@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Addon Debug|Win32">
+      <Configuration>Addon Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Addon Release|Win32">
+      <Configuration>Addon Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Shared\TeamMgr.cpp" />
+    <ClCompile Include="..\Shared\WeaponDefs.cpp" />
+    <ClCompile Include="BaseLineSystemFX.cpp" />
+    <ClCompile Include="BaseParticleSystemFX.cpp" />
+    <ClCompile Include="BloodClientShell.cpp" />
+    <ClCompile Include="BloodSplatFX.cpp" />
+    <ClCompile Include="BloodTrailFX.cpp" />
+    <ClCompile Include="BloodTrailSegmentFX.cpp" />
+    <ClCompile Include="CastLineFX.cpp" />
+    <ClCompile Include="ClientUtilities.cpp" />
+    <ClCompile Include="client_physics.cpp" />
+    <ClCompile Include="CommLink.cpp" />
+    <ClCompile Include="ConfigMgr.cpp" />
+    <ClCompile Include="Credits.cpp" />
+    <ClCompile Include="CreditsWin.cpp" />
+    <ClCompile Include="debugline.cpp" />
+    <ClCompile Include="ExplosionFX.cpp" />
+    <ClCompile Include="FlashlightFX.cpp" />
+    <ClCompile Include="FragInfo.cpp" />
+    <ClCompile Include="GameStates.cpp" />
+    <ClCompile Include="GameWeapons.cpp" />
+    <ClCompile Include="gibfx.cpp" />
+    <ClCompile Include="IKChainFX.cpp" />
+    <ClCompile Include="IpMgr.cpp" />
+    <ClCompile Include="KeyFixes.cpp" />
+    <ClCompile Include="LaserBeamFX.cpp" />
+    <ClCompile Include="LaserFX.cpp" />
+    <ClCompile Include="LightFX.cpp" />
+    <ClCompile Include="LightningFX.cpp" />
+    <ClCompile Include="LightningSegmentFX.cpp" />
+    <ClCompile Include="LoadSave.cpp" />
+    <ClCompile Include="LoadScreenData.cpp" />
+    <ClCompile Include="MainMenus.cpp" />
+    <ClCompile Include="MarkSFX.cpp" />
+    <ClCompile Include="MenuBase.cpp" />
+    <ClCompile Include="MenuBloodBath.cpp" />
+    <ClCompile Include="MenuCharacter.cpp" />
+    <ClCompile Include="MenuCharacterFiles.cpp" />
+    <ClCompile Include="MenuCharacterSelect.cpp" />
+    <ClCompile Include="MenuControls.cpp" />
+    <ClCompile Include="MenuCustomLevel.cpp" />
+    <ClCompile Include="MenuDifficulty.cpp" />
+    <ClCompile Include="MenuDisplay.cpp" />
+    <ClCompile Include="MenuJoystick.cpp" />
+    <ClCompile Include="MenuJoystickAxis.cpp" />
+    <ClCompile Include="MenuKeyboard.cpp" />
+    <ClCompile Include="MenuLoadGame.cpp" />
+    <ClCompile Include="MenuMain.cpp" />
+    <ClCompile Include="MenuMouse.cpp" />
+    <ClCompile Include="MenuOptions.cpp" />
+    <ClCompile Include="MenuSaveGame.cpp" />
+    <ClCompile Include="MenuSinglePlayer.cpp" />
+    <ClCompile Include="MenuSound.cpp" />
+    <ClCompile Include="MessageBoxHandler.cpp" />
+    <ClCompile Include="MessageMgr.cpp" />
+    <ClCompile Include="MoveMgr.cpp" />
+    <ClCompile Include="Music.cpp" />
+    <ClCompile Include="NetInfo.cpp" />
+    <ClCompile Include="NetStart.cpp" />
+    <ClCompile Include="NewStatusBar.cpp" />
+    <ClCompile Include="ObjectFX.cpp" />
+    <ClCompile Include="ParticleExplosionFX.cpp" />
+    <ClCompile Include="ParticleStreamFX.cpp" />
+    <ClCompile Include="ParticleSystemFX.cpp" />
+    <ClCompile Include="PickupObjectFX.cpp" />
+    <ClCompile Include="plasma1.cpp" />
+    <ClCompile Include="PlayerCamera.cpp" />
+    <ClCompile Include="PolyGridFX.cpp" />
+    <ClCompile Include="RainFX.cpp" />
+    <ClCompile Include="RippleFX.cpp" />
+    <ClCompile Include="SFXMgr.cpp" />
+    <ClCompile Include="SharedResourceMgr.cpp" />
+    <ClCompile Include="ShellCasingFX.cpp" />
+    <ClCompile Include="SmokeFX.cpp" />
+    <ClCompile Include="SmokeImpactFX.cpp" />
+    <ClCompile Include="SmokePuffFX.cpp" />
+    <ClCompile Include="SmokeTrailFX.cpp" />
+    <ClCompile Include="SmokeTrailSegmentFX.cpp" />
+    <ClCompile Include="Sparam.cpp" />
+    <ClCompile Include="SparksFX.cpp" />
+    <ClCompile Include="SpecialFXList.cpp" />
+    <ClCompile Include="Splash.cpp" />
+    <ClCompile Include="SplashFX.cpp" />
+    <ClCompile Include="SurfaceFragmentFX.cpp" />
+    <ClCompile Include="TheVoice.cpp" />
+    <ClCompile Include="TracerFX.cpp" />
+    <ClCompile Include="TripLaserFX.cpp" />
+    <ClCompile Include="viewcreature.cpp" />
+    <ClCompile Include="ViewWeapon.cpp" />
+    <ClCompile Include="VoiceMgr.cpp" />
+    <ClCompile Include="WarpGateFX.cpp" />
+    <ClCompile Include="WeaponFX.cpp" />
+    <ClCompile Include="WeaponPowerupFX.cpp" />
+    <ClCompile Include="WinUtil.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BaseLineSystemFX.h" />
+    <ClInclude Include="BaseParticleSystemFX.h" />
+    <ClInclude Include="BloodClientShell.h" />
+    <ClInclude Include="BloodSplatFX.h" />
+    <ClInclude Include="BloodTrailFX.h" />
+    <ClInclude Include="BloodTrailSegmentFX.h" />
+    <ClInclude Include="BulletImpactSFX.h" />
+    <ClInclude Include="CameraFX.h" />
+    <ClInclude Include="CastLineFX.h" />
+    <ClInclude Include="ClientUtilities.h" />
+    <ClInclude Include="client_physics.h" />
+    <ClInclude Include="CommLink.h" />
+    <ClInclude Include="ConfigMgr.h" />
+    <ClInclude Include="Credits.h" />
+    <ClInclude Include="CreditsWin.h" />
+    <ClInclude Include="debugline.h" />
+    <ClInclude Include="ExplosionFX.h" />
+    <ClInclude Include="FlashlightFX.h" />
+    <ClInclude Include="FragInfo.h" />
+    <ClInclude Include="GameWeapons.h" />
+    <ClInclude Include="GibFX.h" />
+    <ClInclude Include="IKChainFX.h" />
+    <ClInclude Include="IpMgr.h" />
+    <ClInclude Include="KeyFixes.h" />
+    <ClInclude Include="LaserBeamFX.h" />
+    <ClInclude Include="LaserFX.h" />
+    <ClInclude Include="LightFX.h" />
+    <ClInclude Include="LightningFX.h" />
+    <ClInclude Include="LightningSegmentFX.h" />
+    <ClInclude Include="LoadSave.h" />
+    <ClInclude Include="LoadScreenData.h" />
+    <ClInclude Include="MainMenus.h" />
+    <ClInclude Include="MarkSFX.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuBase.h" />
+    <ClInclude Include="MenuBloodBath.h" />
+    <ClInclude Include="MenuCharacter.h" />
+    <ClInclude Include="MenuCharacterFiles.h" />
+    <ClInclude Include="MenuCharacterSelect.h" />
+    <ClInclude Include="MenuCommands.h" />
+    <ClInclude Include="MenuControls.h" />
+    <ClInclude Include="MenuCustomLevel.h" />
+    <ClInclude Include="MenuDifficulty.h" />
+    <ClInclude Include="MenuDisplay.h" />
+    <ClInclude Include="MenuJoystick.h" />
+    <ClInclude Include="MenuJoystickAxis.h" />
+    <ClInclude Include="MenuKeyboard.h" />
+    <ClInclude Include="MenuLoadGame.h" />
+    <ClInclude Include="MenuMain.h" />
+    <ClInclude Include="MenuMouse.h" />
+    <ClInclude Include="MenuOptions.h" />
+    <ClInclude Include="MenuSaveGame.h" />
+    <ClInclude Include="MenuSinglePlayer.h" />
+    <ClInclude Include="MenuSound.h" />
+    <ClInclude Include="MessageBoxHandler.h" />
+    <ClInclude Include="MessageMgr.h" />
+    <ClInclude Include="MoveMgr.h" />
+    <ClInclude Include="Music.h" />
+    <ClInclude Include="NetInfo.h" />
+    <ClInclude Include="NetStart.h" />
+    <ClInclude Include="NewStatusBar.h" />
+    <ClInclude Include="ObjectFX.h" />
+    <ClInclude Include="ParticleExplosionFX.h" />
+    <ClInclude Include="ParticleStreamFX.h" />
+    <ClInclude Include="ParticleSystemFX.h" />
+    <ClInclude Include="PickupObjectFX.h" />
+    <ClInclude Include="plasma.h" />
+    <ClInclude Include="PlayerCamera.h" />
+    <ClInclude Include="PolyGridFX.h" />
+    <ClInclude Include="RainFX.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="RippleFX.h" />
+    <ClInclude Include="SFXMgr.h" />
+    <ClInclude Include="SharedResourceMgr.h" />
+    <ClInclude Include="ShellCasingFX.h" />
+    <ClInclude Include="SmokeFX.h" />
+    <ClInclude Include="SmokeImpactFX.h" />
+    <ClInclude Include="SmokePuffFX.h" />
+    <ClInclude Include="SmokeTrailFX.h" />
+    <ClInclude Include="SmokeTrailSegmentFX.h" />
+    <ClInclude Include="Sparam.h" />
+    <ClInclude Include="SparksFX.h" />
+    <ClInclude Include="SpecialFX.h" />
+    <ClInclude Include="SpecialFXList.h" />
+    <ClInclude Include="Splash.h" />
+    <ClInclude Include="SplashFX.h" />
+    <ClInclude Include="stack.h" />
+    <ClInclude Include="StatusBar.h" />
+    <ClInclude Include="SurfaceFragmentFX.h" />
+    <ClInclude Include="TheVoice.h" />
+    <ClInclude Include="TracerFX.h" />
+    <ClInclude Include="TripLaserFX.h" />
+    <ClInclude Include="viewcreature.h" />
+    <ClInclude Include="ViewWeapon.h" />
+    <ClInclude Include="VKDefs.h" />
+    <ClInclude Include="VoiceMgr.h" />
+    <ClInclude Include="VolumeBrushFX.h" />
+    <ClInclude Include="WarpGateFX.h" />
+    <ClInclude Include="WeaponFX.h" />
+    <ClInclude Include="WeaponPowerupFX.h" />
+    <ClInclude Include="WinUtil.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{D0047100-F512-4326-B41E-26234F405165}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ClientShellDLL</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Addon Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Addon Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Addon Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Addon Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>..\directx-sdk;..\appheaders;..\shared;..\misc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <TargetName>CShell</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Addon Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>..\directx-sdk;..\appheaders;..\shared;..\misc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <TargetName>CShell</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>..\directx-sdk;..\appheaders;..\shared;..\misc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <TargetName>CShell</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Addon Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>..\directx-sdk;..\appheaders;..\shared;..\misc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <TargetName>CShell</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_STRICT;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/c %(AdditionalOptions)</AdditionalOptions>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <StringPooling>
+      </StringPooling>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>..\misc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Addon Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_ADD_ON;_ADDON;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;NO_STRICT;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/c %(AdditionalOptions)</AdditionalOptions>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <StringPooling>
+      </StringPooling>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>..\misc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NO_STRICT;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/c %(AdditionalOptions)</AdditionalOptions>
+      <ExceptionHandling>false</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>..\misc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Addon Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_ADD_ON;_ADDON;NO_STRICT;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/c %(AdditionalOptions)</AdditionalOptions>
+      <ExceptionHandling>false</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>..\misc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

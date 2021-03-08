@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Addon Debug|Win32">
+      <Configuration>Addon Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Addon Release|Win32">
+      <Configuration>Addon Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\AppHeaders\cpp_engineobjects_de.cpp" />
+    <ClCompile Include="..\Shared\TeamMgr.cpp" />
+    <ClCompile Include="..\Shared\WeaponDefs.cpp" />
+    <ClCompile Include="AI_Mgr.cpp" />
+    <ClCompile Include="AI_Shared.CPP" />
+    <ClCompile Include="AmmoPickups.cpp" />
+    <ClCompile Include="AncientOne.cpp" />
+    <ClCompile Include="AncientOneTentacle.cpp" />
+    <ClCompile Include="Anim_Sound.cpp" />
+    <ClCompile Include="B2BaseClass.cpp" />
+    <ClCompile Include="BaseCharacter.cpp" />
+    <ClCompile Include="behemoth.cpp" />
+    <ClCompile Include="BloodServerShell.cpp" />
+    <ClCompile Include="boneleech.cpp" />
+    <ClCompile Include="BulletImpactSFX.cpp" />
+    <ClCompile Include="CalebAI.cpp" />
+    <ClCompile Include="CameraObj.cpp" />
+    <ClCompile Include="CameraSpot.cpp" />
+    <ClCompile Include="CinematicTrigger.cpp" />
+    <ClCompile Include="CivilianAI.cpp" />
+    <ClCompile Include="clientbloodtrail.cpp" />
+    <ClCompile Include="ClientCastLineSFX.cpp" />
+    <ClCompile Include="clientdebugline.cpp" />
+    <ClCompile Include="ClientExplosionSFX.cpp" />
+    <ClCompile Include="ClientGibFX.cpp" />
+    <ClCompile Include="ClientLaserBeamSFX.cpp" />
+    <ClCompile Include="ClientLaserFX.cpp" />
+    <ClCompile Include="ClientLightFX.cpp" />
+    <ClCompile Include="ClientLightningSFX.cpp" />
+    <ClCompile Include="ClientMarkSFX.cpp" />
+    <ClCompile Include="ClientParticleStreamSFX.cpp" />
+    <ClCompile Include="ClientSFX.cpp" />
+    <ClCompile Include="ClientSmokeTrail.cpp" />
+    <ClCompile Include="ClientSparksSFX.cpp" />
+    <ClCompile Include="ClientSplashSFX.cpp" />
+    <ClCompile Include="ClientSplatFX.cpp" />
+    <ClCompile Include="ClientTracer.cpp" />
+    <ClCompile Include="ClientWarpGateSFX.cpp" />
+    <ClCompile Include="ClientWeaponSFX.cpp" />
+    <ClCompile Include="ConversationTrigger.cpp" />
+    <ClCompile Include="corpse.cpp" />
+    <ClCompile Include="CultistAI.cpp" />
+    <ClCompile Include="DeathShroud.cpp" />
+    <ClCompile Include="Debris.cpp" />
+    <ClCompile Include="Destructable.cpp" />
+    <ClCompile Include="DestructableBrush.cpp" />
+    <ClCompile Include="DestructableModel.cpp" />
+    <ClCompile Include="DetailSprite.cpp" />
+    <ClCompile Include="Door.cpp" />
+    <ClCompile Include="DrudgeLord.cpp" />
+    <ClCompile Include="drudgepriest.cpp" />
+    <ClCompile Include="EnhancedGideon.cpp" />
+    <ClCompile Include="ExitHint.cpp" />
+    <ClCompile Include="ExitTrigger.cpp" />
+    <ClCompile Include="Explosion.cpp" />
+    <ClCompile Include="Fanatic.cpp" />
+    <ClCompile Include="FireFX.cpp" />
+    <ClCompile Include="FlagObjects.cpp" />
+    <ClCompile Include="GabriellaAI.cpp" />
+    <ClCompile Include="GabriellaREV.cpp" />
+    <ClCompile Include="GameInvItems.cpp" />
+    <ClCompile Include="GameProjectiles.cpp" />
+    <ClCompile Include="GameStartPoint.cpp" />
+    <ClCompile Include="GameWeapons.cpp" />
+    <ClCompile Include="Gib.cpp" />
+    <ClCompile Include="Gideon.cpp" />
+    <ClCompile Include="GooSplat.cpp" />
+    <ClCompile Include="Gremlin.cpp" />
+    <ClCompile Include="HandWeaponModel.cpp" />
+    <ClCompile Include="Impacts.cpp" />
+    <ClCompile Include="InventoryMgr.cpp" />
+    <ClCompile Include="InvItem.cpp" />
+    <ClCompile Include="IshmaelAI.cpp" />
+    <ClCompile Include="IshmaelREV.cpp" />
+    <ClCompile Include="ItemPickups.cpp" />
+    <ClCompile Include="Key.cpp" />
+    <ClCompile Include="KeyData.cpp" />
+    <ClCompile Include="KeyFramer.cpp" />
+    <ClCompile Include="LightFX.cpp" />
+    <ClCompile Include="MadScientistAI.cpp" />
+    <ClCompile Include="ModelObject.cpp" />
+    <ClCompile Include="movement.cpp" />
+    <ClCompile Include="Music.cpp" />
+    <ClCompile Include="Naga.cpp" />
+    <ClCompile Include="NagaCeilingDebris.cpp" />
+    <ClCompile Include="nightmare.cpp" />
+    <ClCompile Include="ObjectivesTrigger.cpp" />
+    <ClCompile Include="ObjectUtilities.cpp" />
+    <ClCompile Include="OpheliaAI.cpp" />
+    <ClCompile Include="OpheliaREV.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="PathListData.cpp" />
+    <ClCompile Include="PathMgr.cpp" />
+    <ClCompile Include="pathpoint.cpp" />
+    <ClCompile Include="PickupObject.cpp" />
+    <ClCompile Include="PlayerObj.cpp" />
+    <ClCompile Include="PolyGrid.cpp" />
+    <ClCompile Include="PowerupPickups.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="prophet.cpp" />
+    <ClCompile Include="Rain.cpp" />
+    <ClCompile Include="RandomSoundFX.cpp" />
+    <ClCompile Include="Rotating.cpp" />
+    <ClCompile Include="RotatingBrush.cpp" />
+    <ClCompile Include="RotatingDoor.cpp" />
+    <ClCompile Include="RotatingModel.cpp" />
+    <ClCompile Include="RotatingSprite.cpp" />
+    <ClCompile Include="Script.cpp" />
+    <ClCompile Include="SeeingEye.cpp" />
+    <ClCompile Include="ShellCasing.cpp" />
+    <ClCompile Include="ShikariAI.cpp" />
+    <ClCompile Include="SmellHint.cpp" />
+    <ClCompile Include="SoccerObjects.cpp" />
+    <ClCompile Include="SoulDrudge.cpp" />
+    <ClCompile Include="SoundFX.cpp" />
+    <ClCompile Include="Sparam.cpp" />
+    <ClCompile Include="SparksObj.cpp" />
+    <ClCompile Include="Spawner.cpp" />
+    <ClCompile Include="Tchernotronic.cpp" />
+    <ClCompile Include="TheHandAI.cpp" />
+    <ClCompile Include="thief.cpp" />
+    <ClCompile Include="Trigger.cpp" />
+    <ClCompile Include="TripLaser.cpp" />
+    <ClCompile Include="UndeadGideon.cpp" />
+    <ClCompile Include="ViewWeaponModel.cpp" />
+    <ClCompile Include="VoiceMgr.cpp" />
+    <ClCompile Include="VolumeBrush.cpp" />
+    <ClCompile Include="VolumeBrushTypes.cpp" />
+    <ClCompile Include="Weapon.cpp" />
+    <ClCompile Include="WeaponPickups.cpp" />
+    <ClCompile Include="WorldModelDebris.cpp" />
+    <ClCompile Include="WorldProperties.cpp" />
+    <ClCompile Include="WreckingBall.cpp" />
+    <ClCompile Include="ZealotAI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AIScriptList.h" />
+    <ClInclude Include="AI_Mgr.h" />
+    <ClInclude Include="AI_Shared.h" />
+    <ClInclude Include="AmmoPickups.h" />
+    <ClInclude Include="AncientOne.h" />
+    <ClInclude Include="AncientOneTentacle.h" />
+    <ClInclude Include="Anim_Sound.h" />
+    <ClInclude Include="B2BaseClass.h" />
+    <ClInclude Include="BaseCharacter.h" />
+    <ClInclude Include="behemoth.h" />
+    <ClInclude Include="BloodServerShell.h" />
+    <ClInclude Include="boneleech.h" />
+    <ClInclude Include="BulletImpactSFX.h" />
+    <ClInclude Include="CalebAI.h" />
+    <ClInclude Include="CameraObj.h" />
+    <ClInclude Include="CameraSpot.h" />
+    <ClInclude Include="ChosenSounds.h" />
+    <ClInclude Include="CinematicTrigger.h" />
+    <ClInclude Include="CivilianAI.h" />
+    <ClInclude Include="clientbloodtrail.h" />
+    <ClInclude Include="ClientCastLineSFX.h" />
+    <ClInclude Include="clientdebugline.h" />
+    <ClInclude Include="ClientExplosionSFX.h" />
+    <ClInclude Include="ClientGibFX.h" />
+    <ClInclude Include="ClientLaserBeamSFX.h" />
+    <ClInclude Include="ClientLaserFX.h" />
+    <ClInclude Include="ClientLightFX.h" />
+    <ClInclude Include="ClientLightningSFX.h" />
+    <ClInclude Include="ClientMarkSFX.h" />
+    <ClInclude Include="ClientParticleStreamSFX.h" />
+    <ClInclude Include="ClientSFX.h" />
+    <ClInclude Include="ClientSmokeTrail.h" />
+    <ClInclude Include="ClientSparksSFX.h" />
+    <ClInclude Include="ClientSplashSFX.h" />
+    <ClInclude Include="ClientSplatFX.h" />
+    <ClInclude Include="ClientTracer.h" />
+    <ClInclude Include="ClientWarpGateSFX.h" />
+    <ClInclude Include="ClientWeaponSFX.h" />
+    <ClInclude Include="ConversationStrings.h" />
+    <ClInclude Include="ConversationTrigger.h" />
+    <ClInclude Include="corpse.h" />
+    <ClInclude Include="CultistAI.h" />
+    <ClInclude Include="CVarTrack.h" />
+    <ClInclude Include="DeathShroud.h" />
+    <ClInclude Include="Debris.h" />
+    <ClInclude Include="Destructable.h" />
+    <ClInclude Include="DestructableBrush.h" />
+    <ClInclude Include="DestructableModel.h" />
+    <ClInclude Include="DetailSprite.h" />
+    <ClInclude Include="Door.h" />
+    <ClInclude Include="DrudgeLord.h" />
+    <ClInclude Include="drudgepriest.h" />
+    <ClInclude Include="EnhancedGideon.h" />
+    <ClInclude Include="ExitHint.h" />
+    <ClInclude Include="ExitTrigger.h" />
+    <ClInclude Include="Explosion.h" />
+    <ClInclude Include="Fanatic.h" />
+    <ClInclude Include="FileCaching.h" />
+    <ClInclude Include="FireFX.h" />
+    <ClInclude Include="FlagObjects.h" />
+    <ClInclude Include="GabriellaAI.h" />
+    <ClInclude Include="GabriellaREV.h" />
+    <ClInclude Include="GameInvItems.h" />
+    <ClInclude Include="GameProjectiles.h" />
+    <ClInclude Include="GameStartPoint.h" />
+    <ClInclude Include="GameWeapons.h" />
+    <ClInclude Include="Gib.h" />
+    <ClInclude Include="Gideon.h" />
+    <ClInclude Include="GooSplat.h" />
+    <ClInclude Include="Gremlin.h" />
+    <ClInclude Include="HandWeaponModel.h" />
+    <ClInclude Include="Impacts.h" />
+    <ClInclude Include="InventoryMgr.h" />
+    <ClInclude Include="InvItem.h" />
+    <ClInclude Include="IshmaelAI.h" />
+    <ClInclude Include="IshmaelREV.h" />
+    <ClInclude Include="ItemPickups.h" />
+    <ClInclude Include="Key.h" />
+    <ClInclude Include="KeyData.h" />
+    <ClInclude Include="KeyFramer.h" />
+    <ClInclude Include="LightFX.h" />
+    <ClInclude Include="MadScientistAI.h" />
+    <ClInclude Include="ModelObject.h" />
+    <ClInclude Include="movement.h" />
+    <ClInclude Include="Music.h" />
+    <ClInclude Include="Naga.h" />
+    <ClInclude Include="NagaCeilingDebris.h" />
+    <ClInclude Include="nightmare.h" />
+    <ClInclude Include="ObjectivesTrigger.h" />
+    <ClInclude Include="ObjectUtilities.h" />
+    <ClInclude Include="OpheliaAI.h" />
+    <ClInclude Include="OpheliaREV.h" />
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="PathList.h" />
+    <ClInclude Include="PathListData.h" />
+    <ClInclude Include="PathMgr.h" />
+    <ClInclude Include="pathpoint.h" />
+    <ClInclude Include="PhysicalAttributes.h" />
+    <ClInclude Include="PickupObject.h" />
+    <ClInclude Include="PlayerObj.h" />
+    <ClInclude Include="PolyGrid.h" />
+    <ClInclude Include="PowerupPickups.h" />
+    <ClInclude Include="Projectile.h" />
+    <ClInclude Include="prophet.h" />
+    <ClInclude Include="Rain.h" />
+    <ClInclude Include="RandomSoundFX.h" />
+    <ClInclude Include="Rotating.h" />
+    <ClInclude Include="RotatingBrush.h" />
+    <ClInclude Include="RotatingDoor.h" />
+    <ClInclude Include="RotatingModel.h" />
+    <ClInclude Include="RotatingSprite.h" />
+    <ClInclude Include="Script.h" />
+    <ClInclude Include="ScriptList.h" />
+    <ClInclude Include="SeeingEye.h" />
+    <ClInclude Include="ShellCasing.h" />
+    <ClInclude Include="ShikariAI.h" />
+    <ClInclude Include="SmellHint.h" />
+    <ClInclude Include="SoccerObjects.h" />
+    <ClInclude Include="SoulDrudge.h" />
+    <ClInclude Include="SoundFX.h" />
+    <ClInclude Include="Sparam.h" />
+    <ClInclude Include="SparksObj.h" />
+    <ClInclude Include="Spawner.h" />
+    <ClInclude Include="Tchernotronic.h" />
+    <ClInclude Include="TheHandAI.h" />
+    <ClInclude Include="thief.h" />
+    <ClInclude Include="Trigger.h" />
+    <ClInclude Include="TripLaser.h" />
+    <ClInclude Include="UndeadGideon.h" />
+    <ClInclude Include="ViewWeaponModel.h" />
+    <ClInclude Include="VoiceMgr.h" />
+    <ClInclude Include="VolumeBrush.h" />
+    <ClInclude Include="VolumeBrushTypes.h" />
+    <ClInclude Include="Weapon.h" />
+    <ClInclude Include="WeaponPickups.h" />
+    <ClInclude Include="WorldModelDebris.h" />
+    <ClInclude Include="WreckingBall.h" />
+    <ClInclude Include="ZealotAI.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{2B4ECE23-1B5C-4F3D-B625-3127704DB558}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Blood2ObjectDLL</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Addon Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Addon Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Addon Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Addon Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>Object</TargetName>
+    <TargetExt>.lto</TargetExt>
+    <IncludePath>..\appheaders;..\shared;..\misc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Addon Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>Object</TargetName>
+    <TargetExt>.lto</TargetExt>
+    <IncludePath>..\appheaders;..\shared;..\misc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>Object</TargetName>
+    <TargetExt>.lto</TargetExt>
+    <IncludePath>..\appheaders;..\shared;..\misc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Addon Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>Object</TargetName>
+    <TargetExt>.lto</TargetExt>
+    <IncludePath>..\appheaders;..\shared;..\misc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/c %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>..\misc;</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Addon Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_ADD_ON;_ADDON;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/c %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>..\misc;</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/c %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>..\misc;</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Addon Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_ADD_ON;_ADDON;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/c %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>..\misc;</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
