@@ -1204,7 +1204,7 @@ void CNewStatusBar::SetupTab(StatTab &stTab, CoolFont *font, DBYTE nFlags)
 
 		sprintf(value, "%d", stTab.value);
 		m_pStatCursor->Draw(value);
-		delete value;
+		delete [] value;
 		value = 0;
 	}
 }

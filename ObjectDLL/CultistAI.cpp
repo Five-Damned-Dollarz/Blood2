@@ -604,8 +604,8 @@ void CultistAI::Load(HMESSAGEREAD hRead, DDWORD dwLoadFlags)
 
 	m_pServerDE->GetModelFilenames(m_hObject, sModel, 255, sSkin, 255);
 
-	strupr(sModel);
-	strupr(sSkin);
+	_strupr(sModel);
+	_strupr(sSkin);
 
 	if (strstr(sSkin, "M_CULTIST4")) m_bClownSkin = DTRUE;
 	if (strstr(sSkin, "M_CULTIST5")) m_bClownSkin = DTRUE;

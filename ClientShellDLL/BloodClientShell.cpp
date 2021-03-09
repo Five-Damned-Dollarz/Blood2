@@ -2886,7 +2886,7 @@ void CBloodClientShell::PreLoadWorld(char *pWorldName)
 #ifdef _ADDON
 	char sUpr[256];
 	strncpy(sUpr, pWorldName, 255);
-	strupr(sUpr);
+	_strupr(sUpr);
 
 	if (strstr(sUpr, "_AO"))			// is this an add-on level?
 	{
@@ -7125,7 +7125,7 @@ void CBloodClientShell::GetWorldTitle(char *pWorldFile)
 #ifdef _ADDON
 	char sUpr[256];
 	strncpy(sUpr, pWorldFile, 255);
-	strupr(sUpr);
+	_strupr(sUpr);
 	if (strstr(sUpr, "WORLDS_AO"))
 	{
 		strncpy(szFilename, pWorldFile, MAX_CS_FILENAME_LEN);
@@ -7202,7 +7202,7 @@ void CBloodClientShell::GetWorldTitle(char *pWorldFile)
 	// Change the loading screen string if this is a nightmare level...
 
 #ifdef _ADDON
-	strupr(szFilename);
+	_strupr(szFilename);
 	if (strstr(szFilename, "WORLDS_AO"))
 	{
 		if (m_hstrLoadScreen) { pClientDE->FreeString(m_hstrLoadScreen); m_hstrLoadScreen = 0; }

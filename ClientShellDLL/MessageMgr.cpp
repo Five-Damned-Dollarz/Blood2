@@ -763,6 +763,7 @@ void CCheatMgr::Init(CClientDE* pClientDE)
 	g_pCheatMgr = this;
 
 #if ENCRYPT_CHEATS
+	#pragma message(__FILE__ "[" STRING(__LINE__) "]: ENCRYPT_CHEATS is set, Decrypt() will cause a runtime memory access write violation!")
 	Decrypt();
 #endif
 

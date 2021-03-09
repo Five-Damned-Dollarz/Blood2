@@ -864,7 +864,7 @@ DBOOL CBloodServerShell::LoadWorld(HMESSAGEREAD hMessage)
 #ifdef _ADDON
 	char sUpr[256];
 	strncpy(sUpr, pFilename, 255);
-	strupr(sUpr);
+	_strupr(sUpr);
 	if (strstr(sUpr, "WORLDS_AO"))
 	{
 		strncpy(szPath, pFilename, MAX_PATH);

@@ -69,11 +69,11 @@ Script::Script() : B2BaseClass(OT_NORMAL)
 	memset(ScriptCamera, 0, sizeof(ScriptCamera));
 	memset(ScriptSound, 0, sizeof(ScriptSound));
 
-	for (int i=0; i<MAX_MOVEOBJS+1; i++)
+	for (int i=0; i<MAX_MOVEOBJS; i++)
 	{
 		m_nMoveObject[i] = -1;
 		m_nMoveCamera[i] = -1;
-	}            
+	}
 }
 
 
