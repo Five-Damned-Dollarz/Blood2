@@ -830,7 +830,7 @@ BOOL NetStart_SelectCurrentService(HWND hList)
 	{
 		strcpy(s_pServerInfo->m_sService, sBuf);
 		strcpy(s_sServiceName, s_pServerInfo->m_sService);
-		strlwr(sBuf);
+		_strlwr(sBuf);
 
 		if (strstr(sBuf, "ipx")) strcpy(s_pServerInfo->m_sService, "Ipx");
 		else if (strstr(sBuf, "modem")) strcpy(s_pServerInfo->m_sService, "Modem");
@@ -1147,7 +1147,7 @@ BOOL NetStart_FillLevelList(HWND hList, char* sDir, int nData, BOOL bClearList)
 	{
 		if (ptr->m_Type == TYPE_FILE)
 		{
-			if (strnicmp(&ptr->m_pBaseFilename[strlen(ptr->m_pBaseFilename) - 4], ".dat", 4) == 0)
+			if (_strnicmp(&ptr->m_pBaseFilename[strlen(ptr->m_pBaseFilename) - 4], ".dat", 4) == 0)
 			{
 				char sLevel[128];
 				strcpy(sLevel, ptr->m_pBaseFilename);
@@ -1455,7 +1455,7 @@ void InitGameLevels(HWND hDlg)
 
 			int nType = RETAIL_LEVEL;
 
-			strupr(sTemp);
+			_strupr(sTemp);
 			if (!strstr(sTemp, "\\MULTI\\") && !strstr(sTemp, "\\MULTI_AO\\"))
 			{
 				nType = CUSTOM_LEVEL;
@@ -1775,7 +1775,7 @@ BOOL NetStart_GoNoDialogs(ServerInfo* pServerInfo, NetGame* pNetGame)
 
 	for (pCur=pListHead; pCur; pCur=pCur->m_pNext)
 	{
-		if (stricmp(pCur->m_sName, s_sServiceName) == 0)
+		if (_stricmp(pCur->m_sName, s_sServiceName) == 0)
 		{
 			pFound = pCur;
 			break;
@@ -1800,7 +1800,7 @@ BOOL NetStart_GoNoDialogs(ServerInfo* pServerInfo, NetGame* pNetGame)
 	if (!bRet) return(FALSE);
 
 	strcpy(s_pServerInfo->m_sService, s_sServiceName);
-	strlwr(s_pServerInfo->m_sService);
+	_strlwr(s_pServerInfo->m_sService);
 
 	if (strstr(s_pServerInfo->m_sService, "ipx")) strcpy(s_pServerInfo->m_sService, "Ipx");
 	else if (strstr(s_pServerInfo->m_sService, "tcp")) strcpy(s_pServerInfo->m_sService, "Tcp/ip");
@@ -1980,7 +1980,7 @@ int FillAvailableRez(HWND hList)
 
 	// Change to the "custom" direcotry...
 
-	if (chdir("Custom") != 0) return(0);
+	if (_chdir("Custom") != 0) return(0);
 
 
 	// Enumerate the available rez files and add them to the list box...
@@ -1992,7 +1992,7 @@ int FillAvailableRez(HWND hList)
 	hFile = _findfirst("*.rez", &fd);
 	if (hFile == -1)
 	{
-		chdir ("..");
+		_chdir ("..");
 		return(0);
 	}
 
@@ -2017,7 +2017,7 @@ int FillAvailableRez(HWND hList)
 
 	// Restore the directory...
 
-	chdir ("..");
+	_chdir ("..");
 
 
 	// All done...
@@ -2057,7 +2057,7 @@ int FillSelectedRez(HWND hList)
 
 		char sTemp[128];
 		strncpy(sTemp, sRez, 125);
-		strupr(sTemp);
+		_strupr(sTemp);
 		if (strncmp(sTemp, "CUSTOM\\", 7) == 0)
 		{
 			strncpy(sTemp, sRez, 125);
@@ -2146,7 +2146,7 @@ BOOL RemoveSelectedRez(HWND hSourceList, HWND hDestList)
 	// Remove the current item from the dest list...
 
 	int nRet = SendMessage(hDestList, LB_DELETESTRING, nIndex, 0);
-	if (!nRet == LB_ERR) return(FALSE);
+	if (nRet == LB_ERR) return(FALSE);
 
 
 	// Try to select the previous item...
@@ -2933,7 +2933,7 @@ BOOL NetStart_IsOkToDisplayLevel(char* sLevel)
 	char sTemp[128];
 
 	strncpy(sTemp, sLevel, 126);
-	strupr(sTemp);
+	_strupr(sTemp);
 
 	if (strncmp(sTemp, sPrefix, strlen(sPrefix)) != 0)
 	{

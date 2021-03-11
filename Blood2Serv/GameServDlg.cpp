@@ -704,7 +704,7 @@ BOOL CGameServDlg::OnInitDialog()
 	SetIcon(hIcon, FALSE);
 
 
-	for(i=0; i < 30; i++)
+	for(int i=0; i < 30; i++)
 	{
 		if(SetTimer((UINT)i, 500, NULL))
 			break;
@@ -1125,7 +1125,7 @@ void CGameServDlg::OnStandardUpdate(char* pMsg)
 
 	PLAYERINFO TempPi;
 
-	for (i = 0; i < count - 1; i++)
+	for (int i = 0; i < count - 1; i++)
 	{
 		for (int j = i+1; j < count; j++)
 		{
@@ -1152,7 +1152,7 @@ void CGameServDlg::OnStandardUpdate(char* pMsg)
 
 	nNewSel = LB_ERR;
 
-	for (i = 0; i < count; i++)
+	for (int i = 0; i < count; i++)
 	{
 		CString sPlayer;
 		sPlayer.Format("(%d)\t%s\t%i", m_aPis[i].dwPing, m_aPis[i].sName, m_aPis[i].nFrags);

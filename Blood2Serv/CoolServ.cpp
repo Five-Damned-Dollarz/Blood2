@@ -81,7 +81,7 @@ BOOL CCoolServApp::InitInstance()
 	//  the specific initialization routines you do not need.
 
 #ifdef _AFXDLL
-	Enable3dControls();			// Call this when using MFC in a shared DLL
+	//Enable3dControls();			// Call this when using MFC in a shared DLL
 #else
 	Enable3dControlsStatic();	// Call this when linking to MFC statically
 #endif
@@ -95,7 +95,7 @@ BOOL CCoolServApp::InitInstance()
 	int i;
 	for(i=0; i < (__argc-1); i++)
 	{
-		if(stricmp(__argv[i], "-DLL") == 0)
+		if(_stricmp(__argv[i], "-DLL") == 0)
 		{
 			pDLLName = __argv[i+1];
 			break;
@@ -127,7 +127,7 @@ BOOL CCoolServApp::InitInstance()
 
 	char sCmdLine[256];
 	strcpy(sCmdLine, theApp.m_lpCmdLine);
-	strupr(sCmdLine);
+	_strupr(sCmdLine);
 
 	if (strlen(sCmdLine) > 0 && strstr(sCmdLine, "-GO"))
 	{
@@ -150,7 +150,7 @@ BOOL CCoolServApp::InitInstance()
 
 	for (i = 0; i < (__argc-1); i++)
 	{
-		if (stricmp(__argv[i], "-CONFIG") == 0)
+		if (_stricmp(__argv[i], "-CONFIG") == 0)
 		{
 			strncpy(configFile, __argv[i+1], sizeof(configFile));
 		}

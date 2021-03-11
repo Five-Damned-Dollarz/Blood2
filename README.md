@@ -16,6 +16,4 @@ This is the minimum I've found to get it compiling in VS2019. Note that it's sup
 - Fixed incorrect stride in a loop in CPolyGridFX
 - Fixed a CNewStatusBar array not being deleted correctly
 - Fixed Script constructor initializing beyond array bounds
-
-## Issues
-- Blood2Serv doesn't compile
+- CGameSpyMgr stubbed out so server can link

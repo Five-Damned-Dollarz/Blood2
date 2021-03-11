@@ -33,7 +33,7 @@
 
 #pragma comment (lib, "winmm.lib")
 
-#pragma comment (lib, "GameSpyMgr.lib")
+//#pragma comment (lib, "GameSpyMgr.lib")
 
 // Classes...
 
