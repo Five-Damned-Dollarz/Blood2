@@ -10,7 +10,8 @@ This is the minimum I've found to get it compiling in VS2019. Note that it's sup
 ## Changes from original source
 - B2_LITE (Shared/SharedDefs.h) has been unset to enable extra effects and sounds
 - CWeaponFX::GetImpactSound has been rewritten to fix a memory access write violation (includes adding s_FileBuffer in Shared/ClientServerShared.h)
-- ENCRYPT_CHEATS set to 0, CCheatMgr::Decrypt causes a memory access write violation
+- Modified CCheatMgr::Check to encrypt entered cheat and compare if ENCRYPT_CHEATS is 1
+- CCheatMgr::Decrypt stubbed out due to memory access write violation
 - A lot of variable fallthroughs have been fixed, mostly in ClientShellDLL/*FX.cpp
 - Fixed an equality check that was an assignment in the FlagStand class
 - Fixed incorrect stride in a loop in CPolyGridFX

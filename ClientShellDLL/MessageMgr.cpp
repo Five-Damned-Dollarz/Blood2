@@ -18,7 +18,7 @@ CMessageMgr *g_pMessageMgr = DNULL;
 CCheatMgr	*g_pCheatMgr = DNULL;
 
 
-#define ENCRYPT_CHEATS	0	// SET THIS TO NON-ZERO BEFORE WE SHIP!!! 210307 - don't set this to non-zero unless you fix Decrypt() first!
+#define ENCRYPT_CHEATS	1	// SET THIS TO NON-ZERO BEFORE WE SHIP!!!
 
 #if ENCRYPT_CHEATS
 
@@ -762,7 +762,7 @@ void CCheatMgr::Init(CClientDE* pClientDE)
 	m_pClientDE = pClientDE;
 	g_pCheatMgr = this;
 
-#if ENCRYPT_CHEATS
+#if 0
 	#pragma message(__FILE__ "[" STRING(__LINE__) "]: ENCRYPT_CHEATS is set, Decrypt() will cause a runtime memory access write violation!")
 	Decrypt();
 #endif
@@ -797,6 +797,7 @@ void CCheatMgr::Reset()
 
 void CCheatMgr::Decrypt()
 {
+#if 0
 	// Decrypt each cheat code...
 
 	for (int i = 0; i < CHEAT_MAX; i++)
@@ -809,6 +810,7 @@ void CCheatMgr::Decrypt()
 			sCheat++;
 		}
 	}
+#endif
 }
 
 
@@ -833,9 +835,11 @@ DBOOL CCheatMgr::Check( char *pzText )
 	if ( _mbsncmp((const unsigned char*)buf, (const unsigned char*)"MP", 2) != 0 )
 		return DFALSE;
 
-	// convert it to cheat compatible text
-//	for ( i = 0; i < _mbstrlen(pzText); i++ )
-//		buf[i]++;
+#ifdef ENCRYPT_CHEATS
+	// Encrypt buf so we can compare
+	for ( i = 0; i < _mbstrlen(pzText); i++ )
+		buf[i] += 13;
+#endif
 
 	// then compare the converted text (skip the first two chars, already know they are "MP"
 	for ( i = 0; i < CHEAT_MAX; i++ )
