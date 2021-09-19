@@ -49,7 +49,7 @@ struct GlobalFilterFnData
 	GlobalFilterFnData( ) { m_dwFlags = 0; m_nIgnoreObjects = 0; m_hIgnoreObjects = DNULL; }
 
 	DDWORD m_dwFlags;				// Filter flags
-	DDWORD m_nIgnoreObjects;		// Number of objects in ingnore list
+	DDWORD m_nIgnoreObjects;		// Number of objects in ignore list
 	HOBJECT *m_hIgnoreObjects;		// Objects to ignore
 };
 

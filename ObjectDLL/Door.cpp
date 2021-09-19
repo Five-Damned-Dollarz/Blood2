@@ -1020,7 +1020,7 @@ DFLOAT Door::GetWaveValue( DFLOAT fSpeed, DFLOAT fPercentOpen, DDWORD dwWaveType
 	if (dwWaveType == DOORWAVE_LINEAR)
 		return fSpeed;
 
-	DFLOAT fNewSpeed;
+	DFLOAT fNewSpeed=fSpeed;
 	DFLOAT f10Percent = fSpeed * 0.1f;
 
 	switch ( dwWaveType )

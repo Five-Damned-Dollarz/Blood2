@@ -56,7 +56,7 @@ static DFLOAT g_fFocusRegenAmt[6] = {2.0f, 4.0f, 6.0f, 8.0f, 10.0f, 12.0f};
 
 // For alternating weapons
 static DBOOL g_FireLeftHand = 0;
-static DFLOAT g_LastDuelShotTime = 0.0f;
+static DFLOAT g_LastDualShotTime = 0.0f;
 
 
 // Prototypes...
@@ -2597,7 +2597,7 @@ void CInventoryMgr::UpdateCurrentWeaponFiring(DVector *firedPos, DVector *lFired
 
 		DFLOAT fTime = pServerDE->GetTime();
 
-		if((fTime - g_LastDuelShotTime) >= (pWeap->GetReloadTime() / 2.0f))
+		if((fTime - g_LastDualShotTime) >= (pWeap->GetReloadTime() / 2.0f))
 		{
 			if(g_FireLeftHand)
 				pLWeap->UpdateFiringState(lFiredPos, rotP, bFiring, bAltFiring);
@@ -2605,7 +2605,7 @@ void CInventoryMgr::UpdateCurrentWeaponFiring(DVector *firedPos, DVector *lFired
 				pWeap->UpdateFiringState(firedPos, rotP, bFiring, bAltFiring);
 
 			g_FireLeftHand = !g_FireLeftHand;
-			g_LastDuelShotTime = fTime;
+			g_LastDualShotTime = fTime;
 		}
 	}
 	else if (pWeap)

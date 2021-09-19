@@ -538,45 +538,56 @@ void DamageObjectsInRadius(HOBJECT hResponsible, LPBASECLASS pDamager,
 	CServerDE* pServerDE = BaseClass::GetServerDE();
 	if (!pServerDE || fRadius <= 0.0f) return;
 
-	// Set area of effect damage type flag, for those who care
+	ObjectList* object_list=pServerDE->FindObjectsTouchingSphere(&vOrigin, fRadius);
+	if (!object_list)
+		return;
+
 	nDamageType |= DAMAGE_FLAG_AREAEFFECT;
 
-	DLink* pLink = CDestructable::m_DestructableHead.m_pNext;
-	if(!pLink)
-		return;
+	ObjectLink* object_ref=object_list->m_pFirstLink;
 
 	// small optimization..
 	// Work with the squares of the distances so as to not have to get a square root.
 	DFLOAT fRadiusSquared = fRadius * fRadius;
 	DFLOAT fHalfRadiusSquared = fRadiusSquared/2;
 
-	HOBJECT hObj;
-
-	while(pLink != &CDestructable::m_DestructableHead)
+	while (object_ref)
 	{
-		hObj = ((CDestructable*)pLink->m_pData)->GetObject();
-
-		if (!hObj)
-		{
-			pLink = pLink->m_pNext;
-			continue;
-		}
-
+		HOBJECT hObj = object_ref->m_hObject;
+		// test intersect, do damage
 		DVector vDir, vObjPos, vObjDims;
 		pServerDE->GetObjectPos(hObj, &vObjPos);
 
 		// Get the average of the objects dims
 		pServerDE->GetObjectDims(hObj, &vObjDims);
 		DFLOAT fAvgDim = (vObjDims.x + vObjDims.y + vObjDims.z) / 3.0f;
-		fAvgDim = fAvgDim * fAvgDim;	
-		
+		fAvgDim = fAvgDim * fAvgDim;
+
 		VEC_SUB(vDir, vObjPos, vOrigin);
 		DFLOAT fDistanceSquared = VEC_MAGSQR(vDir) - fAvgDim;
 
-		// Apply full damage to 50% point, then reduce it
-		if (fDistanceSquared < fHalfRadiusSquared) 
+		IntersectQuery intersect_query;
+		IntersectInfo intersect_info;
+
+		intersect_query.m_From = vOrigin;
+		intersect_query.m_To = vObjPos;
+
+		intersect_query.m_Flags = INTERSECT_OBJECTS | IGNORE_NONSOLID;
+		intersect_query.m_FilterFn = [](HOBJECT object, void* user_data) noexcept -> DBOOL { if (!object) return DFALSE; return object != (HOBJECT)user_data; };
+		intersect_query.m_pUserData = hObj;
+
+		if (!pServerDE->IntersectSegment(&intersect_query, &intersect_info))
 		{
-			DamageObject(hResponsible, pDamager, hObj, fDamage, vDir, vOrigin, nDamageType);
+			// Apply full damage to 50% point, then reduce it
+			//if (fDistanceSquared < fHalfRadiusSquared)
+			//{
+				DamageObject(hResponsible, pDamager, hObj, fDamage, vDir, vOrigin, nDamageType);
+			//}
+			//else if (fDistanceSquared <= fRadiusSquared)
+			//{
+				//DFLOAT fAdjDamage = fDamage - (fDistanceSquared - fHalfRadiusSquared) / fHalfRadiusSquared * fDamage;
+				//DamageObject(hResponsible, pDamager, hObj, fAdjDamage, vDir, vOrigin, nDamageType);
+			//}
 		}
 		else if (fDistanceSquared <= fRadiusSquared) 
 		{
@@ -584,8 +595,10 @@ void DamageObjectsInRadius(HOBJECT hResponsible, LPBASECLASS pDamager,
 			DamageObject(hResponsible, pDamager, hObj, fAdjDamage, vDir, vOrigin, nDamageType);
 		}
 
-		pLink = pLink->m_pNext;
+		object_ref = object_ref->m_pNext;
 	}
+
+	pServerDE->RelinquishList(object_list);
 }
 
 

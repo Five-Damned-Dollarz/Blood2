@@ -23,23 +23,23 @@
 // intro from silence, index=1 ending to silence, index 2=transition from
 // cruising, index 3=transition from harddriving.
 
-static char g_szAmbientTrans[4][PARSE_MAXTOKENSIZE] = 
+static char g_szAmbientTrans[4][PARSE_MAXTOKENSIZE] =
 {
 	"sta.sec", "ats.sec", "cta.sec", "hta.sec"
 };
 
-static char g_szCruisingTrans[4][PARSE_MAXTOKENSIZE] = 
+static char g_szCruisingTrans[4][PARSE_MAXTOKENSIZE] =
 {
 	"stc.sec", "cts.sec", "atc.sec", "htc.sec"
 };
 
-static char g_szHarddrivingTrans[4][PARSE_MAXTOKENSIZE] = 
+static char g_szHarddrivingTrans[4][PARSE_MAXTOKENSIZE] =
 {
 	"sth.sec", "cts.sec", "ath.sec", "cth.sec"
 };
 
 
- 
+
 // ----------------------------------------------------------------------- //
 //
 //	ROUTINE:	CMusic::CMusic
@@ -267,7 +267,7 @@ DBOOL CMusic::HandleMusicMessage( HMESSAGEREAD hMessage )
 			return PlayBreak( msg );
 		}
 	}
-	
+
 	return DFALSE;
 }
 
@@ -402,10 +402,10 @@ DBOOL CMusic::TransitionToLevel( char *szTransition, char *szList, EMusicLevel e
 // ----------------------------------------------------------------------- //
 DBOOL CMusic::PlayMotif( char *pMotifName, DBOOL bLoop )
 {
-	if( !m_bUseIma )
+	if(!m_bUseIma || pMotifName==NULL)
 		return DTRUE;
 
-	return DTRUE;
+	return (DBOOL)m_pClientDE->PlayMotif(pMotifName, bLoop);
 }
 
 // ----------------------------------------------------------------------- //
@@ -419,6 +419,8 @@ void CMusic::StopMotif( char *pMotifName )
 {
 	if( !m_bUseIma )
 		return;
+
+	m_pClientDE->StopMotif(pMotifName);
 }
 
 // ----------------------------------------------------------------------- //

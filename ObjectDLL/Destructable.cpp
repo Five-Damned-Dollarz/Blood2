@@ -65,7 +65,7 @@ CDestructable::CDestructable() : Aggregate()
 
 	m_hstrSpawnObject			= DNULL;
 	VEC_INIT(m_vSpawnObjectVel);
-	
+
 	m_bGodMode					= DFALSE;
 	m_bNighInvulnerable			= DFALSE;
 	m_hWhoKilledMeLast			= DNULL;
@@ -147,7 +147,7 @@ CDestructable::~CDestructable()
 //	PURPOSE:	Handle message from the engine
 //
 // ----------------------------------------------------------------------- //
-		
+
 DDWORD CDestructable::EngineMessageFn(LPBASECLASS pObject, DDWORD messageID, void *pData, DFLOAT fData)
 {
 	if (!g_pServerDE) return 0;
@@ -336,7 +336,7 @@ DBOOL CDestructable::Init(HOBJECT hObject, CInventoryMgr* pInv, CAnim_Sound* pAn
 //	ROUTINE:	CDestructable::CalculateResistance
 //
 //	PURPOSE:	Handle damage message
-// 
+//
 // ----------------------------------------------------------------------- //
 
 void CDestructable::CalculateResistance(DBYTE nResistValue)
@@ -354,8 +354,8 @@ void CDestructable::CalculateResistance(DBYTE nResistValue)
 	else if (nResistValue >= 6)
 		m_fResistance = 0.7f;
 }
-	
-	
+
+
 // ----------------------------------------------------------------------- //
 //
 //	ROUTINE:	CDestructable::SetMass
@@ -389,7 +389,7 @@ void CDestructable::SetMass(DFLOAT fMass)
 //	ROUTINE:	CDestructable::HandleDamage
 //
 //	PURPOSE:	Handle damage message
-// 
+//
 // ----------------------------------------------------------------------- //
 
 void CDestructable::HandleDamage(HOBJECT hSender, HMESSAGEREAD hRead)
@@ -420,7 +420,7 @@ void CDestructable::HandleDamage(HOBJECT hSender, HMESSAGEREAD hRead)
 		return;
 	}
 
-	// If instant death, don't bother calculating stuff.. 
+	// If instant death, don't bother calculating stuff..
 	if( m_bDestructable && nDamageType == DAMAGE_TYPE_DEATH)
 	{
 		m_fArmorPoints = 0;
@@ -437,14 +437,14 @@ void CDestructable::HandleDamage(HOBJECT hSender, HMESSAGEREAD hRead)
 		// Special pre-damage base character modifiers
 		if (IsAICharacter(m_hObject))
 		{
-			m_nNodeHit = CalculateHitLimb(vDir,vPos,fDamage);
+			m_nNodeHit = CalculateHitLimb(vDir, vPos, fDamage);
 
-			if(m_nNodeHit == -1 && !(nDamageType & DAMAGE_TYPE_NORMAL))
-				m_nNodeHit = SetProperNode(pServerDE->IntRandom(0,NUM_ALL_NODES - 3));
-			else if(m_nNodeHit >= 0)
+			if (m_nNodeHit == -1 && !(nDamageType & (DAMAGE_TYPE_NORMAL | DAMAGE_TYPE_MELEE)))
+				m_nNodeHit = SetProperNode(pServerDE->IntRandom(0, NUM_ALL_NODES - 3));
+			else if (m_nNodeHit >= 0)
 				m_nNodeHit = SetProperNode(m_nNodeHit);
-			else
-				return;
+			//else
+			//	return;
 
 			//Compute one side got hit for recoils
 			DVector vU, vR, vF, vTmpDir;
@@ -454,24 +454,24 @@ void CDestructable::HandleDamage(HOBJECT hSender, HMESSAGEREAD hRead)
 
 			VEC_COPY(vTmpDir, vDir);
 
-			VEC_MULSCALAR(vTmpDir,vTmpDir,-1.0f);
-			DFLOAT fAmount = (DFLOAT) atan2(vTmpDir.x, vTmpDir.z);    
-			DFLOAT fAmount2 = (DFLOAT) atan2(vF.x, vF.z);
+			VEC_MULSCALAR(vTmpDir, vTmpDir, -1.0f);
+			DFLOAT fAmount = (DFLOAT)atan2(vTmpDir.x, vTmpDir.z);
+			DFLOAT fAmount2 = (DFLOAT)atan2(vF.x, vF.z);
 
-			if(fAmount < 0.0f)
-				fAmount = (MATH_PI*2) + fAmount;
-			if(fAmount2 < 0.0f)
-				fAmount2 = (MATH_PI*2) + fAmount2;
+			if (fAmount < 0.0f)
+				fAmount = (MATH_PI * 2) + fAmount;
+			if (fAmount2 < 0.0f)
+				fAmount2 = (MATH_PI * 2) + fAmount2;
 
 			DFLOAT fAngle = fAmount2 - fAmount;
 
-			if(fAngle <= MATH_PI/2 || fAngle >= 3*MATH_PI/2)	//Hit the front
+			if (fAngle <= MATH_PI / 2 || fAngle >= 3 * MATH_PI / 2)	//Hit the front
 			{
 				m_nSideHit = 0;
 			}
 			else //Hit the back
 			{
-				m_nSideHit = 6;	
+				m_nSideHit = 6;
 			}
 
 			if (m_hLastDamager)
@@ -479,36 +479,36 @@ void CDestructable::HandleDamage(HOBJECT hSender, HMESSAGEREAD hRead)
 
 			m_hLastDamager = hWhoHit;
 
-			if(m_hLastDamager)
+			if (m_hLastDamager)
 				pServerDE->CreateInterObjectLink(m_hObject, m_hLastDamager);
 
-			if(m_nNodeHit == NODE_NECK)
+			if (m_nNodeHit == NODE_NECK)
 			{
 				AI_Mgr* pAI = (AI_Mgr*)pServerDE->HandleToObject(m_hObject);
 
-				if(pAI->m_bCabal || pServerDE->IsKindOf(pServerDE->GetObjectClass(m_hObject), pServerDE->GetClass("SoulDrudge")))
+				if (pAI->m_bCabal || pServerDE->IsKindOf(pServerDE->GetObjectClass(m_hObject), pServerDE->GetClass("SoulDrudge")))
 					m_fHitPoints = 0;
-				
+
 				fDamage *= 1.5f;
 			}
-			else if(m_nNodeHit == NODE_TORSO)
+			else if (m_nNodeHit == NODE_TORSO)
 			{
 				fDamage *= 1.0f;
 			}
 			else
 			{
-				fDamage *= 0.5f;
+				fDamage *= 1.0f; // 0.5f;
 			}
 		}
 
 		if (IsBaseCharacter(m_hObject))
 		{
-			CBaseCharacter *pOwner = (CBaseCharacter*)pServerDE->HandleToObject(m_hObject);
+			CBaseCharacter* pOwner = (CBaseCharacter*)pServerDE->HandleToObject(m_hObject);
 
-//			if (pOwner->IsItemActive(SPELL_STONE))
-//				return;
+			//			if (pOwner->IsItemActive(SPELL_STONE))
+			//				return;
 
-			// If Nigh-invulnerability powerup in effect..
+						// If Nigh-invulnerability powerup in effect..
 			if (m_bNighInvulnerable)
 				fDamage = fDamage * 0.05f;
 
@@ -516,7 +516,7 @@ void CDestructable::HandleDamage(HOBJECT hSender, HMESSAGEREAD hRead)
 /*			if (nDamageType != DAMAGE_TYPE_DEATH && pOwner->IsItemActive(SPELL_SHIELD))
 			{
 				DFLOAT fFocusAmmo = pOwner->GetInventoryMgr()->GetAmmoCount(AMMO_FOCUS);
-		
+
 				fFocusAmmo -= fDamage;
 
 				if (fFocusAmmo < 0.0f)
@@ -532,12 +532,12 @@ void CDestructable::HandleDamage(HOBJECT hSender, HMESSAGEREAD hRead)
 				pOwner->GetInventoryMgr()->SetAmmoCount(AMMO_FOCUS, fFocusAmmo);
 			}
 */
-			// Reflection reflects damage back to the sender, and absorbs 
-			// twice the damage in focus ammo
+// Reflection reflects damage back to the sender, and absorbs
+// twice the damage in focus ammo
 /*			if (pOwner->IsItemActive(SPELL_REFLECTION) && !(nDamageType & DAMAGE_FLAG_AREAEFFECT))
 			{
 				DFLOAT fFocusAmmo = pOwner->GetInventoryMgr()->GetAmmoCount(AMMO_FOCUS);
-		
+
 				fFocusAmmo -= fDamage * 2.0f;
 
 				if (fFocusAmmo < 0.0f)
@@ -556,9 +556,16 @@ void CDestructable::HandleDamage(HOBJECT hSender, HMESSAGEREAD hRead)
 		}
 
 		// If single player, don't let the player apply damage to himself.
-		if (m_bApplyDamagePhysics && !(g_pBloodServerShell->GetGameType() == GAMETYPE_SINGLE && (m_hObject == hWhoHit) && IsPlayer(m_hObject)))
-			ApplyDamagePhysics(fDamage, &vDir);
-		
+		if (m_bApplyDamagePhysics) // && !(g_pBloodServerShell->GetGameType() == GAMETYPE_SINGLE && (m_hObject == hWhoHit) && IsPlayer(m_hObject)))
+		{
+			DVector my_pos;
+			pServerDE->GetObjectPos(m_hObject, &my_pos);
+			float dist_sqr;
+			dist_sqr = (my_pos - vPos).MagSqr();
+
+			ApplyDamagePhysics(fDamage, &vDir); // TODO: mod this to take distance and damage_type
+		}
+
 		// Can't damage if already dead...
 
 		if( m_bDestructable && m_bDead )
@@ -576,20 +583,20 @@ void CDestructable::HandleDamage(HOBJECT hSender, HMESSAGEREAD hRead)
 				fAbsorb = fDamage * 0.7f;
 			else if (m_fArmorPoints <= 150.0f)
 				fAbsorb = fDamage * 0.8f;
-			else 
+			else
 				fAbsorb = fDamage * 0.9f;
 
 			if (!m_bGodMode)
 			{
 				m_fArmorPoints -= fAbsorb;
-				if (m_fArmorPoints < 0.0f) 
+				if (m_fArmorPoints < 0.0f)
 				{
 					fAbsorb += m_fArmorPoints;
 					m_fArmorPoints = 0.0f;
 				}
-        
+
 				fDamage -= fAbsorb;
-       		}
+			}
 		}
 
 		if (fDamage < 0.0f) fDamage = 0.0f;	// just to be sure :)
@@ -640,40 +647,40 @@ void CDestructable::HandleDamage(HOBJECT hSender, HMESSAGEREAD hRead)
 
 		m_hWhoKilledMeLast = hWhoHit;
 
-        // If its a PlayerObj then Increase the Kills 
-/*		if(pSender && pServerDE->IsKindOf(pServerDE->GetObjectClass(m_hObject), pServerDE->GetClass("CBaseCharacter"))) 
+				// If its a PlayerObj then Increase the Kills
+/*		if(pSender && pServerDE->IsKindOf(pServerDE->GetObjectClass(m_hObject), pServerDE->GetClass("CBaseCharacter")))
 		{
-            // If it was killed with a melee weapon, then add the damage done back to playerobj
-        	if(nDamageType == DAMAGE_TYPE_LEECH)
-            {
+						// If it was killed with a melee weapon, then add the damage done back to playerobj
+					if(nDamageType == DAMAGE_TYPE_LEECH)
+						{
 				pSender->GetDestructable()->Heal(fDamage / 5.0f);
 				pSender->AddMeleeKill();
 
 				DFLOAT fIncrease = 0.0f;
 				int nKills = pSender->GetMeleeKills();
-        
+
 				if (nKills > 0)
 				{
-                    // Increase Damage by 5% for every kill
-                    fIncrease = (DFLOAT)nKills * .05f;
-                    // Max Increase 200%
-                    if (fIncrease > 2.0f)   fIncrease = 2.0f;
-                }            
-                
-                // If the Increase is greater than 50% then add back some of the damage to player
-                if (fIncrease > 0.5f)
-                {
-                    // Add back damage to playerobj
-                    DFLOAT fAddHits = fDamage * (fIncrease/2.0f);
-                    
-    				pSender->GetDestructable()->Heal(fAddHits);
-                    
-                    // Need to Glow the player Sword...
-                    // Set Glow on the Melee Weapon
-                    
-                }
-            }
-        }*/
+										// Increase Damage by 5% for every kill
+										fIncrease = (DFLOAT)nKills * .05f;
+										// Max Increase 200%
+										if (fIncrease > 2.0f)   fIncrease = 2.0f;
+								}
+
+								// If the Increase is greater than 50% then add back some of the damage to player
+								if (fIncrease > 0.5f)
+								{
+										// Add back damage to playerobj
+										DFLOAT fAddHits = fDamage * (fIncrease/2.0f);
+
+						pSender->GetDestructable()->Heal(fAddHits);
+
+										// Need to Glow the player Sword...
+										// Set Glow on the Melee Weapon
+
+								}
+						}
+				}*/
 	}
 
 
@@ -689,7 +696,7 @@ void CDestructable::HandleDamage(HOBJECT hSender, HMESSAGEREAD hRead)
 	if( m_bDestructable && fOldHitPoints != m_fHitPoints && m_hObject != hWhoHit)
 	{
 		// Make sure it's a player
-		if(pSender) 
+		if(pSender)
 		{
 			DFLOAT fHeal;
 			if (pSender->HasSoulStealingBinding() && (fHeal = (fOldHitPoints - m_fHitPoints) / 10.0f))
@@ -732,7 +739,7 @@ void CDestructable::HandleTrigger(HOBJECT hSender, HMESSAGEREAD hRead)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: CDestructable::SetProperNode
 // DESCRIPTION	: Set the hit node to the parent node of the limb
-// RETURN TYPE	: int 
+// RETURN TYPE	: int
 // PARAMS		: int nNode
 // ----------------------------------------------------------------------- //
 
@@ -766,11 +773,11 @@ int CDestructable::SetProperNode(int nNode)
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: CDestructable::CalculateHitLimb
-// DESCRIPTION	: 
+// DESCRIPTION	:
 // RETURN TYPE	: int
 // ----------------------------------------------------------------------- //
 
-int CDestructable::CalculateHitLimb(DVector vDir, DVector vPos, DFLOAT fDamage)
+int CDestructable::CalculateHitLimb(DVector vDir, DVector vPos, DFLOAT fDamage) // FIXME: this returns 0 when it should return a node, causing "wonky rng damage"
 {
 	CServerDE* pServerDE = BaseClass::GetServerDE();
 	if (!pServerDE || !m_hObject || !m_pInventoryMgr || !m_pAnim_Sound) return -1;
@@ -810,7 +817,7 @@ int CDestructable::CalculateHitLimb(DVector vDir, DVector vPos, DFLOAT fDamage)
 
 	fX = 1 / VEC_DOT(vC,vC);
 	fY = fX * -(VEC_DOT(vC,vPos));
-	
+
 	for(int i = 0; i < NUM_STD_NODES; i++)
 	{
 		pServerDE->GetModelNodeHideStatus(m_hObject, szNodes[i], &bStatus);
@@ -836,7 +843,7 @@ int CDestructable::CalculateHitLimb(DVector vDir, DVector vPos, DFLOAT fDamage)
 		}
 	}
 /*
-	//Do we leave a pass through mark behind us?	
+	//Do we leave a pass through mark behind us?
 	if(nNode != -1)
 	{
 		CWeapon *pW = m_pInventoryMgr->GetCurrentWeapon();
@@ -845,13 +852,13 @@ int CDestructable::CalculateHitLimb(DVector vDir, DVector vPos, DFLOAT fDamage)
 		{
 			VEC_MULSCALAR(vTemp,vDir,-1.0f);
 			// TODO: combine sparks with weaponFX GK 8/27
-//			pW->AddSparks(vPos, vTemp, fDamage * 2.0f, m_hObject, SURFTYPE_FLESH);	
-//			pW->AddBloodSpurt(vPos, vTemp, fDamage * 2.0f, m_hObject, SURFTYPE_FLESH);	
+//			pW->AddSparks(vPos, vTemp, fDamage * 2.0f, m_hObject, SURFTYPE_FLESH);
+//			pW->AddBloodSpurt(vPos, vTemp, fDamage * 2.0f, m_hObject, SURFTYPE_FLESH);
 
 //			Took this out - more efficient to send one message. GK 8/27
 //			vTemp.x *= -1.0f;
 //			vTemp.z *= -1.0f;
-//			pW->AddBloodSpurt(vPos, vTemp, fDamage * 2.0f, m_hObject, SURFTYPE_FLESH);	
+//			pW->AddBloodSpurt(vPos, vTemp, fDamage * 2.0f, m_hObject, SURFTYPE_FLESH);
 
 			IntersectQuery	iq;
 			IntersectInfo	ii;
@@ -867,9 +874,9 @@ int CDestructable::CalculateHitLimb(DVector vDir, DVector vPos, DFLOAT fDamage)
 			// Apply a blood splat to the wall
 			if(pServerDE->IntersectSegment(&iq, &ii) && (ii.m_hObject == pServerDE->GetWorldObject()))
 			{
-//				pW->AddImpact(WFX_BLOODSPLAT, ii.m_Point, vDir, ii.m_Plane.m_Normal, fDamage * 2.0f, 
+//				pW->AddImpact(WFX_BLOODSPLAT, ii.m_Point, vDir, ii.m_Plane.m_Normal, fDamage * 2.0f,
 //							  ii.m_hObject, SURFTYPE_FLESH);
-//				pW->AddSparks(ii.m_Point, ii.m_Plane.m_Normal, fDamage * 2.0f, ii.m_hObject, SURFTYPE_FLESH);	
+//				pW->AddSparks(ii.m_Point, ii.m_Plane.m_Normal, fDamage * 2.0f, ii.m_hObject, SURFTYPE_FLESH);
 			}
 		}
 	}
@@ -907,8 +914,9 @@ void CDestructable::ApplyDamagePhysics(DFLOAT fDamage, DVector *pvDir)
 	VEC_NORM(vTemp);
 
 	if (m_fMass <= 0) m_fMass = 1;
-	
-	DFLOAT fMultiplier = (fDamage * PA_DAMAGE_VEL_MUTLIPLIER) / m_fMass;
+
+	// TODO: find a real value for this that works for self-damage and enemy damage
+	DFLOAT fMultiplier = (fDamage * 10.0f * PA_DAMAGE_VEL_MUTLIPLIER) / m_fMass;
 
 	VEC_MULSCALAR(vTemp, vTemp, fMultiplier);
 	VEC_ADD(vVel, vTemp, vVel);
@@ -963,7 +971,7 @@ void CDestructable::HandleDestruction()
 //	ROUTINE:	CDestructable::HandleHeal
 //
 //	PURPOSE:	Handle heal message.
-// 
+//
 // ----------------------------------------------------------------------- //
 
 void CDestructable::HandleHeal(HOBJECT hSender, HMESSAGEREAD hRead)
@@ -982,7 +990,7 @@ void CDestructable::HandleHeal(HOBJECT hSender, HMESSAGEREAD hRead)
 //	ROUTINE:	CDestructable::Heal
 //
 //	PURPOSE:	Add some value to hit points
-// 
+//
 // ----------------------------------------------------------------------- //
 
 DBOOL CDestructable::Heal(DFLOAT fAmount)
@@ -1029,7 +1037,7 @@ DBOOL CDestructable::Heal(DFLOAT fAmount)
 //	ROUTINE:	CDestructable::MegaHeal
 //
 //	PURPOSE:	Add some value to hit points
-// 
+//
 // ----------------------------------------------------------------------- //
 
 DBOOL CDestructable::MegaHeal(DFLOAT fAmount)
@@ -1080,7 +1088,7 @@ DBOOL CDestructable::AddWard(DFLOAT fAmount)
 
 	m_fArmorPoints += fAmount;
 
-	if(m_fArmorPoints > m_fMaxArmorPoints) 
+	if(m_fArmorPoints > m_fMaxArmorPoints)
 		m_fArmorPoints = m_fMaxArmorPoints;
 
 	return DTRUE;
@@ -1101,7 +1109,7 @@ DBOOL CDestructable::AddNecroWard(DFLOAT fAmount)
 
 	m_fArmorPoints += fAmount;
 
-	if(m_fArmorPoints > m_fMaxNecroArmorPoints) 
+	if(m_fArmorPoints > m_fMaxNecroArmorPoints)
 		m_fArmorPoints = m_fMaxNecroArmorPoints;
 
 	return DTRUE;

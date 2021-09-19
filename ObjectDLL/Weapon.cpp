@@ -144,9 +144,9 @@ CWeapon::CWeapon(DBYTE dbWeapType)
 	m_nRestAnim				= INVALID_ANI;
 	m_nIdleAnim				= INVALID_ANI;
 	m_nDrawAnim				= INVALID_ANI;
-	m_nDrawDuelAnim			= INVALID_ANI;
+	m_nDrawDualAnim			= INVALID_ANI;
 	m_nHolsterAnim			= INVALID_ANI;
-	m_nHolsterDuelAnim		= INVALID_ANI;
+	m_nHolsterDualAnim		= INVALID_ANI;
 	m_nStartFireAnim		= INVALID_ANI;
 	m_nFireAnim				= INVALID_ANI;
 	m_nStopFireAnim			= INVALID_ANI;
@@ -1623,9 +1623,9 @@ void CWeapon::SetupViewModel()
 		m_nRestAnim			= pServerDE->GetAnimIndex(m_pViewModel->m_hObject, "static_model");
 		m_nIdleAnim			= pServerDE->GetAnimIndex(m_pViewModel->m_hObject, "idle");
 		m_nDrawAnim			= pServerDE->GetAnimIndex(m_pViewModel->m_hObject, "draw");
-		m_nDrawDuelAnim		= pServerDE->GetAnimIndex(m_pViewModel->m_hObject, "dh_draw");
+		m_nDrawDualAnim		= pServerDE->GetAnimIndex(m_pViewModel->m_hObject, "dh_draw");
 		m_nHolsterAnim		= pServerDE->GetAnimIndex(m_pViewModel->m_hObject, "holster");
-		m_nHolsterDuelAnim	= pServerDE->GetAnimIndex(m_pViewModel->m_hObject, "dh_holster");
+		m_nHolsterDualAnim	= pServerDE->GetAnimIndex(m_pViewModel->m_hObject, "dh_holster");
 		m_nStartFireAnim	= pServerDE->GetAnimIndex(m_pViewModel->m_hObject, "start_fire");
 		m_nFireAnim			= pServerDE->GetAnimIndex(m_pViewModel->m_hObject, "fire");
 		m_nStopFireAnim		= pServerDE->GetAnimIndex(m_pViewModel->m_hObject, "end_fire");

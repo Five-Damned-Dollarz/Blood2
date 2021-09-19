@@ -378,14 +378,16 @@ DBOOL CameraObj::DisplayRay()
 	VEC_COPY(theStruct.m_Pos, vPos);
 	ROT_COPY(theStruct.m_Rotation,rRot);
 
-	HCLASS hClass = g_pServerDE->GetClass("CClientCastLineSFX");
+	//HCLASS hClass = g_pServerDE->GetClass("CClientCastLineSFX");
 	CClientCastLineSFX* pLine = DNULL;
 
-	if (hClass)
+	if (HCLASS hClass = g_pServerDE->GetClass("CClientCastLineSFX"))
 	{
 		pLine = (CClientCastLineSFX*)g_pServerDE->CreateObject(hClass, &theStruct);
-		if (!pLine) return DFALSE;
+		//if (!pLine) return DFALSE;
 	}
+
+	if (!pLine) return DFALSE;
 
 	DVector vColor;
 	VEC_SET(vColor, 0.0f, 1.0f, 0.0f);                      // Green Line

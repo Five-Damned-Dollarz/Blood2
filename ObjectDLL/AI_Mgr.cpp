@@ -92,7 +92,7 @@ AI_Mgr::AI_Mgr() : CBaseCharacter(OT_MODEL)
 	m_hstrSpotTriggerTarget	 = DNULL;
 	m_hstrSpotTriggerMessage = DNULL;
 	m_hstrTriggerRelayTarget = DNULL;
-    
+
 	m_AIPathList.Init(DFALSE);
 	m_nScriptCmdIndex	= 0;
 
@@ -121,11 +121,11 @@ AI_Mgr::AI_Mgr() : CBaseCharacter(OT_MODEL)
    	m_hTrackObject  = DNULL;
     VEC_INIT(m_vTrackObjPos);
 
-	memset(&m_fStimuli,0,sizeof(m_fStimuli));		
+	memset(&m_fStimuli,0,sizeof(m_fStimuli));
 
 	m_nState		= STATE_Idle;
     m_nLastState    = STATE_Idle;
-    
+
     // Adjustable vars
     m_fHearingDist  = 0;
     m_fSensingDist  = 0.0f;
@@ -136,14 +136,14 @@ AI_Mgr::AI_Mgr() : CBaseCharacter(OT_MODEL)
 	m_fRunSpeed			= 10.0f;
 	m_fJumpSpeed		= 500.0f;
 	m_fRollSpeed		= 2.0f;
-        
+
     m_fTimeStart        = 0.0f;
     m_fLoadTimeStart    = 0.0f;
-        
+
     m_bAnimating		= DFALSE;
 	m_bJumping			= DFALSE;
     Metacmd				= 1;
-    
+
 	m_hCurSound			= DNULL;
 
 	m_pServerDE			= DNULL;
@@ -213,7 +213,7 @@ AI_Mgr::AI_Mgr() : CBaseCharacter(OT_MODEL)
 
 	m_bStartFire		= DFALSE;
 	m_hFireSource		= DNULL;
-	
+
 	m_bProceedAttach	= DFALSE;
 
 	m_fWaitForIdleTime = 0.0f;
@@ -267,7 +267,7 @@ AI_Mgr::~AI_Mgr()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::InitStatics
 // DESCRIPTION	: Initialization function
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // PARAMS		: CAnim_Sound* pAnim_Sound
 // PARAMS		: float* pOutputTable
 // PARAMS		: float* pInternalTable
@@ -283,8 +283,8 @@ DBOOL AI_Mgr::InitStatics(CAnim_Sound* pAnim_Sound)
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::StateStrToInt
-// DESCRIPTION	: 
-// RETURN TYPE	: int 
+// DESCRIPTION	:
+// RETURN TYPE	: int
 // PARAMS		: char *pState
 // ----------------------------------------------------------------------- //
 
@@ -315,6 +315,10 @@ int AI_Mgr::StateStrToInt(char *pState)
     else if ( _mbsncmp((const unsigned char*)pState, (const unsigned char*)"HIDE", 4) == 0)
     {
         m_nRetState = STATE_Escape_Hide;
+    }
+    else if (_mbsncmp((const unsigned char*)pState, (const unsigned char*)"PANIC", 5) == 0)
+    {
+        m_nRetState = STATE_Escape_RunAway;
     }
     else if ( _mbsncmp((const unsigned char*)pState, (const unsigned char*)"GUARD", 5) == 0)
     {
@@ -370,8 +374,8 @@ int AI_Mgr::StateStrToInt(char *pState)
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::WeaponStrToInt
-// DESCRIPTION	: 
-// RETURN TYPE	: DDWORD 
+// DESCRIPTION	:
+// RETURN TYPE	: DDWORD
 // PARAMS		: char *pWeapon
 // ----------------------------------------------------------------------- //
 
@@ -379,7 +383,7 @@ DDWORD AI_Mgr::WeaponStrToInt(char *pWeapon)
 {
 
     DDWORD m_nRetWeapon = WEAP_BERETTA;
-    
+
 //	WEAP_BERETTA,
     if ( _mbsncmp((const unsigned char*)pWeapon, (const unsigned char*)"BERET", 5) == 0)
     {
@@ -665,7 +669,7 @@ DDWORD AI_Mgr::WeaponStrToInt(char *pWeapon)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::EngineMessageFn
 // DESCRIPTION	: Handle engine messages
-// RETURN TYPE	: DDWORD 
+// RETURN TYPE	: DDWORD
 // PARAMS		: DDWORD messageID
 // PARAMS		: void *pData
 // PARAMS		: DFLOAT fData
@@ -677,7 +681,7 @@ DDWORD AI_Mgr::EngineMessageFn(DDWORD messageID, void *pData, DFLOAT fData)
 	{
 		case MID_UPDATE:
 		{
-			if (!AI_Update()) 
+			if (!AI_Update())
             {
 				RemoveMe();
             }
@@ -744,7 +748,7 @@ DDWORD AI_Mgr::EngineMessageFn(DDWORD messageID, void *pData, DFLOAT fData)
 			Load((HMESSAGEREAD)pData, (DDWORD)fData);
 			InsertMe();
 			break;
-		
+
 		default : break;
 	}
 
@@ -755,7 +759,7 @@ DDWORD AI_Mgr::EngineMessageFn(DDWORD messageID, void *pData, DFLOAT fData)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::ObjectMessageFn
 // DESCRIPTION	: Handle inter-object messages
-// RETURN TYPE	: DDWORD 
+// RETURN TYPE	: DDWORD
 // PARAMS		: HOBJECT hSender
 // PARAMS		: DDWORD messageID
 // PARAMS		: HMESSAGEREAD hRead
@@ -768,7 +772,7 @@ DDWORD AI_Mgr::ObjectMessageFn(HOBJECT hSender, DDWORD messageID, HMESSAGEREAD h
 		case MID_DAMAGE:
 		{
 			if (!m_pServerDE) break;
-			
+
 			CBaseCharacter::ObjectMessageFn(hSender, messageID, hRead);
 			HandleDamage();
 
@@ -780,7 +784,7 @@ DDWORD AI_Mgr::ObjectMessageFn(HOBJECT hSender, DDWORD messageID, HMESSAGEREAD h
 			HandleTrigger(hSender, hRead);
 			break;
 		}
-    
+
 		case MID_ADDAMMO:
 		{
 			if (!m_damage.IsDead())
@@ -808,7 +812,7 @@ DDWORD AI_Mgr::ObjectMessageFn(HOBJECT hSender, DDWORD messageID, HMESSAGEREAD h
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::ReadProp
 // DESCRIPTION	: read properties from ED file
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // PARAMS		: BaseClass *pObject
 // PARAMS		: ObjectCreateStruct *pStruct
 // ----------------------------------------------------------------------- //
@@ -816,12 +820,12 @@ DDWORD AI_Mgr::ObjectMessageFn(HOBJECT hSender, DDWORD messageID, HMESSAGEREAD h
 DBOOL AI_Mgr::ReadProp(ObjectCreateStruct *pStruct)
 {
 	CServerDE* pServerDE = BaseClass::GetServerDE();
-	if (!pServerDE || !pStruct) return DFALSE;	
+	if (!pServerDE || !pStruct) return DFALSE;
 
 	char buf[MAX_CS_FILENAME_LEN];
 
 	pServerDE->GetPropReal("RandomHitPoints", &m_fAIRandomHP);
-    
+
 	buf[0] = '\0';
 	pServerDE->GetPropString("AIState", buf, MAX_CS_FILENAME_LEN);
 	if (buf[0]) _mbsncpy((unsigned char*)m_szAIState, (const unsigned char*)buf, 32);
@@ -835,7 +839,7 @@ DBOOL AI_Mgr::ReadProp(ObjectCreateStruct *pStruct)
 
 		buf[0] = '\0';
 		pServerDE->GetPropString(szTemp, buf, MAX_CS_FILENAME_LEN);
-		if (buf[0]) 
+		if (buf[0])
 			_mbsncpy((unsigned char*)m_szAIWeapon[i - 1], (const unsigned char*)buf, 32);
 	}
 
@@ -869,7 +873,7 @@ DBOOL AI_Mgr::ReadProp(ObjectCreateStruct *pStruct)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::OnStringKey
 // DESCRIPTION	: read and parse string keys
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // PARAMS		: ArgList* pArgList
 // ----------------------------------------------------------------------- //
 
@@ -882,7 +886,7 @@ void AI_Mgr::OnStringKey(ArgList* pArgList)
 
 	char szTemp[32];
 
-	//fire current weapon 
+	//fire current weapon
 	if(Sparam_Get(szTemp,pKey,"fire_key"))
 	{
 		if(m_hTarget == DNULL)
@@ -971,7 +975,7 @@ void AI_Mgr::OnStringKey(ArgList* pArgList)
 	}
 
 	CBaseCharacter::OnStringKey(pArgList);
-	
+
 	return;
 }
 
@@ -979,7 +983,7 @@ void AI_Mgr::OnStringKey(ArgList* pArgList)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::HandleTrigger
 // DESCRIPTION	: Handle MID_TRIGGER messages
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // PARAMS		:  HOBJECT hSender
 // PARAMS		: HMESSAGEREAD hRead
 // ----------------------------------------------------------------------- //
@@ -987,14 +991,14 @@ void AI_Mgr::OnStringKey(ArgList* pArgList)
 DBOOL AI_Mgr::HandleTrigger( HOBJECT hSender, HMESSAGEREAD hRead )
 {
 	if (!m_hObject ) return DFALSE;
-    
+
 	HSTRING hMsg = m_pServerDE->ReadFromMessageHString(hRead);
 
 //	char *pCommand = _strupr(m_pServerDE->GetStringData(hMsg));
 	char *pCommand = m_pServerDE->GetStringData(hMsg);
-	    
+
 	int nArgs;
-    
+
     char tokenSpace[64*20];
     char *pTokens[64];
     char *pCommandPos;
@@ -1006,7 +1010,7 @@ DBOOL AI_Mgr::HandleTrigger( HOBJECT hSender, HMESSAGEREAD hRead )
 		g_pServerDE->FreeString( hMsg );
 		return DTRUE;
 	}
-    
+
 	DBOOL bContinue = DTRUE;
 	while (bContinue)
 	{
@@ -1028,7 +1032,7 @@ DBOOL AI_Mgr::HandleTrigger( HOBJECT hSender, HMESSAGEREAD hRead )
 				switch(nId)
 				{
 					case SOUND_GUNFIRE:
-					{		
+					{
 						if(m_nState == STATE_Idle)
 						{
 							DVector vPos;
@@ -1048,7 +1052,7 @@ DBOOL AI_Mgr::HandleTrigger( HOBJECT hSender, HMESSAGEREAD hRead )
 									AI_Mgr* pAI = (AI_Mgr*)m_pServerDE->HandleToObject(hSender);
 									m_hTrackObject = pAI->GetTarget();
 
-									if(VEC_DIST(vPos, m_MoveObj.GetPos()) > (m_fHearingDist * 0.1) 
+									if(VEC_DIST(vPos, m_MoveObj.GetPos()) > (m_fHearingDist * 0.1)
 										&& m_dwFlags & FLAG_CANASSIST)
 									{
 										VEC_COPY(m_vTrackObjPos, vPos);
@@ -1068,7 +1072,7 @@ DBOOL AI_Mgr::HandleTrigger( HOBJECT hSender, HMESSAGEREAD hRead )
 					}
 
 					case SOUND_PLAYERSOUND:
-					{		
+					{
 						if(m_nState == STATE_Idle)
 						{
 							DVector vPos;
@@ -1093,10 +1097,10 @@ DBOOL AI_Mgr::HandleTrigger( HOBJECT hSender, HMESSAGEREAD hRead )
 					}
 
 					case SOUND_GUNIMPACT:
-					{	
+					{
 						if(m_dwFlags & FLAG_DODGE)
 						{
-							if(m_nState != STATE_Dodge && m_nLastState != STATE_Dodge 
+							if(m_nState != STATE_Dodge && m_nLastState != STATE_Dodge
 								&& m_nLastState != STATE_Passive)
 							{
 								m_vTrackObjPos.x = (DFLOAT)atof(pTokens[2]);
@@ -1125,7 +1129,7 @@ DBOOL AI_Mgr::HandleTrigger( HOBJECT hSender, HMESSAGEREAD hRead )
     			{
 	    			fRadius = (DFLOAT) atoi(pTokens[2]);
 		    	}
-    
+
 	    		fRadius = fRadius > 0.0f ? fRadius : 1000.0f;
                 PlaySoundFromObject( m_hObject, pSoundName, fRadius, SOUNDPRIORITY_MISC_HIGH, DFALSE, DFALSE, DFALSE );
 
@@ -1158,7 +1162,7 @@ DBOOL AI_Mgr::HandleTrigger( HOBJECT hSender, HMESSAGEREAD hRead )
 			    return DTRUE;
     		}
 	    }
-    	else if (_mbsicmp((const unsigned char*)TRIGGER_PLAY_ANIMATION, (const unsigned char*)pTokens[0]) == 0 && nArgs > 1) 
+    	else if (_mbsicmp((const unsigned char*)TRIGGER_PLAY_ANIMATION, (const unsigned char*)pTokens[0]) == 0 && nArgs > 1)
 	    {
     		// Get ani name from message...
 
@@ -1209,7 +1213,7 @@ DBOOL AI_Mgr::HandleTrigger( HOBJECT hSender, HMESSAGEREAD hRead )
 				}
 
         		AISCRIPTCMD* pCmd = new AISCRIPTCMD;
-		        if (!pCmd) 
+		        if (!pCmd)
 				{
 					m_pServerDE->FreeString( hMsg );
 					return DFALSE;
@@ -1231,13 +1235,13 @@ DBOOL AI_Mgr::HandleTrigger( HOBJECT hSender, HMESSAGEREAD hRead )
 			m_nScriptCmdIndex  = 0;
 
     		// Force a Update
-	    	AI_Update();     
-            
+	    	AI_Update();
+
     	} // else if
 
 
 	    pCommand = pCommandPos;
-        
+
 	} // While commands
 
 	m_pServerDE->FreeString( hMsg );
@@ -1247,8 +1251,8 @@ DBOOL AI_Mgr::HandleTrigger( HOBJECT hSender, HMESSAGEREAD hRead )
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::PlayAnimation
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // PARAMS		: char* pAniName
 // ----------------------------------------------------------------------- //
 
@@ -1263,8 +1267,8 @@ void AI_Mgr::PlayAnimation(char* pAniName)
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::SetTarget
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // PARAMS		: char* pTargetName
 // ----------------------------------------------------------------------- //
 
@@ -1288,8 +1292,8 @@ void AI_Mgr::SetTarget(char* pTargetName)
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::SetNewTarget
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // PARAMS		: HOBJECT hNewTarget
 // ----------------------------------------------------------------------- //
 
@@ -1313,8 +1317,8 @@ void AI_Mgr::SetNewTarget(HOBJECT hNewTarget)
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::UpdateScriptCommand
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::UpdateScriptCommand()
@@ -1327,7 +1331,7 @@ void AI_Mgr::UpdateScriptCommand()
 	if (nNumItems > 0)
 	{
 		m_curScriptCmd = *(m_scriptCmdList[m_nScriptCmdIndex]);
-		
+
 		// Determine what the next script cmd index should be...
 
 		if (m_dwScriptFlags & AI_SCRFLG_LOOP)
@@ -1350,37 +1354,37 @@ void AI_Mgr::UpdateScriptCommand()
 			case AI_SCMD_FOLLOWPATH:
 				SetFollowPathCmd();
 			break;
-			
+
 			case AI_SCMD_PLAYSOUND:
 				SetPlaysoundCmd();
 			break;
-			
+
 			case AI_SCMD_SETSTATE:
 				SetSetStateCmd();
 			break;
-			
+
 			case AI_SCMD_TARGET:
 				SetTargetCmd();
 			break;
-			
+
 			case AI_SCMD_WAIT:
 				SetWaitCmd();
 			break;
-			
+
 			case AI_SCMD_PLAYANIMATION:
 				SetPlayAnimationCmd(DFALSE);
 			break;
-			
+
 			case AI_SCMD_PLAYANIMATION_LOOPING:
 				SetPlayAnimationCmd(DTRUE);
 			break;
-			
+
 			case AI_SCMD_MOVETOOBJECT:
 				SetMoveToObjectCmd();
 			break;
-			
+
 			case AI_SCMD_DONE:
-			default: 
+			default:
 				m_dwScriptFlags	= 0;
 				ComputeState();
 			break;
@@ -1390,8 +1394,8 @@ void AI_Mgr::UpdateScriptCommand()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::SetSetMovementCmd
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::SetSetMovementCmd()
@@ -1403,13 +1407,13 @@ void AI_Mgr::SetSetMovementCmd()
 	else if (_mbsicmp((const unsigned char*)m_curScriptCmd.args, (const unsigned char*)SCRIPT_MOVEMENT_RUN) == 0)
 	{
 		m_eScriptMovement = SM_RUN;
-	}	
+	}
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::SetFollowPathCmd
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::SetFollowPathCmd()
@@ -1420,7 +1424,7 @@ void AI_Mgr::SetFollowPathCmd()
 
 	PathMgr* pPathMgr = g_pBloodServerShell->GetPathMgr();
 	if (!pPathMgr) return;
-	
+
 	pPathMgr->GetPath(m_curScriptCmd.args, &m_AIPathList);
 
 	Metacmd = 1;
@@ -1428,8 +1432,8 @@ void AI_Mgr::SetFollowPathCmd()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::UpdateFollowPathCmd
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::UpdateFollowPathCmd()
@@ -1479,8 +1483,8 @@ void AI_Mgr::UpdateFollowPathCmd()
 			// If there is a target, use that.  If not, send to myself.
 			if (pCurKey->m_hstrActionTarget)
 			{
-				SendTriggerMsgToObjects(this, 
-										pCurKey->m_hstrActionTarget, 
+				SendTriggerMsgToObjects(this,
+										pCurKey->m_hstrActionTarget,
 										pCurKey->m_hstrActionMessage);
 			}
 			else
@@ -1522,8 +1526,8 @@ void AI_Mgr::UpdateFollowPathCmd()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::SetMoveToObjectCmd
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::SetMoveToObjectCmd()
@@ -1549,8 +1553,8 @@ void AI_Mgr::SetMoveToObjectCmd()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::UpdateMoveToObjectCmd
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::UpdateMoveToObjectCmd()
@@ -1565,7 +1569,7 @@ void AI_Mgr::UpdateMoveToObjectCmd()
 
 	DVector vTargetPos;
 	m_pServerDE->GetObjectPos(m_hTarget, &vTargetPos);
-    
+
  	DVector vPos;
 	VEC_COPY(vPos, m_MoveObj.GetPos());
 
@@ -1577,17 +1581,17 @@ void AI_Mgr::UpdateMoveToObjectCmd()
 		case 1:
 		{
 			m_MoveObj.CalculatePath(vTargetPos);
-			Metacmd++;									
+			Metacmd++;
 		}
 		break;
-		
-		case 2:		
+
+		case 2:
 		{
 			MC_FacePos(*m_MoveObj.GetNextPathPoint());
 		}
 		break;
 
-		case 3:		
+		case 3:
 		{
 			DFLOAT fSpeed = m_fWalkSpeed;
 			if (m_eScriptMovement == SM_RUN)
@@ -1638,8 +1642,8 @@ void AI_Mgr::UpdateMoveToObjectCmd()
 			}
 		}
 		break;
-						
-		case 4:		
+
+		case 4:
 		{
 			// Move to the position for completeness
 			if(!m_nTrapped)
@@ -1653,23 +1657,23 @@ void AI_Mgr::UpdateMoveToObjectCmd()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::SetPlaysoundCmd
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::SetPlaysoundCmd()
 {
 	char* pSoundName = m_curScriptCmd.args;
-	if (pSoundName) 
+	if (pSoundName)
     {
         PlaySoundFromObject( m_hObject, pSoundName, 5000.0f, SOUNDPRIORITY_MISC_HIGH, DFALSE, DFALSE, DFALSE );
-    }                          
+    }
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::SetSetStateCmd
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::SetSetStateCmd()
@@ -1679,8 +1683,8 @@ void AI_Mgr::SetSetStateCmd()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::SetTargetCmd
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::SetTargetCmd()
@@ -1691,8 +1695,8 @@ void AI_Mgr::SetTargetCmd()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::SetWaitCmd
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::SetWaitCmd()
@@ -1702,8 +1706,8 @@ void AI_Mgr::SetWaitCmd()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::UpdateWaitCmd
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::UpdateWaitCmd()
@@ -1716,8 +1720,8 @@ void AI_Mgr::UpdateWaitCmd()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::SetPlayAnimationCmd
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // PARAMS		: DBOOL bLooping - Animation should be played looping.
 // ----------------------------------------------------------------------- //
 
@@ -1731,8 +1735,8 @@ void AI_Mgr::SetPlayAnimationCmd(DBOOL bLooping)
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::UpdatePlayAnimationCmd
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::UpdatePlayAnimationCmd()
@@ -1747,8 +1751,8 @@ void AI_Mgr::UpdatePlayAnimationCmd()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::FacePos
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // PARAMS		: DVector vTargetPos
 // ----------------------------------------------------------------------- //
 
@@ -1772,7 +1776,7 @@ void AI_Mgr::FacePos(DVector vTargetPos)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::HandleDamage
 // DESCRIPTION	: Handle MID_DAMAGE messages
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // PARAMS		: HOBJECT hSender
 // PARAMS		: DDWORD messageID
 // PARAMS		: HMESSAGEREAD hRead
@@ -1796,7 +1800,7 @@ DBOOL AI_Mgr::HandleDamage()
 	DVector vDir;
 	m_damage.GetLastDamageDirection(&vDir);
 
-	if(m_dwFlags & FLAG_LIMP && m_nInjuredLeg == 0 && 
+	if(m_dwFlags & FLAG_LIMP && m_nInjuredLeg == 0 &&
 	   (nNodeHit == NODE_LLEG || nNodeHit == NODE_RLEG))
 	{
 		if(m_damage.GetHitPoints() < (m_damage.GetMaxHitPoints() * 0.5f))
@@ -1806,7 +1810,7 @@ DBOOL AI_Mgr::HandleDamage()
 	}
 
 	//SCHLEGZ 3/10/98 12:44:32 AM: check for limb loss
-	if (m_damage.GetHitPoints() <= 0.0f) 
+	if (m_damage.GetHitPoints() <= 0.0f)
 	{
 		if(m_bCabal)
 			m_InventoryMgr.DropCurrentWeapon();		//SCHLEGZ 4/26/98 10:14:32 PM: i'm dead; no need for weapon
@@ -1821,7 +1825,7 @@ DBOOL AI_Mgr::HandleDamage()
 
 			if(!(dwFlags & FLAG_SOLID))
 			{
-				m_dwFlags |= FLAG_ALWAYSGIB;		
+				m_dwFlags |= FLAG_ALWAYSGIB;
 			}
 		}
 
@@ -1835,7 +1839,7 @@ DBOOL AI_Mgr::HandleDamage()
 			ocStruct.m_NextUpdate = 0.01f;
 			m_pServerDE->GetModelNodeTransform(m_hObject, "torso",&ocStruct.m_Pos,&ocStruct.m_Rotation);
 			ocStruct.m_Flags = FLAG_FORCECLIENTUPDATE;
-			
+
 			HCLASS hClass = m_pServerDE->GetClass("BaseClass");
 			BaseClass* pObj = m_pServerDE->CreateObject(hClass, &ocStruct);
 
@@ -1855,6 +1859,7 @@ DBOOL AI_Mgr::HandleDamage()
 				g_pPlayerObj->PlayVoiceGroupEventOnClient(VME_BIGGIB, DTRUE);	// [blg]
 			}
 		}
+        // TODO: only allow this through if it's DAMAGE_TYPE_EXPLOSIVE/DAMAGE_TYPE_SINGULARITY/DAMAGE_TYPE_ELECTRIC?
 		else if((m_damage.GetLastDamagePercent() >= 0.90f) && !(m_dwFlags & FLAG_NEVERGIB))
 		{
 			CreateGibs(vDir, ((int)m_damage.GetMass())>>5, nType, fDamage);
@@ -1866,15 +1871,15 @@ DBOOL AI_Mgr::HandleDamage()
 				g_pPlayerObj->PlayVoiceGroupEventOnClient(VME_BIGGIB, DTRUE);	// [blg]
 			}
 		}
-/*		else if(nNodeHit > 0 && m_damage.GetLastDamagePercent() >= 0.25f)	// 10% of the time, blow off the head.  25% for other limbs
+        // TODO: fix whatever's wrong with this?
+		else if(nNodeHit > 0 && m_damage.GetLastDamagePercent() >= 0.25f)	// 10% of the time, blow off the head.  25% for other limbs
 		{
 			if(AIShared.HideLimb(m_hObject,nNodeHit) && (m_dwFlags & FLAG_LIMBLOSS))
 			{
 				AIShared.CreateLimb(m_hObject, nNodeHit, vDir);
 			}
-
 		}
-*/
+
 		if (IsRandomChance(6) && (m_damage.GetWhoKilledMeLast() == g_pPlayerObj->m_hObject))
 		{
 			g_pPlayerObj->PlayVoiceGroupEventOnClient(VME_KILL, DTRUE);	// [blg]
@@ -1889,7 +1894,7 @@ DBOOL AI_Mgr::HandleDamage()
 
 	if(m_dwFlags & FLAG_ALWAYSRECOIL)
 		SetNewState(STATE_Recoil);
-	else if(fDamage >= m_damage.GetHitPoints() * 0.25f && m_nState != STATE_Teleport && m_nState != STATE_Dodge)	
+	else if(fDamage >= m_damage.GetHitPoints() * 0.25f && m_nState != STATE_Teleport && m_nState != STATE_Dodge)
 		SetNewState(STATE_Recoil);
 	else if(m_nState != STATE_AttackClose && m_nState != STATE_AttackFar)
 		ComputeState();
@@ -1899,8 +1904,8 @@ DBOOL AI_Mgr::HandleDamage()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::SetNewState
-// DESCRIPTION	: Set new state and reset metacmd 
-// RETURN TYPE	: void 
+// DESCRIPTION	: Set new state and reset metacmd
+// RETURN TYPE	: void
 // PARAMS		: int nState
 // ----------------------------------------------------------------------- //
 
@@ -1913,7 +1918,7 @@ void AI_Mgr::SetNewState(int nState)
 	   && m_nState != STATE_SearchVisualTarget && m_nState != STATE_SearchSmellTarget)
 	{
 		if(m_nLastState != m_nState)
-			m_nLastState = m_nState; 
+			m_nLastState = m_nState;
 	}
 
 	fTime = g_pServerDE->GetTime( );
@@ -1931,7 +1936,7 @@ void AI_Mgr::SetNewState(int nState)
 		m_nState = nState;
 		m_fWaitForIdleTime = fTime + WAITFORIDLETIME;
 	}
-	Metacmd = 1; 
+	Metacmd = 1;
 	m_nCurMetacmd = 999;
 	m_bAnimating = DFALSE;
 
@@ -1965,7 +1970,7 @@ DBOOL AI_Mgr::SetAnimation(DDWORD nAni)
 			vDims.y *= m_vScale.y;
 			vDims.z *= m_vScale.z;
 		}
-		
+
 		m_pServerDE->SetObjectDims2(m_hObject,&vDims);
 		m_pServerDE->SetModelAnimation(m_hObject,nAni);
 		VEC_COPY(m_vDims,vDims);
@@ -1978,7 +1983,7 @@ DBOOL AI_Mgr::SetAnimation(DDWORD nAni)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::HandleTouch
 // DESCRIPTION	: Handle MID_TOUCHNOTIFY messages
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // PARAMS		: HOBJECT hObj
 // ----------------------------------------------------------------------- //
 
@@ -1994,7 +1999,7 @@ void AI_Mgr::HandleTouch(HOBJECT hObj)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::InsertMe
 // DESCRIPTION	: Insert to appropriate list
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 void AI_Mgr::InsertMe()
 {
@@ -2016,7 +2021,7 @@ void AI_Mgr::InsertMe()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_Init
 // DESCRIPTION	: Initial update
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::InitialUpdate(int nData)
@@ -2143,13 +2148,13 @@ void AI_Mgr::InitialUpdate(int nData)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_Update
 // DESCRIPTION	: Main update function
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // ----------------------------------------------------------------------- //
 
 DBOOL AI_Mgr::AI_Update()
 {
 	if (!m_hObject || m_bRemoveMe) return DFALSE;
-	
+
 	//this is so we can desync activating AI and lessen tick spikes
 	if(m_pServerDE->GetTime() - m_fLastUpdate >= 1.0f && m_bSetShutdown)
 	{
@@ -2161,14 +2166,14 @@ DBOOL AI_Mgr::AI_Update()
 	//de-sync method for optimizing AI ticks per frame
 /*	DFLOAT fFrameTime = m_pServerDE->GetFrameTime();
 	if(fFrameTime == m_fLastFrame)
-	{	
+	{
 		m_pServerDE->SetNextUpdate(m_hObject, m_pServerDE->Random(fFrameTime,fFrameTime * 10));
 		return DTRUE;
 	}
 
 	m_fLastFrame = fFrameTime;
 */	m_fLastUpdate = m_pServerDE->GetTime();
-	
+
 	m_pServerDE->SetNextUpdate(m_hObject, 0.001f);
 
 	//scripted scene? disable!!
@@ -2237,11 +2242,11 @@ DBOOL AI_Mgr::AI_Update()
 
 		if(m_pServerDE->IsKindOf(hCollClass, hBaseChar))
 		{
-			dwFlags |= FLAG_DONTFOLLOWSTANDING;		
+			dwFlags |= FLAG_DONTFOLLOWSTANDING;
 		}
 		else
 		{
-			dwFlags &= ~FLAG_DONTFOLLOWSTANDING;		
+			dwFlags &= ~FLAG_DONTFOLLOWSTANDING;
 		}
 
 		m_pServerDE->SetObjectFlags(m_hObject, dwFlags);
@@ -2289,16 +2294,16 @@ DBOOL AI_Mgr::AI_Update()
 
         case STATE_Inactive:			return DTRUE;				break;
         default:						AI_STATE_Idle();			break;
-    
+
     }
 
 	return DTRUE;
 }
 
 // ----------------------------------------------------------------------- //
-// ROUTINE		: AI_Mgr::ComputeStimuli 
+// ROUTINE		: AI_Mgr::ComputeStimuli
 // DESCRIPTION	: fill in stimuli set
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // ----------------------------------------------------------------------- //
 
 int AI_Mgr::ComputeStimuli()
@@ -2350,10 +2355,10 @@ int AI_Mgr::ComputeStimuli()
 
 		if(hSightObj)
 			m_pServerDE->GetObjectPos(hSightObj, &vSight);
-		
+
 		if(hSmellObj)
 			m_pServerDE->GetObjectPos(hSmellObj, &vSmell);
-		
+
 		if(hSenseObj)
 			m_pServerDE->GetObjectPos(hSenseObj, &vSense);
 
@@ -2370,7 +2375,7 @@ int AI_Mgr::ComputeStimuli()
 
 			if(m_fStimuli[SMELL] <= 0.0f)
 			{
-				m_fStimuli[SMELL] = 0.0f;	
+				m_fStimuli[SMELL] = 0.0f;
 				hNewTarget = DNULL;
 			}
 		}
@@ -2384,7 +2389,7 @@ int AI_Mgr::ComputeStimuli()
 
 			if(m_fStimuli[SENSE] <= 0.0f)
 			{
-				m_fStimuli[SENSE] = 0.0f;	
+				m_fStimuli[SENSE] = 0.0f;
 				hNewTarget = DNULL;
 			}
 		}
@@ -2398,7 +2403,7 @@ int AI_Mgr::ComputeStimuli()
 
 			if(m_fStimuli[SIGHT] <= 0.0f)
 			{
-				m_fStimuli[SIGHT] = 0.0f;	
+				m_fStimuli[SIGHT] = 0.0f;
 				hNewTarget = DNULL;
 			}
 		}
@@ -2432,9 +2437,9 @@ int AI_Mgr::ComputeStimuli()
 }
 
 // ----------------------------------------------------------------------- //
-// ROUTINE		: AI_Mgr::ChooseOpportunityTarget 
+// ROUTINE		: AI_Mgr::ChooseOpportunityTarget
 // DESCRIPTION	: fill in stimuli set
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // ----------------------------------------------------------------------- //
 
 DBOOL AI_Mgr::ChooseOpportunityTarget()
@@ -2452,7 +2457,7 @@ DBOOL AI_Mgr::ChooseOpportunityTarget()
 
 	HCLASS hEnemyTest = m_pServerDE->GetClass("AI_Mgr");
 	HOBJECT hSightObj = FindObjectInRadius(hEnemyTest, m_fSeeingDist, FIND_VISIBLE | FIND_FACE_OBJECT);
-	
+
 	if(hSightObj)
 	{
 		m_pServerDE->GetObjectPos(hSightObj, &vSight);
@@ -2466,10 +2471,10 @@ DBOOL AI_Mgr::ChooseOpportunityTarget()
     {
 		m_fStimuli[SIGHT]	= 1.0f - (fSight/m_fSeeingDist);
 		hNewTarget = hSightObj;
-	
+
 		if(m_fStimuli[SIGHT] <= 0.0f)
 		{
-			m_fStimuli[SIGHT] = 0.0f;	
+			m_fStimuli[SIGHT] = 0.0f;
 			return DFALSE;
 		}
     }
@@ -2494,7 +2499,7 @@ DBOOL AI_Mgr::ChooseOpportunityTarget()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::ComputeThreat
 // DESCRIPTION	: Compute threat value
-// RETURN TYPE	: DFLOAT 
+// RETURN TYPE	: DFLOAT
 // ----------------------------------------------------------------------- //
 
 DFLOAT AI_Mgr::ComputeThreat()
@@ -2506,11 +2511,11 @@ DFLOAT AI_Mgr::ComputeThreat()
     // If the target a BaseCharacter?
 	if(!m_pServerDE->IsKindOf(m_pServerDE->GetObjectClass(m_hTarget),m_pServerDE->GetClass("CBaseCharacter")))
 		return 0.0f;
-	
+
     CBaseCharacter* pB = (CBaseCharacter*)m_pServerDE->HandleToObject(m_hTarget);
 
-    if (pB) 
-    {        
+    if (pB)
+    {
         // AI values
     	CWeapon *p_Weapon = m_InventoryMgr.GetCurrentWeapon();
        	CWeapon *p_TargetWeapon = pB->CurrentWeapon();
@@ -2519,29 +2524,29 @@ DFLOAT AI_Mgr::ComputeThreat()
 
         // Get the distance from the Target (see if they are in Range)
         DFLOAT m_fTargetDistance = VEC_DIST(m_MoveObj.GetPos(), m_vTargetPos);
-        
+
         // Add a Threat if target weapon is in range and is greater than AI Health
         if (p_TargetWeapon && m_fTargetDistance < p_TargetWeapon->GetWeaponRange())
         {
             m_fTargetThreatValue++;
-            
+
             if (p_TargetWeapon ->GetWeaponDamage() > (DDWORD)m_damage.GetHitPoints())
             {
                 m_fTargetThreatValue += 5;
             }
         }
 
-        // Check from the AI side!        
+        // Check from the AI side!
         if (p_Weapon && m_fTargetDistance < p_Weapon->GetWeaponRange())
         {
             m_fAIThreatValue++;
-            
+
             if (p_Weapon ->GetWeaponDamage() > (DDWORD)pB->HitPoints())
             {
                 m_fAIThreatValue += 5;
             }
         }
-        
+
         // If Target as low health then Plus our Threat
         if (pB->HitPoints() < m_damage.GetHitPoints())
         {
@@ -2553,7 +2558,7 @@ DFLOAT AI_Mgr::ComputeThreat()
 		ObjectLink* pObject = pList->m_pFirstLink;
 		HCLASS hType = m_pServerDE->GetObjectClass(m_hObject);
 		while(pObject && pObject->m_hObject)
-		{			 
+		{
 			if(m_pServerDE->IsKindOf(hType, m_pServerDE->GetObjectClass(pObject->m_hObject)))
 				m_fAIThreatValue += 3;
 
@@ -2565,7 +2570,7 @@ DFLOAT AI_Mgr::ComputeThreat()
 		//The higher the value, the less threat present
 		if(m_fAIThreatValue <= m_fTargetThreatValue)
 	        m_fTheThreat = 1.0f - m_fAIThreatValue/m_fTargetThreatValue;
-    }        
+    }
 
 	return m_fTheThreat;
 }
@@ -2573,7 +2578,7 @@ DFLOAT AI_Mgr::ComputeThreat()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::CheckObstructed
 // DESCRIPTION	: Check if we are obstructed in forward
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // PARAMS		: DFLOAT fSpeed
 // ----------------------------------------------------------------------- //
 
@@ -2596,8 +2601,8 @@ DBOOL AI_Mgr::CheckObstructed(DVector vDir, DFLOAT fSpeed)
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::CalculateObstruction
-// DESCRIPTION	: 
-// RETURN TYPE	: int 
+// DESCRIPTION	:
+// RETURN TYPE	: int
 // ----------------------------------------------------------------------- //
 
 int AI_Mgr::CalculateObstruction(IntersectInfo* IInfo)
@@ -2680,8 +2685,8 @@ int AI_Mgr::CalculateObstruction(IntersectInfo* IInfo)
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::CalculateTurn
-// DESCRIPTION	: 
-// RETURN TYPE	: DFLOAT 
+// DESCRIPTION	:
+// RETURN TYPE	: DFLOAT
 // ----------------------------------------------------------------------- //
 
 DFLOAT AI_Mgr::CalculateTurn(IntersectInfo* IInfo)
@@ -2852,8 +2857,8 @@ DFLOAT AI_Mgr::CalculateTurn(IntersectInfo* IInfo)
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::NavigateObstacle
-// DESCRIPTION	: 
-// RETURN TYPE	: DBOOL 
+// DESCRIPTION	:
+// RETURN TYPE	: DBOOL
 // ----------------------------------------------------------------------- //
 
 DBOOL AI_Mgr::NavigateObstacle()
@@ -2886,7 +2891,7 @@ DBOOL AI_Mgr::NavigateObstacle()
 				return DTRUE;
 			}
 		}
-		else 
+		else
 		{
 			for(int i = 0; i <= 8; i++)
 			{
@@ -2917,7 +2922,7 @@ DBOOL AI_Mgr::NavigateObstacle()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::FindObjectInRadius
 // DESCRIPTION	: Find closest ExitHint object and return radians to turn to obj
-// RETURN TYPE	: DFLOAT 
+// RETURN TYPE	: DFLOAT
 // ----------------------------------------------------------------------- //
 
 HOBJECT AI_Mgr::FindObjectInRadius(HCLASS hObjectTest, DFLOAT fRange, DDWORD dwFlags)
@@ -2938,7 +2943,7 @@ HOBJECT AI_Mgr::FindObjectInRadius(HCLASS hObjectTest, DFLOAT fRange, DDWORD dwF
 	if(!hObjectTest || fRange <= 0.0f)
 		return DNULL;
 
-	// 10/25 [gjk] added better link checking (check for pLink == pLinkHead for end of list, 
+	// 10/25 [gjk] added better link checking (check for pLink == pLinkHead for end of list,
 	// rather than pLink->m_pData since m_pData isn't gauranteed to be NULL for the head
 	if(ExitHint::m_dwNumExits && m_pServerDE->IsKindOf(hObjectTest,m_pServerDE->GetClass("ExitHint")))
 		pLinkHead = &ExitHint::m_ExitHead;
@@ -2946,7 +2951,7 @@ HOBJECT AI_Mgr::FindObjectInRadius(HCLASS hObjectTest, DFLOAT fRange, DDWORD dwF
 		pLinkHead = &SmellHint::m_SmellHead;
 	else if(AmmoPickup::m_dwNumPU && m_pServerDE->IsKindOf(hObjectTest,m_pServerDE->GetClass("AmmoPickup")))
 		pLinkHead = &AmmoPickup::m_PUHead;
-	else if(m_pServerDE->IsKindOf(hObjectTest, m_pServerDE->GetClass("AI_Mgr")) || 
+	else if(m_pServerDE->IsKindOf(hObjectTest, m_pServerDE->GetClass("AI_Mgr")) ||
 			m_pServerDE->IsKindOf(hObjectTest, m_pServerDE->GetClass("CPlayerObj")))
 	{
 		if(m_bCabal && m_dwNumMonster)
@@ -2977,7 +2982,7 @@ HOBJECT AI_Mgr::FindObjectInRadius(HCLASS hObjectTest, DFLOAT fRange, DDWORD dwF
 		if(VEC_DIST(vObjPos, vMyPos) > fRange)
 		{
 			bValid = DFALSE;
-		}	
+		}
 		else if(dwFlags & FIND_SPECIFIC_OBJ)
 		{
 			HCLASS hObjClass = m_pServerDE->GetObjectClass(hObject);
@@ -3002,7 +3007,7 @@ HOBJECT AI_Mgr::FindObjectInRadius(HCLASS hObjectTest, DFLOAT fRange, DDWORD dwF
 
 			// Now test to see if AI is facing test object...
 			DFLOAT fTargetDp = (vTgtDir.x * vForward.x) + (vTgtDir.y * vForward.y) + (vTgtDir.z * vForward.z);
-			
+
 			if (fTargetDp > 0 && fObjectDp > 0)
 			{
 				//we are facing the target AND exit object
@@ -3071,7 +3076,7 @@ HOBJECT AI_Mgr::FindObjectInRadius(HCLASS hObjectTest, DFLOAT fRange, DDWORD dwF
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::CanSee
 // DESCRIPTION	: Check if we have visual of target
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // PARAMS		: HOBJECT hTarget - who we want to see
 // ----------------------------------------------------------------------- //
 DBOOL AI_Mgr::CanSee( HOBJECT hTarget )
@@ -3094,7 +3099,7 @@ DBOOL AI_Mgr::CanSee( HOBJECT hTarget )
 		VEC_COPY(vMyPos, m_MoveObj.GetPos());
 
 	m_pServerDE->GetObjectPos(hTarget, &vObjPos);
-	
+
 	VEC_COPY(IQuery.m_From, vMyPos);
 	VEC_COPY(IQuery.m_To, vObjPos);
 
@@ -3103,7 +3108,7 @@ DBOOL AI_Mgr::CanSee( HOBJECT hTarget )
 	globalFilterFnData.m_dwFlags = IGNORE_LIQUID | IGNORE_GLASS;
 	globalFilterFnData.m_nIgnoreObjects = 1;
 	globalFilterFnData.m_hIgnoreObjects = &m_hObject;
-	IQuery.m_pUserData = &globalFilterFnData;	
+	IQuery.m_pUserData = &globalFilterFnData;
 
 	if(m_pServerDE->IntersectSegment(&IQuery, &IInfo))
 	{
@@ -3132,7 +3137,7 @@ DBOOL AI_Mgr::CanSee( HOBJECT hTarget )
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::Move
 // DESCRIPTION	: Move in vDir direction at fSpeed velocity
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // PARAMS		: DVector vDir
 // PARAMS		: DFLOAT fSpeed
 // ----------------------------------------------------------------------- //
@@ -3158,8 +3163,8 @@ DBOOL AI_Mgr::Move(DVector &vDir, DFLOAT fSpeed)
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::Jump
-// DESCRIPTION	: 
-// RETURN TYPE	: DBOOL 
+// DESCRIPTION	:
+// RETURN TYPE	: DBOOL
 // PARAMS		: DFLOAT m_fYSpeed
 // PARAMS		: DFLOAT m_fZSpeed
 // ----------------------------------------------------------------------- //
@@ -3168,17 +3173,17 @@ DBOOL AI_Mgr::Jump(DFLOAT m_fYSpeed, DFLOAT m_fZSpeed)
 {
     // check for jump completed
     if (m_bJumping == DTRUE)
-    {    
+    {
 	    CollisionInfo collisionInfo;
 
 	    m_pServerDE->GetStandingOn(m_hObject, &collisionInfo);
-    
+
         if (collisionInfo.m_hObject)
         {
             // Do not change until I hit the ground...
             // return to this substate
     		m_bJumping = DFALSE;
-        }        
+        }
     }
     else
     {
@@ -3192,14 +3197,14 @@ DBOOL AI_Mgr::Jump(DFLOAT m_fYSpeed, DFLOAT m_fZSpeed)
 
 		m_bJumping = DTRUE;
     }
-    
+
     return m_bJumping;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::Fire
 // DESCRIPTION	: Fire current weapon forward
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // ----------------------------------------------------------------------- //
 
 DBOOL AI_Mgr::Fire(DBOOL bAltFire)
@@ -3295,7 +3300,7 @@ DBOOL AI_Mgr::Fire(DBOOL bAltFire)
 			VEC_COPY(vDir, m_MoveObj.GetForwardVector());
 			break;
 		}
-		
+
 		case WEAP_ZEALOT_ENERGYBLAST:
 		{
 			m_pServerDE->GetModelNodeTransform(m_hObject,"r_hand_extra2",&vPos,&rRot);
@@ -3356,7 +3361,7 @@ DBOOL AI_Mgr::Fire(DBOOL bAltFire)
 		case WEAP_HAND_SQUEEZE:
 		case WEAP_BONELEECH_SUCK:
 		case WEAP_THIEF_SUCK:
-		
+
 		case WEAP_NAGA_EYEBEAM:
 		{
 			m_pServerDE->GetModelNodeTransform(m_hObject,"head_gun",&vPos,&rRot);
@@ -3436,7 +3441,7 @@ DBOOL AI_Mgr::Fire(DBOOL bAltFire)
 
 
 		default:
-		{	
+		{
 			if(!m_pServerDE->GetModelNodeTransform(m_hObject,"r_gun",&vPos,&rRot))
 			{
 				m_pServerDE->GetObjectPos(m_hObject,&vPos);
@@ -3449,6 +3454,25 @@ DBOOL AI_Mgr::Fire(DBOOL bAltFire)
 
 			break;
 		}
+	}
+
+	if (m_InventoryMgr.GetCurrentWeapon()->GetFireType() != TYPE_MELEE)
+	{
+		// TODO: set a limit on the amount we can miss
+		// TODO: check for crouch, and try miss a bit
+		DVector target_pos, target_vel;
+        m_pServerDE->GetObjectPos(m_hTarget, &target_pos);
+		m_pServerDE->GetVelocity(m_hTarget, &target_vel);
+
+		float mag = target_vel.MagApprox();
+        float dist = (m_vTargetPos-vPos).MagApprox();
+        target_vel.Norm();
+
+		// sigmoidal random miss chance based on mag in the target_vel direction, maybe?
+		float speed_ratio = -1.0f + (mag / 200.0f);
+		float speed_to_miss = (speed_ratio / (fabs(speed_ratio * 2.0f) + 1.0f)) + 0.5f;
+
+		vDir += target_vel * (speed_to_miss * m_pServerDE->Random(0.0f, 25.0f));
 	}
 
 	VEC_NORM(vDir);
@@ -3465,7 +3489,7 @@ DBOOL AI_Mgr::Fire(DBOOL bAltFire)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::CheckClearShot
 // DESCRIPTION	: Check for a clear shot
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // ----------------------------------------------------------------------- //
 
 DBOOL AI_Mgr::CheckClearShot(DVector &vPos, DRotation &rRot, DBOOL bAltFire, DDWORD dwFlags)
@@ -3495,7 +3519,7 @@ DBOOL AI_Mgr::CheckClearShot(DVector &vPos, DRotation &rRot, DBOOL bAltFire, DDW
 	globalFilterFnData.m_dwFlags = dwFlags;
 	globalFilterFnData.m_nIgnoreObjects = 1;
 	globalFilterFnData.m_hIgnoreObjects = &m_hObject;
-	IQuery.m_pUserData = &globalFilterFnData;	
+	IQuery.m_pUserData = &globalFilterFnData;
 
 	VEC_COPY(IQuery.m_From, vPos);
 	VEC_ADDSCALED(IQuery.m_To, vPos, vF, fRange);
@@ -3536,7 +3560,7 @@ DBOOL AI_Mgr::CheckClearShot(DVector &vPos, DRotation &rRot, DBOOL bAltFire, DDW
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::IsClearXZ
 // DESCRIPTION	: Check if the ray intersects in vDir to fDist
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // PARAMS		: DVector vDir
 // PARAMS		: DFLOAT fDist
 // ----------------------------------------------------------------------- //
@@ -3588,7 +3612,7 @@ DBOOL AI_Mgr::IsClearXZ(DVector vDir, DFLOAT fDist)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::CalculateDodge
 // DESCRIPTION	: Calculate how to dodge object
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // PARAMS		: DVector vPos
 // ----------------------------------------------------------------------- //
 
@@ -3619,7 +3643,7 @@ int	AI_Mgr::CalculateDodge(DVector vPos)
 	DFLOAT fLeft		= (vDir.x * vLeft.x) + (vDir.y * vLeft.y) + (vDir.z * vLeft.z);
 	DFLOAT fForward		= (vDir.x * vForward.x) + (vDir.y * vForward.y) + (vDir.z * vForward.z);
 	DFLOAT fBackward	= (vDir.x * vBackward.x) + (vDir.y * vBackward.y) + (vDir.z * vBackward.z);
-	
+
 	//check if right
 	if(fRight > 0)
 	{
@@ -3630,9 +3654,9 @@ int	AI_Mgr::CalculateDodge(DVector vPos)
 	{
 		nFlags = RIGHT;
 		VEC_ADDSCALED(IQuery.m_To, m_MoveObj.GetPos(), vRight, m_fRollSpeed);
-	}			
+	}
 
-	//check if forward	
+	//check if forward
 	if(fForward > 0 && fForward > fRight && fForward > fLeft)
 	{
 		nFlags = BACKWARD;
@@ -3656,7 +3680,7 @@ int	AI_Mgr::CalculateDodge(DVector vPos)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::IsLedge
 // DESCRIPTION	: Check for a drop off in vDir at fDist
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // PARAMS		: DVector vDir
 // PARAMS		: DFLOAT fDist
 // ----------------------------------------------------------------------- //
@@ -3676,12 +3700,12 @@ DBOOL AI_Mgr::IsLedge(DVector vDir)
 	VEC_ADDSCALED(IQuery.m_From,m_MoveObj.GetPos(), vDir, fDist * 1.25f);
 	VEC_COPY(IQuery.m_To,IQuery.m_From);
 	IQuery.m_To.y -= m_vDims.y * 2.0f;
-	
+
 	IQuery.m_Flags	  = INTERSECT_OBJECTS | IGNORE_NONSOLID;
 	IQuery.m_FilterFn = DNULL;	//GlobalFilterFn;
 
 //	DDWORD dwFlags = IGNORE_LIQUID;
-//	IQuery.m_pUserData = &dwFlags;	
+//	IQuery.m_pUserData = &dwFlags;
 
 	if(m_pServerDE->IntersectSegment(&IQuery, &IInfo))
 	{
@@ -3693,8 +3717,8 @@ DBOOL AI_Mgr::IsLedge(DVector vDir)
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::CreateBloodSpurt
-// DESCRIPTION	: 
-// RETURN TYPE	: DBOOL 
+// DESCRIPTION	:
+// RETURN TYPE	: DBOOL
 // PARAMS		: int nNodeHit
 // ----------------------------------------------------------------------- //
 
@@ -3723,7 +3747,7 @@ DBOOL AI_Mgr::CreateBloodSpurt(int nNodeHit)
 															   &ocStruct.m_Pos,&ocStruct.m_Rotation);
 							break;
 		case NODE_LLEG:		m_pServerDE->GetModelNodeTransform(m_hObject,szNodes[NODE_LLEG],
-															   &ocStruct.m_Pos,&ocStruct.m_Rotation);						
+															   &ocStruct.m_Pos,&ocStruct.m_Rotation);
 							break;
 	}
 
@@ -3756,7 +3780,7 @@ DBOOL AI_Mgr::CreateBloodSpurt(int nNodeHit)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::CreateCorpse
 // DESCRIPTION	: Convert the AI into a corpse object
-// RETURN TYPE	: DBOOL 
+// RETURN TYPE	: DBOOL
 // ----------------------------------------------------------------------- //
 
 DBOOL AI_Mgr::CreateCorpse()
@@ -3839,21 +3863,21 @@ DBOOL AI_Mgr::CreateCorpse()
 
 	//LEFT ARM
 	m_pServerDE->GetModelNodeHideStatus(m_hObject,szNodes[NODE_LARM],&bStatus);
-	if(bStatus)	
+	if(bStatus)
 	{
 		AIShared.HideLimb(pObj->m_hObject, NODE_LARM);
 	}
 
 	//LEFT LEG
 	m_pServerDE->GetModelNodeHideStatus(m_hObject,szNodes[NODE_LLEG],&bStatus);
-	if(bStatus)	
+	if(bStatus)
 	{
 		AIShared.HideLimb(pObj->m_hObject, NODE_LLEG);
 	}
 
 	//RIGHT LEG
 	m_pServerDE->GetModelNodeHideStatus(m_hObject,szNodes[NODE_RLEG],&bStatus);
-	if(bStatus)	
+	if(bStatus)
 	{
 		AIShared.HideLimb(pObj->m_hObject, NODE_RLEG);
 	}
@@ -3864,7 +3888,7 @@ DBOOL AI_Mgr::CreateCorpse()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::CreateGibs
 // DESCRIPTION	: Run an idle animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 DBOOL AI_Mgr::CreateGibs(DVector vDir, int nNumGibs, int nType, DFLOAT fDamage)
@@ -3919,15 +3943,15 @@ DBOOL AI_Mgr::CreateGibs(DVector vDir, int nNumGibs, int nType, DFLOAT fDamage)
 		// 70% create 1 arm
 		if (rand = m_pServerDE->IntRandom(0, 100) > 70)
 			AIShared.CreateLimb(m_hObject, NODE_RARM, vDir);
-		
+
 		// 50% create 2 arms
 		if (rand = m_pServerDE->IntRandom(0, 100) > 50)
 			AIShared.CreateLimb(m_hObject, NODE_LARM, vDir);
-		
+
 		// 70% create 1 leg
 		if (rand = m_pServerDE->IntRandom(0, 100) > 70)
-			AIShared.CreateLimb(m_hObject, NODE_RLEG, vDir);	
-		
+			AIShared.CreateLimb(m_hObject, NODE_RLEG, vDir);
+
 		// 50% create 2 legs
 		if (rand = m_pServerDE->IntRandom(0, 100) > 50)
 			AIShared.CreateLimb(m_hObject, NODE_LLEG, vDir);
@@ -3960,7 +3984,7 @@ void AI_Mgr::RemoveMe()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Idle
 // DESCRIPTION	: Run an idle animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Idle()
@@ -3973,7 +3997,7 @@ void AI_Mgr::MC_Idle()
 
 		m_pServerDE->SetModelLooping(m_hObject, DFALSE);
 
-        m_bAnimating = DTRUE; 
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_IDLE;
 	}
 	else
@@ -3992,7 +4016,7 @@ void AI_Mgr::MC_Idle()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Talk
 // DESCRIPTION	: Run an talk animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Talk()
@@ -4005,7 +4029,7 @@ void AI_Mgr::MC_Talk()
 
 		m_pServerDE->SetModelLooping(m_hObject, DFALSE);
 
-        m_bAnimating = DTRUE; 
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_IDLE;
 	}
 	else
@@ -4024,7 +4048,7 @@ void AI_Mgr::MC_Talk()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Walk
 // DESCRIPTION	: Run the walk animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Walk()
@@ -4072,12 +4096,12 @@ void AI_Mgr::MC_Walk()
 			Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed/3);
 		else
 			Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
-			
-        m_bAnimating = DTRUE; 
+
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_WALK;
     }
     else
-    {   
+    {
 		//Check for obstruction; otherwise continue on
 		if(CheckObstructed(m_MoveObj.GetForwardVector(), m_fWalkSpeed))
 		{
@@ -4089,26 +4113,26 @@ void AI_Mgr::MC_Walk()
 		DDWORD dwFlags = m_pServerDE->GetObjectFlags(m_hObject);
 
 		if(collisionInfo.m_hObject && (dwFlags & FLAG_GRAVITY))
-		{		
+		{
 			Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
 		}
-		
+
 		if(m_pServerDE->GetModelPlaybackState(m_hObject) & MS_PLAYDONE)
         {
 			StopVelocity();
 
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
             Metacmd++;
         }
     }
-	
+
     return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::Script_Walk
 // DESCRIPTION	: Run the walk animation (when in the Script state)
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::Script_Walk()
@@ -4151,19 +4175,19 @@ void AI_Mgr::Script_Walk()
 			Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed/3);
 		else
 			Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
-			
-        m_bAnimating = DTRUE; 
+
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_WALK;
     }
     else
-    {   
+    {
 		Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
-   
+
 		if(m_pServerDE->GetModelPlaybackState(m_hObject) & MS_PLAYDONE)
         {
 			StopVelocity();
 
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
         }
     }
 }
@@ -4171,7 +4195,7 @@ void AI_Mgr::Script_Walk()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Run
 // DESCRIPTION	: Run the run animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Run()
@@ -4199,12 +4223,12 @@ void AI_Mgr::MC_Run()
         m_pServerDE->SetModelLooping(m_hObject, DTRUE);
 
 		Move(m_MoveObj.GetForwardVector(),m_fRunSpeed);
-        
-        m_bAnimating = DTRUE; 
+
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_RUN;
     }
     else
-    {   
+    {
 		//Check for obstruction; otherwise continue on
 		if(CheckObstructed(m_MoveObj.GetForwardVector(), m_fRunSpeed))
 		{
@@ -4216,7 +4240,7 @@ void AI_Mgr::MC_Run()
 		DDWORD dwFlags = m_pServerDE->GetObjectFlags(m_hObject);
 
 		if(collisionInfo.m_hObject && (dwFlags & FLAG_GRAVITY))
-		{		
+		{
 			Move(m_MoveObj.GetForwardVector(),m_fRunSpeed);
 		}
 
@@ -4225,18 +4249,18 @@ void AI_Mgr::MC_Run()
         {
 			StopVelocity();
 
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
             Metacmd++;
         }
     }
-	
+
     return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::Script_Run
 // DESCRIPTION	: Run the run animation (when in the Script state)
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::Script_Run()
@@ -4257,20 +4281,20 @@ void AI_Mgr::Script_Run()
         m_pServerDE->SetModelLooping(m_hObject, DTRUE);
 
 		Move(m_MoveObj.GetForwardVector(),m_fRunSpeed);
-        
-        m_bAnimating = DTRUE; 
+
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_RUN;
     }
     else
-    {   
+    {
 		Move(m_MoveObj.GetForwardVector(),m_fRunSpeed);
-    
+
 		//Are we done running?
 		if(m_pServerDE->GetModelPlaybackState(m_hObject) & MS_PLAYDONE)
         {
 			StopVelocity();
 
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
          }
     }
 }
@@ -4278,7 +4302,7 @@ void AI_Mgr::Script_Run()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Jump
 // DESCRIPTION	: Run the jump animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Jump()
@@ -4303,10 +4327,10 @@ void AI_Mgr::MC_Jump()
 		Move(vVel, MATH_EPSILON);
 
 		m_nCurMetacmd = MC_JUMP;
-        m_bAnimating = DTRUE; 
+        m_bAnimating = DTRUE;
     }
     else
-    {        
+    {
 		CollisionInfo collisionInfo;
 		DVector vVel;
 
@@ -4322,18 +4346,18 @@ void AI_Mgr::MC_Jump()
 		{
 			StopVelocity();
 
-			m_bAnimating = DFALSE; 
+			m_bAnimating = DFALSE;
 			Metacmd++;
 		}
-    }               
-	
+    }
+
     return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::Crouch
 // DESCRIPTION	: Run the crouch animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Crouch()
@@ -4355,7 +4379,7 @@ void AI_Mgr::MC_Crouch()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Crawl
 // DESCRIPTION	: Run the crawl animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Crawl()
@@ -4375,12 +4399,12 @@ void AI_Mgr::MC_Crawl()
         m_pServerDE->SetModelLooping(m_hObject, DTRUE);
 
 		Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
-        
-        m_bAnimating = DTRUE; 
+
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_CRAWL;
     }
     else
-    {   
+    {
 		//Check for obstruction; otherwise continue on
 		if(CheckObstructed(m_MoveObj.GetForwardVector(), m_fWalkSpeed))
 		{
@@ -4393,7 +4417,7 @@ void AI_Mgr::MC_Crawl()
 		DDWORD dwFlags = m_pServerDE->GetObjectFlags(m_hObject);
 
 		if(collisionInfo.m_hObject && (dwFlags & FLAG_GRAVITY))
-		{		
+		{
 			Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
 		}
 
@@ -4402,18 +4426,18 @@ void AI_Mgr::MC_Crawl()
         {
 			StopVelocity();
 
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
             Metacmd++;
         }
     }
-	
+
     return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::Swim
 // DESCRIPTION	: Run the swim animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Swim()
@@ -4432,39 +4456,39 @@ void AI_Mgr::MC_Swim()
         m_pServerDE->SetModelLooping(m_hObject, DTRUE);
 
 		Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
-        
-        m_bAnimating = DTRUE; 
+
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_SWIM;
     }
     else
-    {   
+    {
 		//Check for obstruction; otherwise continue on
 		if(CheckObstructed(m_MoveObj.GetForwardVector(), m_fWalkSpeed))
 		{
 			if(!AIShared.TurnToClear(m_hObject))
 			{
-				m_bAnimating = DFALSE; 
+				m_bAnimating = DFALSE;
 				Metacmd++;
 			}
 		}
 
 		Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
-    
+
 		//Are we done walking?
 		if(m_pServerDE->GetModelPlaybackState(m_hObject) & MS_PLAYDONE)
         {
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
             Metacmd++;
         }
     }
-	
+
     return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Fire_Stand
 // DESCRIPTION	: Run the fire_stand animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Fire_Stand()
@@ -4473,7 +4497,7 @@ void AI_Mgr::MC_Fire_Stand()
     {
 		DBOOL bRet = DFALSE;
 
-		CWeapon *pW = m_InventoryMgr.GetCurrentWeapon();		
+		CWeapon *pW = m_InventoryMgr.GetCurrentWeapon();
 		if (pW)
 		{
 			m_fAttackLoadTime = pW->GetReloadTime();
@@ -4494,15 +4518,15 @@ void AI_Mgr::MC_Fire_Stand()
 		else
 		{
 			m_pServerDE->SetModelLooping(m_hObject, DFALSE);
-    
-			m_bAnimating = DTRUE; 
+
+			m_bAnimating = DTRUE;
 			m_nCurMetacmd = MC_FIRE_STAND;
 		}
 
 		m_pServerDE->SetNextUpdate(m_hObject, 0.1f);
     }
     else
-    {   
+    {
 		DFLOAT fTemp = m_pServerDE->GetTime();
 
         if (fTemp > (m_fLoadTimeStart + m_fAttackLoadTime))
@@ -4515,21 +4539,21 @@ void AI_Mgr::MC_Fire_Stand()
 				Metacmd++;
 			}
         }
-        
+
 		if(m_pServerDE->GetModelPlaybackState(m_hObject) & MS_PLAYDONE)
 		{
 			m_bAnimating = DFALSE;
 			Metacmd++;
 		}
-    }      
-	
+    }
+
     return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Fire_Walk
 // DESCRIPTION	: Run the fire_walk animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Fire_Walk()
@@ -4561,15 +4585,15 @@ void AI_Mgr::MC_Fire_Walk()
 		}
 
         m_pServerDE->SetModelLooping(m_hObject, DTRUE);
-                    
+
 		Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
-        
-        m_bAnimating = DTRUE; 
+
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_FIRE_WALK;
 		m_pServerDE->SetNextUpdate(m_hObject, 0.1f);
     }
     else
-    {             
+    {
 		//Check for obstruction; otherwise continue on
 		if(CheckObstructed(m_MoveObj.GetForwardVector(), m_fWalkSpeed))
 		{
@@ -4581,7 +4605,7 @@ void AI_Mgr::MC_Fire_Walk()
 		DDWORD dwFlags = m_pServerDE->GetObjectFlags(m_hObject);
 
 		if(collisionInfo.m_hObject && (dwFlags & FLAG_GRAVITY))
-		{		
+		{
 			Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
 		}
 
@@ -4596,24 +4620,24 @@ void AI_Mgr::MC_Fire_Walk()
 				Metacmd++;
 			}
         }
-	
+
 		//Are we done walking?
 		if(m_pServerDE->GetModelPlaybackState(m_hObject) & MS_PLAYDONE)
         {
 			StopVelocity();
 
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
             Metacmd++;
         }
-    }      
-	
-    return;	
+    }
+
+    return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::Script_Fire_Stand
 // DESCRIPTION	: Run the fire_stand animation (when scripted)
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 DBOOL AI_Mgr::Script_Fire_Stand()
@@ -4631,7 +4655,7 @@ DBOOL AI_Mgr::Script_Fire_Stand()
 
 	if (m_bAnimating == DFALSE || m_nCurMetacmd != MC_FIRE_STAND)
     {
-		CWeapon *pW = m_InventoryMgr.GetCurrentWeapon();		
+		CWeapon *pW = m_InventoryMgr.GetCurrentWeapon();
 		if (pW)
 		{
 			m_fAttackLoadTime = pW->GetReloadTime();
@@ -4643,12 +4667,12 @@ DBOOL AI_Mgr::Script_Fire_Stand()
 		else SetAnimation( m_pAnim_Sound->m_nAnim_FIRE_STAND[TYPE_MELEE]);
 
 		m_pServerDE->SetModelLooping(m_hObject, DFALSE);
-    
-		m_bAnimating  = DTRUE; 
+
+		m_bAnimating  = DTRUE;
 		m_nCurMetacmd = MC_FIRE_STAND;
     }
     else
-    {   //Have we reloaded yet?             
+    {   //Have we reloaded yet?
 
 		DFLOAT fTime = m_pServerDE->GetTime();
 
@@ -4670,15 +4694,15 @@ DBOOL AI_Mgr::Script_Fire_Stand()
 		{
 			m_bAnimating = DFALSE;
 		}
-    }      
-	
+    }
+
     return DTRUE;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::Script_Fire_Walk
 // DESCRIPTION	: Run the fire_walk animation (when scripted)
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::Script_Fire_Walk()
@@ -4707,14 +4731,14 @@ void AI_Mgr::Script_Fire_Walk()
 		}
 
         m_pServerDE->SetModelLooping(m_hObject, DTRUE);
-                    
+
 		Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
-        
-        m_bAnimating = DTRUE; 
+
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_FIRE_WALK;
     }
     else
-    {             
+    {
 		Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
 
 		//Have we reloaded yet?
@@ -4727,23 +4751,23 @@ void AI_Mgr::Script_Fire_Walk()
 				m_fLoadTimeStart = fTime;
 			}
 		}
-	
+
 		//Are we done walking?
 		if (m_pServerDE->GetModelPlaybackState(m_hObject) & MS_PLAYDONE)
         {
 			StopVelocity();
 
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
         }
-    }      
-	
-    return;	
+    }
+
+    return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Fire_Run
 // DESCRIPTION	: Run the fire_run animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Fire_Run()
@@ -4777,13 +4801,13 @@ void AI_Mgr::MC_Fire_Run()
         m_pServerDE->SetModelLooping(m_hObject, DTRUE);
 
 		Move(m_MoveObj.GetForwardVector(),m_fRunSpeed);
-        
-        m_bAnimating = DTRUE; 
+
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_FIRE_RUN;
 		m_pServerDE->SetNextUpdate(m_hObject, 0.1f);
     }
     else
-    {             
+    {
 		//Check for obstruction; otherwise continue on
 		if(CheckObstructed(m_MoveObj.GetForwardVector(), m_fRunSpeed))
 		{
@@ -4795,14 +4819,14 @@ void AI_Mgr::MC_Fire_Run()
 		DDWORD dwFlags = m_pServerDE->GetObjectFlags(m_hObject);
 
 		if(collisionInfo.m_hObject && (dwFlags & FLAG_GRAVITY))
-		{		
+		{
 			Move(m_MoveObj.GetForwardVector(),m_fRunSpeed);
 		}
 
 		//Have we reloaded yet?
         if (fTime > (m_fLoadTimeStart + m_fAttackLoadTime))
         {
-            if(Fire())	
+            if(Fire())
 				m_fLoadTimeStart = m_pServerDE->GetTime();
 			else
 			{
@@ -4810,24 +4834,24 @@ void AI_Mgr::MC_Fire_Run()
 				Metacmd++;
 			}
         }
-	
+
 		//Are we done walking?
 		if(m_pServerDE->GetModelPlaybackState(m_hObject) & MS_PLAYDONE)
         {
 			StopVelocity();
 
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
             Metacmd++;
         }
-    }      
-	
-    return;	
+    }
+
+    return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::Script_Fire_Run
 // DESCRIPTION	: Run the fire_run animation (when scripted)
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::Script_Fire_Run()
@@ -4857,12 +4881,12 @@ void AI_Mgr::Script_Fire_Run()
 
         m_pServerDE->SetModelLooping(m_hObject, DTRUE);
 		Move(m_MoveObj.GetForwardVector(),m_fRunSpeed);
-        
-        m_bAnimating = DTRUE; 
+
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_FIRE_RUN;
     }
     else
-    {             
+    {
 		Move(m_MoveObj.GetForwardVector(),m_fRunSpeed);
 
 		//Have we reloaded yet?
@@ -4875,23 +4899,23 @@ void AI_Mgr::Script_Fire_Run()
 				m_fLoadTimeStart = fTime;
 			}
 		}
-	
+
 		//Are we done walking?
 		if (m_pServerDE->GetModelPlaybackState(m_hObject) & MS_PLAYDONE)
         {
 			StopVelocity();
 
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
         }
-    }      
-	
-    return;	
+    }
+
+    return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Fire_Jump
 // DESCRIPTION	: Run the fire_jump animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Fire_Jump()
@@ -4913,7 +4937,7 @@ void AI_Mgr::MC_Fire_Jump()
 
         Jump(m_fJumpSpeed, m_fRunSpeed);
 
-        m_bAnimating = DTRUE; 
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_FIRE_JUMP;
 		m_pServerDE->SetNextUpdate(m_hObject, 0.1f);
     }
@@ -4930,23 +4954,23 @@ void AI_Mgr::MC_Fire_Jump()
 				Metacmd++;
 			}
         }
-		
+
         if ( Jump(m_fJumpSpeed, m_fRunSpeed) == DFALSE )
         {
 			StopVelocity();
 
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
             Metacmd++;
         }
-    }               
-	
+    }
+
     return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Fire_Crouch
 // DESCRIPTION	: Run the fire_crouch animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Fire_Crouch()
@@ -4960,20 +4984,20 @@ void AI_Mgr::MC_Fire_Crouch()
 		}
 
     	m_fLoadTimeStart = m_fTimeStart = 0;
-   
+
 		if(pW)
 	        SetAnimation( m_pAnim_Sound->m_nAnim_FIRE_CROUCH[pW->GetFireType()]);
 		else
 	        SetAnimation( m_pAnim_Sound->m_nAnim_FIRE_CROUCH[TYPE_PISTOL]);
 
         m_pServerDE->SetModelLooping(m_hObject, DFALSE);
-        
-		m_bAnimating = DTRUE; 
+
+		m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_FIRE_CROUCH;
 		m_pServerDE->SetNextUpdate(m_hObject, 0.1f);
     }
     else
-    {   //Have we reloaded yet?             
+    {   //Have we reloaded yet?
         if (m_pServerDE->GetTime() > (m_fLoadTimeStart + m_fAttackLoadTime))
         {
             if(Fire())
@@ -4984,7 +5008,7 @@ void AI_Mgr::MC_Fire_Crouch()
 				Metacmd++;
 			}
         }
-        
+
 		//Are we done walking?
 		if(m_pServerDE->GetModelPlaybackState(m_hObject) & MS_PLAYDONE)
         {
@@ -4994,16 +5018,16 @@ void AI_Mgr::MC_Fire_Crouch()
             Metacmd++;
             return;
         }
-    
-    }      
-	
+
+    }
+
     return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Fire_Crawl
 // DESCRIPTION	: Run fire_crawl animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Fire_Crawl()
@@ -5026,15 +5050,15 @@ void AI_Mgr::MC_Fire_Crawl()
 	        SetAnimation( m_pAnim_Sound->m_nAnim_FIRE_CRAWL[TYPE_PISTOL]);
 
         m_pServerDE->SetModelLooping(m_hObject, DTRUE);
-                    
+
 		Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
-        
-        m_bAnimating = DTRUE; 
+
+        m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_FIRE_CRAWL;
 		m_pServerDE->SetNextUpdate(m_hObject, 0.1f);
     }
     else
-    {             
+    {
 		//Check for obstruction; otherwise continue on
 		if(CheckObstructed(m_MoveObj.GetForwardVector(), m_fWalkSpeed))
 		{
@@ -5047,7 +5071,7 @@ void AI_Mgr::MC_Fire_Crawl()
 		DDWORD dwFlags = m_pServerDE->GetObjectFlags(m_hObject);
 
 		if(collisionInfo.m_hObject && (dwFlags & FLAG_GRAVITY))
-		{		
+		{
 			Move(m_MoveObj.GetForwardVector(),m_fWalkSpeed);
 		}
 
@@ -5062,24 +5086,24 @@ void AI_Mgr::MC_Fire_Crawl()
 				Metacmd++;
 			}
         }
-	
+
 		//Are we done walking?
 		if(m_pServerDE->GetModelPlaybackState(m_hObject) & MS_PLAYDONE)
         {
 			StopVelocity();
 
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
             Metacmd++;
         }
-    }      
-	
-    return;	
+    }
+
+    return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Roll_Forward
 // DESCRIPTION	: run the roll_forward animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Roll_Forward(DBOOL bLoop)
@@ -5087,7 +5111,7 @@ void AI_Mgr::MC_Roll_Forward(DBOOL bLoop)
     if (m_bAnimating == DFALSE || m_nCurMetacmd != MC_ROLL_FORWARD)
     {
         SetAnimation( m_pAnim_Sound->m_nAnim_ROLL_FORWARD);
-        
+
 		m_pServerDE->SetModelLooping(m_hObject, bLoop);
 
 		Move(m_MoveObj.GetForwardVector(),m_fRollSpeed);
@@ -5100,7 +5124,7 @@ void AI_Mgr::MC_Roll_Forward(DBOOL bLoop)
 		//Check for obstruction; otherwise continue on
 		if(CheckObstructed(m_MoveObj.GetForwardVector(), m_fRollSpeed))
 		{
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
             Metacmd++;
 		}
 
@@ -5109,7 +5133,7 @@ void AI_Mgr::MC_Roll_Forward(DBOOL bLoop)
 		DDWORD dwFlags = m_pServerDE->GetObjectFlags(m_hObject);
 
 		if(collisionInfo.m_hObject && (dwFlags & FLAG_GRAVITY))
-		{		
+		{
 			Move(m_MoveObj.GetForwardVector(),m_fRollSpeed);
 		}
 
@@ -5129,7 +5153,7 @@ void AI_Mgr::MC_Roll_Forward(DBOOL bLoop)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Roll_Backward
 // DESCRIPTION	: runthe roll_backward animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Roll_Backward()
@@ -5152,7 +5176,7 @@ void AI_Mgr::MC_Roll_Backward()
 		//Check for obstruction; otherwise continue on
 		if(CheckObstructed(vBackward, m_fRollSpeed))
 		{
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
             Metacmd++;
 		}
 
@@ -5161,7 +5185,7 @@ void AI_Mgr::MC_Roll_Backward()
 		DDWORD dwFlags = m_pServerDE->GetObjectFlags(m_hObject);
 
 		if(collisionInfo.m_hObject && (dwFlags & FLAG_GRAVITY))
-		{		
+		{
 			Move(vBackward,m_fRollSpeed);
 		}
 
@@ -5181,7 +5205,7 @@ void AI_Mgr::MC_Roll_Backward()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Roll_Left
 // DESCRIPTION	: run the roll_left animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Roll_Left()
@@ -5204,7 +5228,7 @@ void AI_Mgr::MC_Roll_Left()
 		//Check for obstruction; otherwise continue on
 		if(CheckObstructed(vLeft, m_fRollSpeed))
 		{
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
             Metacmd++;
 		}
 
@@ -5213,7 +5237,7 @@ void AI_Mgr::MC_Roll_Left()
 		DDWORD dwFlags = m_pServerDE->GetObjectFlags(m_hObject);
 
 		if(collisionInfo.m_hObject && (dwFlags & FLAG_GRAVITY))
-		{		
+		{
 			Move(vLeft,m_fRollSpeed);
 		}
 
@@ -5233,7 +5257,7 @@ void AI_Mgr::MC_Roll_Left()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Roll_Right
 // DESCRIPTION	: run the roll_right animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Roll_Right()
@@ -5253,7 +5277,7 @@ void AI_Mgr::MC_Roll_Right()
 		//Check for obstruction; otherwise continue on
 		if(CheckObstructed(m_MoveObj.GetRightVector(), m_fRollSpeed))
 		{
-            m_bAnimating = DFALSE; 
+            m_bAnimating = DFALSE;
             Metacmd++;
 		}
 
@@ -5262,7 +5286,7 @@ void AI_Mgr::MC_Roll_Right()
 		DDWORD dwFlags = m_pServerDE->GetObjectFlags(m_hObject);
 
 		if(collisionInfo.m_hObject && (dwFlags & FLAG_GRAVITY))
-		{		
+		{
 			Move(m_MoveObj.GetRightVector(),m_fRollSpeed);
 		}
 
@@ -5282,7 +5306,7 @@ void AI_Mgr::MC_Roll_Right()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Dodge_Left
 // DESCRIPTION	: run the dodge left animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Dodge_Left()
@@ -5317,7 +5341,7 @@ void AI_Mgr::MC_Dodge_Left()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Dodge_Right
 // DESCRIPTION	: run the dodge right animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Dodge_Right()
@@ -5350,7 +5374,7 @@ void AI_Mgr::MC_Dodge_Right()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Taunt_Beg
 // DESCRIPTION	: play the taunt_beg animation
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Taunt_Beg()
@@ -5381,7 +5405,7 @@ void AI_Mgr::MC_Taunt_Beg()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Taunt_Bold
 // DESCRIPTION	: Play a random taunt
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Taunt_Bold()
@@ -5412,7 +5436,7 @@ void AI_Mgr::MC_Taunt_Bold()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Recoil
 // DESCRIPTION	: Run recoil animation based on node hit
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Recoil()
@@ -5464,7 +5488,7 @@ void AI_Mgr::MC_Recoil()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Dead
 // DESCRIPTION	: Run death animation based on node hit
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Dead()
@@ -5492,17 +5516,17 @@ void AI_Mgr::MC_Dead()
 				case NODE_LLEG:		m_nCorpseType = m_pAnim_Sound->m_nAnim_DEATH[4 + nSideHit]; break;
 				case NODE_RLEG:		m_nCorpseType = m_pAnim_Sound->m_nAnim_DEATH[5 + nSideHit]; break;
 			}
-		} 
-		else 
+		}
+		else
 		{
-			if (IsRandomChance(50)) 
+			if (IsRandomChance(50))
 				m_nCorpseType = m_pAnim_Sound->m_nAnim_DEATH[0];
 			else
 				m_nCorpseType = m_pAnim_Sound->m_nAnim_DEATH[1];
 		}
-       
+
 //		m_nCorpseType = m_pAnim_Sound->m_nAnim_DEATH[0];
-		
+
 		m_bAnimating = DTRUE;
 		m_nCurMetacmd = MC_DEAD;
 	}
@@ -5522,7 +5546,7 @@ void AI_Mgr::MC_Dead()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Special
 // DESCRIPTION	: play special animation nIndex
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_Special(int nIndex)
@@ -5551,7 +5575,7 @@ void AI_Mgr::MC_Special(int nIndex)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_FaceTarget
 // DESCRIPTION	: Turn and face m_hTarget
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_FaceTarget()
@@ -5567,7 +5591,7 @@ void AI_Mgr::MC_FaceTarget()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_FaceTrackObj
 // DESCRIPTION	: Turn and face m_hTrackObj
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_FaceTrackObj()
@@ -5580,7 +5604,7 @@ void AI_Mgr::MC_FaceTrackObj()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_FacePos
 // DESCRIPTION	: Turn and face vPos
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_FacePos(DVector vPos)
@@ -5592,7 +5616,7 @@ void AI_Mgr::MC_FacePos(DVector vPos)
 
 	DFLOAT fAmount = (DFLOAT) atan2(vDir.x, vDir.z);
 	DFLOAT fAmount2 = (DFLOAT) atan2(m_MoveObj.GetForwardVector().x, m_MoveObj.GetForwardVector().z);
-    
+
 	DRotation rRot;
 	ROT_COPY(rRot, m_MoveObj.GetRotation());
 
@@ -5607,7 +5631,7 @@ void AI_Mgr::MC_FacePos(DVector vPos)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_BestWeapon
 // DESCRIPTION	: Choose best weapon for attacking
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_BestWeapon()
@@ -5615,7 +5639,7 @@ void AI_Mgr::MC_BestWeapon()
     if (m_bAnimating == DFALSE)
     {
 		if(m_InventoryMgr.FindBestWeapon(VEC_DIST(m_MoveObj.GetPos(),m_vTargetPos)) == DNULL)
-		{            
+		{
 			CWeapon* pW	= m_InventoryMgr.GetCurrentWeapon();
 
 			if(pW)
@@ -5629,8 +5653,8 @@ void AI_Mgr::MC_BestWeapon()
 					}
 				}
 			}
-			
-			m_bAnimating = DFALSE; 
+
+			m_bAnimating = DFALSE;
 			Metacmd++;
 		}
 		else
@@ -5673,7 +5697,7 @@ void AI_Mgr::MC_BestWeapon()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_LayProximity
 // DESCRIPTION	: set proximity bomb on ground
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::MC_LayProximity()
@@ -5705,7 +5729,7 @@ void AI_Mgr::MC_LayProximity()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::MC_Extra
 // DESCRIPTION	: Handle extra functionality
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 void AI_Mgr::MC_Extra(const char *lpszTemp)
 {
@@ -5717,7 +5741,7 @@ void AI_Mgr::MC_Extra(const char *lpszTemp)
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_Dying
 // DESCRIPTION	: STATE_Dying function
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_Dying()
@@ -5727,19 +5751,19 @@ void AI_Mgr::AI_STATE_Dying()
         case 1: MC_Dead();							break;
         case 2: m_nState = STATE_Inactive;			break;
     }
-	
+
 	return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_Script
 // DESCRIPTION	: STATE_Script function
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_Script()
 {
-	if (m_bUpdateScriptCmd) 
+	if (m_bUpdateScriptCmd)
 	{
 		UpdateScriptCommand();
 	}
@@ -5752,7 +5776,7 @@ void AI_Mgr::AI_STATE_Script()
 		case AI_SCMD_TARGET:
 			m_bUpdateScriptCmd = DTRUE;
 		break;
-		
+
 		case AI_SCMD_FOLLOWPATH:
 			UpdateFollowPathCmd();
 		break;
@@ -5760,17 +5784,17 @@ void AI_Mgr::AI_STATE_Script()
 		case AI_SCMD_WAIT:
 			UpdateWaitCmd();
 		break;
-		
+
 		case AI_SCMD_PLAYANIMATION:
 			UpdatePlayAnimationCmd();
 		break;
-		
+
 		case AI_SCMD_MOVETOOBJECT:
 			UpdateMoveToObjectCmd();
 		break;
 
 		case AI_SCMD_DONE:
-		default: 
+		default:
 			m_dwScriptFlags = 0;
 			ComputeState();
 		break;
@@ -5780,7 +5804,7 @@ void AI_Mgr::AI_STATE_Script()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_AssistAlly
 // DESCRIPTION	: AI_STATE_AssistAlly function
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_AssistAlly()
@@ -5803,23 +5827,23 @@ void AI_Mgr::AI_STATE_AssistAlly()
 	switch(Metacmd)
 	{
 		case 1:		MC_FacePos(m_vTrackObjPos);
-					
+
 					if(!m_MoveObj.CalculatePath(m_vTrackObjPos))
 						SetNewState(STATE_Idle);
 
 					break;
-		case 2:	
+		case 2:
 		{
 					DVector* pvPos = m_MoveObj.GetNextPathPoint();
-					
+
 					if(pvPos)
-						MC_FacePos(*pvPos);	
+						MC_FacePos(*pvPos);
 					else
 						SetNewState(STATE_SearchSmellTarget);
 
 					break;
 		}
-		case 3:		
+		case 3:
 		{
 					if(m_MoveObj.GetNextPathPoint() == DNULL)
 						ComputeState();
@@ -5869,7 +5893,7 @@ void AI_Mgr::AI_STATE_AssistAlly()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_SearchTarget
 // DESCRIPTION	: AI_STATE_SearchTarget function
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_SearchVisualTarget()
@@ -5877,7 +5901,7 @@ void AI_Mgr::AI_STATE_SearchVisualTarget()
 	int nStimType = ComputeStimuli();
 
 	// 01/13/1999 Sanity check -- Loki
-	if (!m_hTarget) 
+	if (!m_hTarget)
 	{
 		ComputeState();
 		return;
@@ -5899,23 +5923,23 @@ void AI_Mgr::AI_STATE_SearchVisualTarget()
 	switch(Metacmd)
 	{
 		case 1:		MC_FacePos(m_vTargetPos);
-					
+
 					if(!m_MoveObj.CalculatePath(m_vTargetPos))
 						SetNewState(STATE_Idle);
 
 					break;
-		case 2:	
+		case 2:
 		{
 					DVector* pvPos = m_MoveObj.GetNextPathPoint();
-					
+
 					if(pvPos)
-						MC_FacePos(*pvPos);	
+						MC_FacePos(*pvPos);
 					else
 						SetNewState(STATE_SearchSmellTarget);
 
 					break;
 		}
-		case 3:		
+		case 3:
 		{
 					if(m_MoveObj.GetNextPathPoint() == DNULL || IsLedge(m_MoveObj.GetForwardVector()))
 						ComputeState();
@@ -5953,8 +5977,8 @@ void AI_Mgr::AI_STATE_SearchVisualTarget()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_SearchTarget
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_SearchSmellTarget()
@@ -5962,7 +5986,7 @@ void AI_Mgr::AI_STATE_SearchSmellTarget()
 	int nStimType = ComputeStimuli();
 
 	// 01/13/1999 Sanity check -- Loki
-	if (!m_hTarget) 
+	if (!m_hTarget)
 	{
 		ComputeState();
 		return;
@@ -5984,7 +6008,7 @@ void AI_Mgr::AI_STATE_SearchSmellTarget()
 
 	switch(Metacmd)
 	{
-		case 1:	
+		case 1:
 		{
 					HCLASS hClass = m_pServerDE->GetClass("SmellHint");
 					HOBJECT hSmell = FindObjectInRadius(hClass, m_fSmellingDist, FIND_VISIBLE);
@@ -6011,17 +6035,17 @@ void AI_Mgr::AI_STATE_SearchSmellTarget()
 					else if(m_pCurSmell->m_pData)
 					{
 						SmellHint* pHint = (SmellHint*)m_pCurSmell->m_pData;
-				
+
 						HOBJECT hObj = m_pServerDE->ObjectToHandle(pHint);
 						m_pServerDE->GetObjectPos(hObj, &m_vSmellPos);
-						MC_FacePos(m_vSmellPos);	
+						MC_FacePos(m_vSmellPos);
 					}
 					else
 						SetNewState(m_nLastState);
 
 					break;
 		}
-		case 2:		
+		case 2:
 		{
 					if(IsLedge(m_MoveObj.GetForwardVector()))
 						ComputeState();
@@ -6054,10 +6078,10 @@ void AI_Mgr::AI_STATE_SearchSmellTarget()
 								if(m_pCurSmell->m_pData)
 								{
 									SmellHint* pHint = (SmellHint*)m_pCurSmell->m_pData;
-							
+
 									HOBJECT hObj = m_pServerDE->ObjectToHandle(pHint);
 									m_pServerDE->GetObjectPos(hObj, &m_vSmellPos);
-									MC_FacePos(m_vSmellPos);	
+									MC_FacePos(m_vSmellPos);
 								}
 							}
 						}
@@ -6075,8 +6099,8 @@ void AI_Mgr::AI_STATE_SearchSmellTarget()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_FindAmmo
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_FindAmmo()
@@ -6085,7 +6109,7 @@ void AI_Mgr::AI_STATE_FindAmmo()
 
 	switch(Metacmd)
 	{
-		case 1:		
+		case 1:
 		{
 					HCLASS hAmmo = DNULL;
 
@@ -6120,24 +6144,24 @@ void AI_Mgr::AI_STATE_FindAmmo()
 						m_pServerDE->GetObjectPos(m_hTrackObject,&m_vTrackObjPos);
 
 						MC_FacePos(m_vTrackObjPos);
-						m_MoveObj.CalculatePath(m_vTrackObjPos);		
+						m_MoveObj.CalculatePath(m_vTrackObjPos);
 					}
 
 					break;
 		}
-		case 2:	
+		case 2:
 		{
 					DVector* pvPos = m_MoveObj.GetNextPathPoint();
-					
+
 					if(pvPos)
-						MC_FacePos(*pvPos);	
+						MC_FacePos(*pvPos);
 					else
 						SetNewState(STATE_Escape_RunAway);
 
 					break;
 		}
-		case 3:		
-		{			
+		case 3:
+		{
 					if(m_MoveObj.GetNextPathPoint() == DNULL)
 						ComputeState();
 					else
@@ -6174,8 +6198,8 @@ void AI_Mgr::AI_STATE_FindAmmo()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_FindHealth
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_FindHealth()
@@ -6201,7 +6225,7 @@ void AI_Mgr::AI_STATE_FindHealth()
 
 	switch(Metacmd)
 	{
-		case 1:		
+		case 1:
 		{
 					HCLASS hAmmo = m_pServerDE->GetClass("HealthPU");
 					m_hTrackObject = FindObjectInRadius(hAmmo, m_fSeeingDist, FIND_AVOID_TARGET | FIND_VISIBLE);
@@ -6215,24 +6239,24 @@ void AI_Mgr::AI_STATE_FindHealth()
 						m_pServerDE->GetObjectPos(m_hTrackObject,&m_vTrackObjPos);
 
 						MC_FacePos(m_vTrackObjPos);
-						m_MoveObj.CalculatePath(m_vTrackObjPos);		
+						m_MoveObj.CalculatePath(m_vTrackObjPos);
 					}
 
 					break;
 		}
-		case 2:	
+		case 2:
 		{
 					DVector* pvPos = m_MoveObj.GetNextPathPoint();
-					
+
 					if(pvPos)
-						MC_FacePos(*pvPos);	
+						MC_FacePos(*pvPos);
 					else
 						SetNewState(STATE_Escape_RunAway);
 
 					break;
 		}
-		case 3:		
-		{	
+		case 3:
+		{
 					if(m_MoveObj.GetNextPathPoint() == DNULL)
 						ComputeState();
 					else
@@ -6269,8 +6293,8 @@ void AI_Mgr::AI_STATE_FindHealth()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_GuardLocation
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_GuardLocation()
@@ -6303,18 +6327,18 @@ void AI_Mgr::AI_STATE_GuardLocation()
 					}
 
 					break;
-		case 2:	
+		case 2:
 		{
 					DVector* pvPos = m_MoveObj.GetNextPathPoint();
-					
+
 					if(pvPos)
-						MC_FacePos(*pvPos);	
+						MC_FacePos(*pvPos);
 					else
 						SetNewState(STATE_Escape_RunAway);
 
 					break;
 		}
-		case 3:		
+		case 3:
 		{			if(m_MoveObj.GetNextPathPoint() == DNULL || IsLedge(m_MoveObj.GetForwardVector()))
 						ComputeState();
 					else
@@ -6352,8 +6376,8 @@ void AI_Mgr::AI_STATE_GuardLocation()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_Idle
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_Idle()
@@ -6380,7 +6404,7 @@ void AI_Mgr::AI_STATE_Idle()
 						MC_BestWeapon();
 					else
 						Metacmd++;
-				
+
 					break;
 		case 2:		MC_Idle();			break;
 		case 3:		ComputeState();		break;
@@ -6391,8 +6415,8 @@ void AI_Mgr::AI_STATE_Idle()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_Passive
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_Passive()
@@ -6411,7 +6435,7 @@ void AI_Mgr::AI_STATE_Passive()
 						MC_BestWeapon();
 					else
 						Metacmd++;
-				
+
 					break;
 		case 2:		MC_Idle();			break;
 		case 3:		Metacmd = 1;		break;
@@ -6423,7 +6447,7 @@ void AI_Mgr::AI_STATE_Passive()
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_Recoil
 // DESCRIPTION	: STATE_Recoil function
-// RETURN TYPE	: void 
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_Recoil()
@@ -6433,14 +6457,14 @@ void AI_Mgr::AI_STATE_Recoil()
         case 1: MC_Recoil();						break;
         case 2: ComputeState();						break;
     }
-	
+
 	return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_WalkAroundObj
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_WalkAroundObj()
@@ -6474,18 +6498,18 @@ void AI_Mgr::AI_STATE_WalkAroundObj()
 						SetNewState(STATE_Idle);
 
 					break;
-		case 2:	
+		case 2:
 		{
 					DVector* pvPos = m_MoveObj.GetNextPathPoint();
-					
+
 					if(pvPos)
-						MC_FacePos(*pvPos);	
+						MC_FacePos(*pvPos);
 					else
 						SetNewState(STATE_SearchSmellTarget);
 
 					break;
 		}
-		case 3:		
+		case 3:
 		{
 					if(m_MoveObj.GetNextPathPoint() == DNULL)
 						ComputeState();
@@ -6519,8 +6543,8 @@ void AI_Mgr::AI_STATE_WalkAroundObj()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_RunAroundObj
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_RunAroundObj()
@@ -6554,18 +6578,18 @@ void AI_Mgr::AI_STATE_RunAroundObj()
 						SetNewState(STATE_Idle);
 
 					break;
-		case 2:	
+		case 2:
 		{
 					DVector* pvPos = m_MoveObj.GetNextPathPoint();
-					
+
 					if(pvPos)
-						MC_FacePos(*pvPos);	
+						MC_FacePos(*pvPos);
 					else
 						SetNewState(STATE_SearchSmellTarget);
 
 					break;
 		}
-		case 3:		
+		case 3:
 		{
 					if(m_MoveObj.GetNextPathPoint() == DNULL)
 						ComputeState();
@@ -6599,8 +6623,8 @@ void AI_Mgr::AI_STATE_RunAroundObj()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_JumpOverObj
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_JumpOverObj()
@@ -6610,14 +6634,14 @@ void AI_Mgr::AI_STATE_JumpOverObj()
         case 1: MC_Jump();							break;
         case 2: SetNewState(m_nLastState);			break;
     }
-	
+
 	return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_CrawlUnderObj
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_CrawlUnderObj()
@@ -6625,21 +6649,21 @@ void AI_Mgr::AI_STATE_CrawlUnderObj()
     switch(Metacmd)
     {
         case 1: if(m_nLastState == STATE_AttackClose)
-					MC_Fire_Crawl();						
+					MC_Fire_Crawl();
 				else
 					MC_Crawl();
-				
+
 				break;
         case 2: SetNewState(m_nLastState);			break;
     }
-	
+
 	return;
 }
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_WalkToPos
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_WalkToPos()
@@ -6653,21 +6677,21 @@ void AI_Mgr::AI_STATE_WalkToPos()
 		case 1:		if(!m_MoveObj.CalculatePath(m_vDestPos))
 						SetNewState(STATE_Idle);
 					else
-						Metacmd++;									
-					
+						Metacmd++;
+
 					break;
-		case 2:	
+		case 2:
 		{
 					DVector* pvPos = m_MoveObj.GetNextPathPoint();
-					
+
 					if(pvPos)
-						MC_FacePos(*pvPos);	
+						MC_FacePos(*pvPos);
 					else
 						SetNewState(m_nLastState);
 
 					break;
 		}
-		case 3:		
+		case 3:
 		{
 					DVector vPoint = *m_MoveObj.GetNextPathPoint();
 					vPoint.y = m_MoveObj.GetPos().y;
@@ -6694,8 +6718,8 @@ void AI_Mgr::AI_STATE_WalkToPos()
 
 // ----------------------------------------------------------------------- //
 // ROUTINE		: AI_Mgr::AI_STATE_RunToPos
-// DESCRIPTION	: 
-// RETURN TYPE	: void 
+// DESCRIPTION	:
+// RETURN TYPE	: void
 // ----------------------------------------------------------------------- //
 
 void AI_Mgr::AI_STATE_RunToPos()
@@ -6709,21 +6733,21 @@ void AI_Mgr::AI_STATE_RunToPos()
 		case 1:		if(!m_MoveObj.CalculatePath(m_vDestPos))
 						SetNewState(STATE_Idle);
 					else
-						Metacmd++;									
-					
+						Metacmd++;
+
 					break;
-		case 2:	
+		case 2:
 		{
 					DVector* pvPos = m_MoveObj.GetNextPathPoint();
-					
+
 					if(pvPos)
-						MC_FacePos(*pvPos);	
+						MC_FacePos(*pvPos);
 					else
 						SetNewState(m_nLastState);
 
 					break;
 		}
-		case 3:		
+		case 3:
 		{
 					DVector vPoint = *m_MoveObj.GetNextPathPoint();
 					vPoint.y = m_MoveObj.GetPos().y;
@@ -6779,7 +6803,7 @@ void AI_Mgr::Save(HMESSAGEWRITE hWrite, DDWORD dwSaveFlags)
 		pServerDE->WriteToMessageFloat(hWrite, m_fStimuli[i]);
 
 	pServerDE->WriteToMessageDWord(hWrite, (DDWORD) m_nDodgeFlags);
- 
+
 	//conditions
 	pServerDE->WriteToMessageHString(hWrite, m_hstrSpotTriggerTarget);
 	pServerDE->WriteToMessageHString(hWrite, m_hstrSpotTriggerMessage);
@@ -6790,19 +6814,19 @@ void AI_Mgr::Save(HMESSAGEWRITE hWrite, DDWORD dwSaveFlags)
 	pServerDE->WriteToMessageFloat(hWrite, m_fSmellingDist);
 	pServerDE->WriteToMessageFloat(hWrite, m_fSensingDist);
 	pServerDE->WriteToMessageFloat(hWrite, m_fSeeingDist);
-				
+
 	pServerDE->WriteToMessageFloat(hWrite, m_fWalkSpeed);
 	pServerDE->WriteToMessageFloat(hWrite, m_fRunSpeed);
 	pServerDE->WriteToMessageFloat(hWrite, m_fJumpSpeed);
 	pServerDE->WriteToMessageFloat(hWrite, m_fRollSpeed);
 
-	pServerDE->WriteToMessageFloat(hWrite, m_fTimeStart - fTime);			
-	pServerDE->WriteToMessageFloat(hWrite, m_fLoadTimeStart - fTime);			
-												
+	pServerDE->WriteToMessageFloat(hWrite, m_fTimeStart - fTime);
+	pServerDE->WriteToMessageFloat(hWrite, m_fLoadTimeStart - fTime);
+
 	pServerDE->WriteToMessageDWord(hWrite, (DDWORD) m_nCorpseType);
-				
+
 	pServerDE->WriteToMessageFloat(hWrite, m_fAttackLoadTime);
-	
+
 	pServerDE->WriteToMessageByte(hWrite, m_bAnimating);
 	pServerDE->WriteToMessageByte(hWrite, m_bJumping);
 
@@ -6869,7 +6893,7 @@ void AI_Mgr::Load(HMESSAGEREAD hRead, DDWORD dwLoadFlags)
 
 	m_nState = (int)pServerDE->ReadFromMessageDWord(hRead);
 	m_nLastState= (int)pServerDE->ReadFromMessageDWord(hRead);
-    
+
 	for(int i = 0; i < NUM_STIMULI; i++)
 		m_fStimuli[i] = pServerDE->ReadFromMessageFloat(hRead);
 
@@ -6880,24 +6904,24 @@ void AI_Mgr::Load(HMESSAGEREAD hRead, DDWORD dwLoadFlags)
 	m_hstrSpotTriggerMessage= pServerDE->ReadFromMessageHString(hRead);
 	m_hstrTriggerRelayTarget= pServerDE->ReadFromMessageHString(hRead);
 
-    // Adjustable vars				
+    // Adjustable vars
 	m_fHearingDist		= pServerDE->ReadFromMessageFloat(hRead);
 	m_fSmellingDist		= pServerDE->ReadFromMessageFloat(hRead);
 	m_fSensingDist		= pServerDE->ReadFromMessageFloat(hRead);
 	m_fSeeingDist		= pServerDE->ReadFromMessageFloat(hRead);
-				
+
 	m_fWalkSpeed		= pServerDE->ReadFromMessageFloat(hRead);
 	m_fRunSpeed			= pServerDE->ReadFromMessageFloat(hRead);
 	m_fJumpSpeed		= pServerDE->ReadFromMessageFloat(hRead);
 	m_fRollSpeed		= pServerDE->ReadFromMessageFloat(hRead);
 
-	m_fTimeStart		= pServerDE->ReadFromMessageFloat(hRead) + fTime;			
-	m_fLoadTimeStart	= pServerDE->ReadFromMessageFloat(hRead) + fTime;			
+	m_fTimeStart		= pServerDE->ReadFromMessageFloat(hRead) + fTime;
+	m_fLoadTimeStart	= pServerDE->ReadFromMessageFloat(hRead) + fTime;
 
 	m_nCorpseType		= (int)pServerDE->ReadFromMessageDWord(hRead);
-				
+
 	m_fAttackLoadTime	= pServerDE->ReadFromMessageFloat(hRead);
-												
+
 	m_bAnimating		= pServerDE->ReadFromMessageByte(hRead);
 	m_bJumping			= pServerDE->ReadFromMessageByte(hRead);
 

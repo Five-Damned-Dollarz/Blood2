@@ -128,7 +128,8 @@ void CPlayerCamera::CameraUpdate(DFLOAT deltaTime)
 	m_pClientDE->GetObjectRotation(m_hTarget, &rRot);
 	
 	DVector vU, vR, vF;
-	m_pClientDE->GetRotationVectors(&rRot, &vU, &vR, &vF);
+	//m_pClientDE->GetRotationVectors(&rRot, &vU, &vR, &vF);
+	m_pClientDE->Common()->GetRotationVectors(rRot, vU, vR, vF); // possible placebo, but feels smoother to me
 
 	if(m_hTarget)
 	{

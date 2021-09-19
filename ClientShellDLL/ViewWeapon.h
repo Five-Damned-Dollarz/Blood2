@@ -179,9 +179,9 @@ class CViewWeapon
 		DDWORD		m_nRestAnim;			// Rest animation
 		DDWORD		m_nIdleAnim;			// Idle animation
 		DDWORD		m_nDrawAnim;			// Unholstering the weapon animation
-		DDWORD		m_nDrawDuelAnim;		// Unholstering in duel weapon mode
+		DDWORD		m_nDrawDualAnim;		// Unholstering in dual weapon mode
 		DDWORD		m_nHolsterAnim;			// Holstering the weapon animation
-		DDWORD		m_nHolsterDuelAnim;		// Holstering the weapons in duel mode
+		DDWORD		m_nHolsterDualAnim;		// Holstering the weapons in dual mode
 		DDWORD		m_nStartFireAnim;		// Firing spin-up animation
 		DDWORD		m_nFireAnim;			// Firing animation
 		DDWORD		m_nStopFireAnim;		// Firing spin-down animation

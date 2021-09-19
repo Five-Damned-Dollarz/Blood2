@@ -77,7 +77,7 @@ PhysicsState	  g_waterPhysicsState;
 
 #ifdef _ADDON
 
-DGUID BLOOD2GUID = { /* Add-On */ 
+DGUID BLOOD2GUID = { /* Add-On */
 	0xc13e628, 0x418c, 0x11d2, 0x86, 0xa, 0x0, 0x60, 0x97, 0x18, 0xa9, 0x42
 };
 
@@ -271,7 +271,7 @@ void AuraModelHook (struct ModelHookData_t *pData, void *pUser)
 {
 	CClientDE* pClientDE = (CClientDE*) pUser;
 	if (!pClientDE ) return;
-	
+
 	DDWORD nUserFlags = 0;
 	pClientDE->GetObjectUserFlags (pData->m_hObject, &nUserFlags);
 	if (nUserFlags & FLAG_BASECHARACTER)
@@ -320,7 +320,7 @@ void DefaultModelHook (struct ModelHookData_t *pData, void *pUser)
 		}
 	}
 	// Glow red for anger
-	else if (nUserFlags & USRFLG_ANGERGLOW)	
+	else if (nUserFlags & USRFLG_ANGERGLOW)
 	{
 		if( pData->m_LightAdd )
 		{
@@ -369,7 +369,7 @@ CBloodClientShell::CBloodClientShell()
 	m_hWeapHandObj			= DNULL;
 	m_hLWeapHandObj			= DNULL;
 
-	m_nGameState			= GS_NONE;		
+	m_nGameState			= GS_NONE;
 
 	m_bInWorld				= DFALSE;
 	m_hCrosshair			= NULL;
@@ -406,7 +406,7 @@ CBloodClientShell::CBloodClientShell()
 	m_hSeeingEyeObj			= DNULL;
 	m_hOrbObj				= DNULL;
 	m_hLastOrbObj			= DNULL;
- 
+
 	m_bBurn					= DFALSE;
     m_bBlind				= DFALSE;
 	m_bFadeIn				= DFALSE;
@@ -545,7 +545,7 @@ CBloodClientShell::CBloodClientShell()
 //	PURPOSE:	Destruction
 //
 // ----------------------------------------------------------------------- //
-			
+
 CBloodClientShell::~CBloodClientShell()
 {
 	CClientDE* pClientDE = GetClientDE();
@@ -607,7 +607,7 @@ CBloodClientShell::~CBloodClientShell()
 	if (m_hSoccerGoalString2)
 		g_pClientDE->FreeString(m_hSoccerGoalString2);
 #endif // _ADDON
-}	
+}
 
 
 
@@ -716,14 +716,14 @@ DRESULT CBloodClientShell::InitSound()
 	if ((hVar = pClientDE->GetConsoleVar("soundvolume")))
 	{
 		soundInfo.m_nVolume = (unsigned short)(pClientDE->GetVarValueFloat(hVar));
-	}		
-	
+	}
+
 	DBOOL b8bitOnly = DFALSE;
 	hVar = pClientDE->GetConsoleVar("sound16bit");
 	if (hVar)
 	{
 		b8bitOnly = (pClientDE->GetVarValueFloat(hVar) == 0.0f) ? DTRUE : DFALSE;
-	}		
+	}
 	if( b8bitOnly )
 		soundInfo.m_dwFlags |= INITSOUNDINFOFLAG_CONVERT16TO8;
 
@@ -785,7 +785,7 @@ void CBloodClientShell::CSPrint (char* msg, ...)
 	va_end (marker);
 
 	if (nSuccess < 0) return;
-	 
+
 	// now display the message
 	m_MessageMgr.AddLine(pMsg);
 	pClientDE->CPrint(pMsg);
@@ -898,7 +898,7 @@ DRESULT CBloodClientShell::OnEngineInitialized(RMode *pMode, DGUID *pAppGuid)
 		nNumRuns = pClientDE->GetVarValueFloat (hVar);
 	}
 	nNumRuns++;
-	
+
 	char strConsole[64];
 	sprintf (strConsole, "+NumRuns %f", nNumRuns);
 	pClientDE->RunConsoleString (strConsole);
@@ -1072,7 +1072,7 @@ DRESULT CBloodClientShell::OnEngineInitialized(RMode *pMode, DGUID *pAppGuid)
 	if (hResult != LT_OK)
 	{
 		// If an error occurred, try 640x480x16...
-		
+
 		RMode rMode;
 
 		rMode.m_Width		= 640;
@@ -1087,7 +1087,7 @@ DRESULT CBloodClientShell::OnEngineInitialized(RMode *pMode, DGUID *pAppGuid)
 		if (pClientDE->SetRenderMode(&rMode) != LT_OK)
 		{
 			// Okay, that didn't work, looks like we're stuck with software...
-		
+
 			rMode.m_bHardware = DFALSE;
 
 			sprintf(rMode.m_RenderDLL, "soft.ren");
@@ -1098,7 +1098,7 @@ DRESULT CBloodClientShell::OnEngineInitialized(RMode *pMode, DGUID *pAppGuid)
 			{
 				Abort(IDS_ERR_SETVIDMODE, 6929314);
 				return LT_ERROR;
-			} 
+			}
 		}
 	}
 
@@ -1154,7 +1154,7 @@ DRESULT CBloodClientShell::OnEngineInitialized(RMode *pMode, DGUID *pAppGuid)
 	{
 		pClientDE->SetSoundVolume(35);
 	}
-	
+
 	// Set the music volume
 	hVar = pClientDE->GetConsoleVar("MusicVolume");
 	if (hVar)
@@ -1194,12 +1194,12 @@ DRESULT CBloodClientShell::OnEngineInitialized(RMode *pMode, DGUID *pAppGuid)
 		m_bUseJoystick=DFALSE;
 	}
 
-	// Set the keyboard turn rate	
+	// Set the keyboard turn rate
 	hVar=pClientDE->GetConsoleVar("KeyboardTurnRate");
 	if (hVar)
 	{
 		m_fKeyboardTurnRate=pClientDE->GetVarValueFloat(hVar);
-	}	
+	}
 	else
 	{
 		m_fKeyboardTurnRate=1.0f;
@@ -1232,7 +1232,7 @@ DRESULT CBloodClientShell::OnEngineInitialized(RMode *pMode, DGUID *pAppGuid)
     // Initialize the Message Mgr (T option)
     m_MessageMgr.Init(pClientDE);
     m_MessageMgr.Enable(DTRUE);
-    
+
     // Initialize the Cheat Manager
 	m_CheatMgr.Init(pClientDE);
 
@@ -1332,7 +1332,7 @@ DRESULT CBloodClientShell::OnEngineInitialized(RMode *pMode, DGUID *pAppGuid)
 			m_MessageMgr.SetMaxMessages((int)6);
 			pClientDE->RunConsoleString("NumConsoleLines 0");
 		}
-		
+
 		// Get the command line world, if found
 		if (hVar = pClientDE->GetConsoleVar("runworld"))
 		{
@@ -1398,7 +1398,7 @@ DRESULT CBloodClientShell::OnEngineInitialized(RMode *pMode, DGUID *pAppGuid)
 
 	// Initialize the message box font
 	m_messageFont.Init(pClientDE, "interface/fonts/MenuFont1.pcx", "interface/fonts/MenuFont1.fnt");
-	
+
 	// Initialize the message box
 	m_messageBox.Create(pClientDE, "interface/mainmenus/dialog.pcx", &m_messageFont, DNULL, DNULL);
 	m_messageBox.SetTextColor(SETRGB(255, 255, 255));
@@ -1440,7 +1440,7 @@ DRESULT CBloodClientShell::OnEngineInitialized(RMode *pMode, DGUID *pAppGuid)
 	return LT_OK;
 }
 
-	
+
 // --------------------------------------------------------------------------- //
 //
 //	ROUTINE:	CBloodClientShell::OnEngineTerm()
@@ -1515,7 +1515,7 @@ void CBloodClientShell::OnEnterWorld()
 	{
 		ObjectCreateStruct cocStruct;
 		INIT_OBJECTCREATESTRUCT(cocStruct);
-	
+
 		cocStruct.m_ObjectType = OT_CAMERA;
 		VEC_INIT(cocStruct.m_Pos)
 		ROT_INIT(cocStruct.m_Rotation)
@@ -1525,8 +1525,13 @@ void CBloodClientShell::OnEnterWorld()
 	}
 	pClientDE->GetSurfaceDims(pClientDE->GetScreenSurface(), &m_dwScreenWidth, &m_dwScreenHeight);
 	m_fovX = DEG2RAD(m_DefFovX);
-	m_fovY = m_fovX * m_fovYScale;
-    
+
+	float aspect_ratio = (float)m_dwScreenHeight / (float)m_dwScreenWidth;
+	m_fovY = 2 * atanf(tanf(m_fovX / 2.0f) * aspect_ratio); //fmodf(m_fovX + MATH_HALFPI, MATH_PI) - MATH_HALFPI < needs aspect_ratio
+#ifdef _DEBUG
+	CSPrint("BloodClientShell::%f %f", RAD2DEG(m_fovX), RAD2DEG(m_fovY));
+#endif
+
 	pClientDE->SetCameraFOV(m_hCamera, m_fovX, m_fovY);
 
 	// Initialize various variables
@@ -1593,7 +1598,7 @@ void CBloodClientShell::OnEnterWorld()
 		m_nCurGun = 0;
 
 		m_bSpectatorMode = DFALSE;
-	
+
 		m_bZoomView = DFALSE;
 //		m_bStoneView = DFALSE;
 //		m_bAuraView = DFALSE;
@@ -1675,12 +1680,12 @@ void CBloodClientShell::OnExitWorld()
 		m_abyWeaponID[i] = WEAP_NONE;
 		m_abyLWeaponID[i] = WEAP_NONE;
 	}
-	if (m_pWeapon) 
+	if (m_pWeapon)
 	{
 		delete m_pWeapon;
 		m_pWeapon = DNULL;
 	}
-	if (m_pLWeapon) 
+	if (m_pLWeapon)
 	{
 		delete m_pLWeapon;
 		m_pLWeapon = DNULL;
@@ -1814,19 +1819,19 @@ void CBloodClientShell::SendPlayerUpdateMessage(DBOOL bSendAll)
 	{
 		if (cdata.byFlags != cdataLast.byFlags)
 			byUpdateFlags |= PLAYERUPDATE_FLAGS;
-		
+
 		if (cdata.fPitch != cdataLast.fPitch)
 			byUpdateFlags |= PLAYERUPDATE_PITCH;
-		
+
 		if (cdata.fYaw != cdataLast.fYaw)
 			byUpdateFlags |= PLAYERUPDATE_YAW;
-		
+
 		if (!VEC_EQU(cdata.GunMuzzlePos, cdataLast.GunMuzzlePos))
 			byUpdateFlags |= PLAYERUPDATE_MUZZLE;
-		
+
 		if (!VEC_EQU(cdata.lGunMuzzlePos, cdataLast.lGunMuzzlePos))
 			byUpdateFlags |= PLAYERUPDATE_LMUZZLE;
-		
+
 		if (cdata.MouseAxis0 != cdataLast.MouseAxis0 || cdata.MouseAxis1 != cdataLast.MouseAxis1)
 		{
 			byUpdateFlags |= PLAYERUPDATE_MOUSE;
@@ -1850,27 +1855,27 @@ void CBloodClientShell::SendPlayerUpdateMessage(DBOOL bSendAll)
 
 		if (byUpdateFlags & PLAYERUPDATE_FLAGS)
 			pClientDE->WriteToMessageByte(hMsg, cdata.byFlags);			// Flags
-		
+
 		if (byUpdateFlags & PLAYERUPDATE_PITCH)
 			pClientDE->WriteToMessageFloat(hMsg, cdata.fPitch);			// Rotation
-		
+
 		if (byUpdateFlags & PLAYERUPDATE_YAW)
 			pClientDE->WriteToMessageFloat(hMsg, cdata.fYaw);
-		
+
 		if (byUpdateFlags & PLAYERUPDATE_MUZZLE)
 			pClientDE->WriteToMessageCompVector(hMsg, &cdata.GunMuzzlePos); // Muzzle pos
-		
+
 		if (byUpdateFlags & PLAYERUPDATE_LMUZZLE)
 			pClientDE->WriteToMessageCompVector(hMsg, &cdata.lGunMuzzlePos); // Muzzle pos
-		
+
 		if (byUpdateFlags & PLAYERUPDATE_MOUSE)
 		{
-			DFLOAT fMouse0 = cdata.MouseAxis0 * 512;
-			CLIPLOWHIGH(fMouse0, -128, 127);
-			fMouse0 += 128;
-			DFLOAT fMouse1 = cdata.MouseAxis1 * 512;
-			CLIPLOWHIGH(fMouse1, -128, 127);
-			fMouse1 += 128;
+			DFLOAT fMouse0 = cdata.MouseAxis0 * 512.0f;
+			CLIPLOWHIGH(fMouse0, -128.0f, 127.0f);
+			fMouse0 += 128.0f;
+			DFLOAT fMouse1 = cdata.MouseAxis1 * 512.0f;
+			CLIPLOWHIGH(fMouse1, -128.0f, 127.0f);
+			fMouse1 += 128.0f;
 
 			pClientDE->WriteToMessageByte(hMsg, (DBYTE)fMouse0);			// Mouse axis
 			pClientDE->WriteToMessageByte(hMsg, (DBYTE)fMouse1);
@@ -1903,7 +1908,7 @@ void CBloodClientShell::SendPlayerUpdateMessage(DBOOL bSendAll)
 	m_pMoveMgr->WritePositionInfo(hMessage);
 
 	pClientDE->EndMessage2(hMessage, 0); // Send unguaranteed.
-	
+
 //	m_fLastSentYaw	= m_fYaw;
 //	m_fLastSentCamCant = m_fCamCant;
 //	m_fPlayerInfoLastSendTime = pClientDE->GetTime();
@@ -2176,7 +2181,7 @@ void CBloodClientShell::UpdateSoundReverb( )
 			reverbProperties.m_fDecayTime		= 3.0f;
 			reverbProperties.m_fVolume			= 0.1f * m_fReverbLevel;
 		}
-	} 
+	}
 	// Use room types that are enclosed rooms
 	else
 	{
@@ -2267,7 +2272,7 @@ void CBloodClientShell::UpdateCamera()
 				{
 					DDWORD dwUsrFlags;
 					pClientDE->GetObjectUserFlags(hObj, &dwUsrFlags);
-					
+
 					// USRFLG_VISIBLE means the camera is active
 					if (dwUsrFlags & USRFLG_VISIBLE)
 					{
@@ -2331,7 +2336,7 @@ void CBloodClientShell::FirstUpdate()
 		g_bPlayerInvReset = DFALSE;
 	}
 #endif
-	
+
 	// Display the world name if any
 //	if (pStrParam = pClientDE->GetServerConVarValueString("WorldName"))
 //	{
@@ -2426,7 +2431,7 @@ void CBloodClientShell::ResetGlobalFog()
 	if (!pClientDE) return;
 
 	DFLOAT fVal = pClientDE->GetServerConVarValueFloat("FogEnable");
-	
+
 	char buf[30];
 	sprintf(buf, "FogEnable %d", (int)fVal);
 	pClientDE->RunConsoleString(buf);
@@ -2467,7 +2472,7 @@ void CBloodClientShell::ResetGlobalFog()
 	fB = pClientDE->GetServerConVarValueFloat("ModelDirAddB");
 	sprintf(buf, "ModelDirAdd %d %d %d", (int)fR, (int)fG, (int)fB);
 	pClientDE->RunConsoleString(buf);
-	
+
 	fVal = pClientDE->GetServerConVarValueFloat("SkyFog");
 	sprintf(buf, "SkyFog %d", (int)fVal);
 	pClientDE->RunConsoleString(buf);
@@ -2500,13 +2505,13 @@ void CBloodClientShell::Update()
 	m_pMoveMgr->Update();
 
 	UpdateSoundReverb( );
-	
+
 	switch (GetGameState())
 	{
 		case GS_PLAYING:
 		case GS_MENUANIM:
 		{
-			if (!m_bInWorld || !pClientDE) 
+			if (!m_bInWorld || !pClientDE)
 				return;
 
 			if (g_bLevelChangeNoUpdate)
@@ -2595,7 +2600,7 @@ void CBloodClientShell::Update()
 				// Start the sound...
 				if( !m_hNightGogglesSound )
 				{
-					m_hNightGogglesSound = PlaySoundLocal( "sounds\\powerups\\nightgogglesloop1.wav", 
+					m_hNightGogglesSound = PlaySoundLocal( "sounds\\powerups\\nightgogglesloop1.wav",
 						SOUNDPRIORITY_PLAYER_LOW, DTRUE, DTRUE );
 				}
 			}
@@ -2637,7 +2642,7 @@ void CBloodClientShell::Update()
 			else if (m_bFadeIn)	// 4 second fade-in
 			{
 				m_fFadeVal += 100 * pClientDE->GetFrameTime();
-				if (m_fFadeVal > 255) 
+				if (m_fFadeVal > 255)
 				{
 					m_fFadeVal = 255;
 					m_bFadeIn = DFALSE;
@@ -2648,7 +2653,7 @@ void CBloodClientShell::Update()
 			else if (m_bFadeOut) // 4 second fade-out
 			{
 				m_fFadeVal -= 100 * pClientDE->GetFrameTime();
-				if (m_fFadeVal < 0) 
+				if (m_fFadeVal < 0)
 				{
 					m_fFadeVal = 0;
 				}
@@ -2712,7 +2717,7 @@ void CBloodClientShell::Update()
 		}
 
 		// Nothing to do if we're in menu mode..
-		case GS_MENU:	
+		case GS_MENU:
 			break;
 
 		case GS_LOADINGLEVEL:
@@ -2777,7 +2782,7 @@ void CBloodClientShell::UpdateCredits()
 //
 //	ROUTINE:	CBloodClientShell::OnObjectMove()
 //
-//	PURPOSE:	
+//	PURPOSE:
 //
 // --------------------------------------------------------------------------- //
 DRESULT CBloodClientShell::OnObjectMove(HOBJECT hObj, DBOOL bTeleport, DVector *pPos)
@@ -2968,7 +2973,7 @@ void CBloodClientShell::PostUpdate()
 		DBOOL bDraw = m_bDrawStatusBar && !(m_pExternalCamera);
 		m_NewStatusBar.Draw(bDraw);
 		m_CommLink.Draw(DTRUE);
-	
+
 		if (m_bDrawFragBar && IsMultiplayerGame())
 		{
 			m_FragInfo.Draw (DTRUE, DTRUE);
@@ -3059,10 +3064,13 @@ void CBloodClientShell::UpdateBob()
 	// Calculate velocities
 	DVector vMyPos;
 	pClientDE->GetObjectPos(hPlayerObj, &vMyPos);
-	
+
 	// Calculate Y velocity for camera dampening
 	DFLOAT fVelY = (vMyPos.y - m_vMyLastPos.y) / (pClientDE->GetFrameTime() * 100.0f);
-	CLIPLOWHIGH(fVelY, -20, 20);
+
+	// clip to half eye level, hope that helps with clipping into ground at high fall speeds
+	float half_eye_level=m_fEyeLevel*0.5f;
+	CLIPLOWHIGH(fVelY, -half_eye_level, half_eye_level);
 
 	VEC_COPY(m_vMyLastPos, vMyPos);
 
@@ -3087,7 +3095,7 @@ void CBloodClientShell::UpdateBob()
 		swayH = SWAYH_WALKING / 5000.0f;
 		swayV = SWAYV_WALKING / 5000.0f;
 	}
-	
+
 	m_fBobPhase += (pClientDE->GetFrameTime() * pace);
 	if (m_fBobPhase > PIx2) m_fBobPhase -= PIx2;
 
@@ -3113,7 +3121,7 @@ void CBloodClientShell::UpdateBob()
 	m_fSwayWidth = swayH * m_fBobAmp * (float)sin(m_fSwayPhase * 2 - (PI/3)) / 3;
 
 	// Adjust camera velocity
-#define kViewDamping    0.43f
+#define kViewDamping    0.43f*3.0f
 #define kViewStiffnessA 0.625f  // return force when above goal y
 #define kViewStiffnessB 0.112f  // return force when below goal y
 
@@ -3171,16 +3179,16 @@ void CBloodClientShell::UpdateHeadCant()
 		if(m_fCamCant > m_fCantMaxDist)
 			m_fCamCant = m_fCantMaxDist;
 	}
-	else 
+	else
 	{
 		// We are not canting so move us toward zero...
 		if(m_fCamCant != 0.0f)
 		{
-			if(m_fCamCant < 0.0f) 
+			if(m_fCamCant < 0.0f)
 			{
 				m_fCamCant += m_fCantIncrement;
-			} 
-			else 
+			}
+			else
 			{
 				m_fCamCant -= m_fCantIncrement;
 			}
@@ -3230,7 +3238,7 @@ void CBloodClientShell::GetCameraRotation(DRotation *pRot)
 //	PURPOSE:	Sets the camera field of view, rect & zoom mode.
 //
 // --------------------------------------------------------------------------- //
-void CBloodClientShell::SetCameraStuff(HLOCALOBJ hPlayerObj, HLOCALOBJ hCamera)
+void CBloodClientShell::SetCameraStuff(HLOCALOBJ hPlayerObj, HLOCALOBJ hCamera) // TODO: fix FOV stuff here
 {
 	float oldFovX;
 	float zoomSpeed;
@@ -3313,7 +3321,7 @@ void CBloodClientShell::SetCameraStuff(HLOCALOBJ hPlayerObj, HLOCALOBJ hCamera)
 		if (m_bZoomView && m_fovX > DEG2RAD(FOV_ZOOMED))
 		{
 			m_fovX -= zoomSpeed;
-			if (m_fovX < DEG2RAD(FOV_ZOOMED)) 
+			if (m_fovX < DEG2RAD(FOV_ZOOMED))
 			{
 				m_fovX = DEG2RAD(FOV_ZOOMED);
 			}
@@ -3354,7 +3362,7 @@ void CBloodClientShell::SetCameraStuff(HLOCALOBJ hPlayerObj, HLOCALOBJ hCamera)
 
 
 
-	
+
 // --------------------------------------------------------------------------- //
 //
 //	ROUTINE:	CBloodClientShell::OnCommandOn()
@@ -3437,14 +3445,14 @@ void CBloodClientShell::OnCommandOn(int command)
 			}
 			break;
 */
-		case COMMAND_LOOKUP: 
+		case COMMAND_LOOKUP:
 			if (!m_MessageMgr.GetEditingState())
 			{
 				m_bZeroXAngle = DFALSE;
-			}	
+			}
 			break;
 
-		case COMMAND_LOOKDOWN: 
+		case COMMAND_LOOKDOWN:
 			if (!m_MessageMgr.GetEditingState())
 			{
 				m_bZeroXAngle = DFALSE;
@@ -3495,12 +3503,12 @@ void CBloodClientShell::OnCommandOn(int command)
 					if (m_pWeapon)		m_pWeapon->CancelFiringState();
 					if (m_pLWeapon)		m_pLWeapon->CancelFiringState();
 
-					if (m_pWeapon) 
+					if (m_pWeapon)
 					{
 						delete m_pWeapon;
 						m_pWeapon = DNULL;
 					}
-					if (m_pLWeapon) 
+					if (m_pLWeapon)
 					{
 						delete m_pLWeapon;
 						m_pLWeapon = DNULL;
@@ -3555,14 +3563,14 @@ void CBloodClientShell::OnCommandOff(int command)
 			}
 			break;
 
-			case COMMAND_LOOKUP: 
-			case COMMAND_LOOKDOWN: 
+			case COMMAND_LOOKUP:
+			case COMMAND_LOOKDOWN:
 			{
 				if (m_bLookSpring)
-					m_bZeroXAngle = DTRUE;		
+					m_bZeroXAngle = DTRUE;
 			}
 			break;
-			
+
 			case COMMAND_USE:
 			{
 				if(m_pCreature)
@@ -3688,7 +3696,7 @@ void CBloodClientShell::OnKeyDown(int key, int rep)
 		else if (GetGameState() == GS_PLAYING)
 		{
 			pClientDE->RunConsoleString("NumConsoleLines 0");
-            
+
 			SetGameState(GS_MENU);
             PauseGame(DTRUE);
 			m_Menu.SetCurrentMenu(MENU_ID_MAINMENU, MENU_ID_MAINMENU);
@@ -3771,7 +3779,7 @@ void CBloodClientShell::OnKeyDown(int key, int rep)
 		}*/
 
 #ifdef _DEBUG
-		// 09/12/97 
+		// 09/12/97
 		// Add option to move weapon in the game... viewing of the weapon
 		// Move Weapon X,Y,Z
 		if (m_pWeapon)
@@ -4181,7 +4189,7 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 				m_NewStatusBar.SetAmmo(nAmmo);
 				break;
 			}
-		
+
 		case SMSG_FOCUS:
 			{
 				DDWORD nAmmo = pClientDE->ReadFromMessageWord(hMessage);
@@ -4191,7 +4199,7 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 		case SMSG_EYELEVEL:
 			m_fEyeLevel = pClientDE->ReadFromMessageFloat(hMessage);
 			break;
-		
+
 #ifdef _DEBUG
 		case STC_BPRINT:
 #endif
@@ -4608,7 +4616,7 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 						pClientDE->FreeString(hStr);
 					}
 				}
-				
+
 				m_FragInfo.RemoveClient (nID);
 				m_TeamMgr.RemovePlayer(nID);
 
@@ -4652,7 +4660,7 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 							byFlags |= VOICEFLAG_MALE_ATTACKER;
 							break;
 					}
-					
+
 					switch(m_FragInfo.GetPlayerCharacter(nVictim))
 					{
 						case CHARACTER_GABREILLA:
@@ -4663,25 +4671,25 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 							byFlags |= VOICEFLAG_MALE_VICTIM;
 							break;
 					}
-					
+
 					// Display a message
 					if (nVictim == nKiller)		// Suicide
 					{
-						pve = GetVoiceEntry(g_aVoiceSuicide, 
-											NUM_VOICE_SUICIDE, 
-											wIndex, 
+						pve = GetVoiceEntry(g_aVoiceSuicide,
+											NUM_VOICE_SUICIDE,
+											wIndex,
 											byFlags);
-	//					pve = &g_aVoiceSuicide[wIndex % NUM_VOICE_SUICIDE]; 
+	//					pve = &g_aVoiceSuicide[wIndex % NUM_VOICE_SUICIDE];
 						if (pve)
 							sprintf(msgbuf, pve->m_szText, pKiller);
 					}
 					else						// Frag
 					{
-						pve = GetVoiceEntry(g_aVoiceKill, 
-											NUM_VOICE_KILL, 
-											wIndex, 
+						pve = GetVoiceEntry(g_aVoiceKill,
+											NUM_VOICE_KILL,
+											wIndex,
 											byFlags);
-	//					pve = &g_aVoiceKill[wIndex % NUM_VOICE_KILL]; 
+	//					pve = &g_aVoiceKill[wIndex % NUM_VOICE_KILL];
 						if (pve)
 							sprintf(msgbuf, pve->m_szText, pKiller, pVictim);
 					}
@@ -4693,7 +4701,7 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 						_mbscat((unsigned char*)szSoundFile, (const unsigned char*)pve->m_szFile);
 						m_CommLink.StartCommunication(4, szSoundFile, msgbuf);
 					}
-					else 
+					else
 						CSPrint(msgbuf);
 				}
 			}
@@ -4821,7 +4829,7 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 						sprintf( sMsg, pClientDE->GetStringData( m_hSoccerGoalString1 ), sScorer, pTeam->GetName( ));
 					else
 						sprintf( sMsg, pClientDE->GetStringData( m_hSoccerGoalString2 ), sScorer );
-	
+
 					CSPrint(sMsg);
 				}
 			}
@@ -4844,28 +4852,28 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 				TheVoice eVoice		= (TheVoice)pClientDE->ReadFromMessageByte(hMessage);
 				D_WORD  wIndex		= pClientDE->ReadFromMessageWord(hMessage);
 				DBYTE	byFlags		= pClientDE->ReadFromMessageByte(hMessage);
-				
+
 				VoiceEntry *pve = DNULL;
 				switch(eVoice)
 				{
 					case VOICE_START_BB:
-						pve = GetVoiceEntry(g_aVoiceStartBB, 
-											NUM_VOICE_START_BB, 
-											wIndex, 
+						pve = GetVoiceEntry(g_aVoiceStartBB,
+											NUM_VOICE_START_BB,
+											wIndex,
 											byFlags);
 						break;
 
 					case VOICE_START_CTF:
-						pve = GetVoiceEntry(g_aVoiceStartCTF, 
-											NUM_VOICE_START_CTF, 
-											wIndex, 
+						pve = GetVoiceEntry(g_aVoiceStartCTF,
+											NUM_VOICE_START_CTF,
+											wIndex,
 											byFlags);
 						break;
 
 					case VOICE_FINISHHIM:
-						pve = GetVoiceEntryWithExtraChecks(g_aVoiceHumiliation, 
-											NUM_VOICE_HUMILIATION, 
-											wIndex, 
+						pve = GetVoiceEntryWithExtraChecks(g_aVoiceHumiliation,
+											NUM_VOICE_HUMILIATION,
+											wIndex,
 											byFlags);
 						break;
 				}
@@ -4920,14 +4928,14 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 			m_NewStatusBar.UpdateInv(0, 0, 0, 0, 0, 0, 0, 0, 0);
 		}
 		break;
- /*           
+ /*
 		case SMSG_CUTSCENE_START :
 		{
 			GetVoiceMgr()->StopAll();
         	m_bDrawStatusBar = DFALSE;
 		}
 		break;
-            
+
 		case SMSG_CUTSCENE_END :
 		{
 			m_bSpectatorMode = DFALSE;
@@ -4939,15 +4947,15 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 				m_pWeapon[m_nCurGun]->Show();
 			if (m_pLWeapon[m_nCurGun])
 				m_pLWeapon[m_nCurGun]->Show();
-            
+
             // Turn on the Status bar
         	m_bDrawStatusBar = DTRUE;
-            
+
 			m_bRenderCamera = DTRUE;
 		}
 		break;
 */
-            
+
 		case SMSG_BURN :
 		{
 			DFLOAT fTheTime = pClientDE->ReadFromMessageFloat(hMessage);
@@ -4962,8 +4970,8 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
             }
 		}
 		break;
-        
-        
+
+
 		case SMSG_BLIND:
 		{
 			if (m_bDead)	// [blg] don't go blind if we're already dead
@@ -4973,7 +4981,7 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 			}
 
 			DFLOAT fTheTime = pClientDE->ReadFromMessageFloat(hMessage);
-            
+
             if (fTheTime > 0.0f)
             {
 				HSTRING szErrorStr = pClientDE->FormatString(IDS_GENERAL_BLIND);
@@ -4989,13 +4997,13 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
             }
 		}
 		break;
-            
-            
+
+
 		case SMSG_ALL_SEEING_EYE:
 		{
 			DBOOL bOn = (DBOOL)pClientDE->ReadFromMessageByte(hMessage);
             HLOCALOBJ hObj = pClientDE->ReadFromMessageObject(hMessage);
-            
+
 			// Kill any old instance of the sound...
 			if( m_hTheEyeLoopingSound )
 			{
@@ -5007,30 +5015,30 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
             {
                 m_hSeeingEyeObj = hObj;
 				pClientDE->SetObjectClientFlags(hObj, CF_NOTIFYREMOVE);
-				m_hTheEyeLoopingSound = PlaySoundLocal("sounds\\powerups\\eyeloop1.wav", 
+				m_hTheEyeLoopingSound = PlaySoundLocal("sounds\\powerups\\eyeloop1.wav",
 					SOUNDPRIORITY_MISC_HIGH, DTRUE, DTRUE );
             }
             else
             {
                 m_hSeeingEyeObj = DNULL;
-            }                
+            }
 		}
 		break;
-          
+
 		case SMSG_ORBCAM:
 		{
 			m_hOrbObj = DNULL;
 		}
 		break;
-          
-            
+
+
 		case SMSG_DISPLAYTEXT:
-		{   
-			DFLOAT fTime = pClientDE->ReadFromMessageFloat(hMessage);		
+		{
+			DFLOAT fTime = pClientDE->ReadFromMessageFloat(hMessage);
 			CSPrint(pClientDE->ReadFromMessageString(hMessage));
-        
+
         // Need to send the Font, Height, Color, Position on the Screen x,y
-        //    
+        //
         //    	m_hFont = pClientDE->CreateFont("Arial", 6, 16, DFALSE, DFALSE, DFALSE);
         //    	m_nFontHeight = 16;
         //    	HDECOLOR hForeground = pClientDE->SetupColor1 (1.0f, 1.0f, 1.0f, DFALSE);
@@ -5039,10 +5047,10 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
         //    	{
         //    		return;
         //    	}
-            
-		}   
+
+		}
 		break;
-         
+
 
 
 		case SMSG_SCREENFADE:
@@ -5060,7 +5068,7 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 				m_bFadeIn = DFALSE;
 				m_fFadeVal = 255.0f;
 			}
-        }    
+        }
 		break;
 
 /*		case SMSG_STONEVIEW:
@@ -5068,7 +5076,7 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 			m_bStoneView = pClientDE->ReadFromMessageByte(hMessage);
 			break;
 		}
-            
+
 		case SMSG_AURAVIEW:
 		{
 			m_bAuraView = pClientDE->ReadFromMessageByte(hMessage);
@@ -5098,7 +5106,7 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 		}
 
 		// Returned when the server has successfully saved a game
-		// Copy save data from the Current slot into the 
+		// Copy save data from the Current slot into the
 		case SMSG_SAVEGAME_ACK:
 		{
 			if (GetGameState() == GS_SAVING)
@@ -5118,7 +5126,7 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 				}
 				m_SavedGameInfo.SetReservedSlot(SLOT_NONE);
 
-				SetGameState(GS_PLAYING); 
+				SetGameState(GS_PLAYING);
 	            PauseGame(DFALSE);
 			}
 			break;
@@ -5276,8 +5284,8 @@ void CBloodClientShell::OnMessage(DBYTE messageID, HMESSAGEREAD hMessage)
 
 		case SMSG_WONKYVISION:		// Set to WonkyVision for a period of time.
 		{
-			DFLOAT fWonkyTime   = pClientDE->ReadFromMessageFloat(hMessage); 
-			DBYTE  bWonkyNoMove = pClientDE->ReadFromMessageByte(hMessage); 
+			DFLOAT fWonkyTime   = pClientDE->ReadFromMessageFloat(hMessage);
+			DBYTE  bWonkyNoMove = pClientDE->ReadFromMessageByte(hMessage);
 
 			if (m_bDead) fWonkyTime = 0;	// [blg] no wonky if we're dead!
 
@@ -5478,16 +5486,16 @@ void CBloodClientShell::ChangeWeapon(DBYTE slot)
 {
 	// Are we switching weapons?
 	// If so, set our flags and get rid of the old one.
-	if(slot != m_nCurGun) 
+	if(slot != m_nCurGun)
 	{
 		m_nCurGun = slot;
 
-		if (m_pWeapon) 
+		if (m_pWeapon)
 		{
 			delete m_pWeapon;
 			m_pWeapon = DNULL;
 		}
-		if (m_pLWeapon) 
+		if (m_pLWeapon)
 		{
 			delete m_pLWeapon;
 			m_pLWeapon = DNULL;
@@ -5588,7 +5596,7 @@ void CBloodClientShell::SpecialEffectNotify(HLOCALOBJ hObj, HMESSAGEREAD hMessag
 
 			break;
 		}
-		
+
 		case SFX_DESTRUCTABLEMODEL:
 		{
 			DVector vDims;
@@ -5894,7 +5902,7 @@ void CBloodClientShell::UpdateContainerFX()
 						sprintf(buf, "FogB %d", (int)vFogColor.z);
 						pClientDE->RunConsoleString(buf);
 					}
-				}				
+				}
 			}
 
 			char *pWaterSound = "Sounds\\Player\\Underwaterloop1.wav";
@@ -5913,7 +5921,7 @@ void CBloodClientShell::UpdateContainerFX()
 					pCurSound = pWaterSound;
 				}
 				break;
-				
+
 				case CC_ACID:
 				{
 					VEC_SET(m_vLightScale, 0.0f, 0.8f, 0.4f);
@@ -5947,7 +5955,7 @@ void CBloodClientShell::UpdateContainerFX()
 	if (m_eCurContainerCode != eCode || bUpdateScale)
 	{
 		// Adjust Fog as necessary...
-		
+
 		if (bUseWorldFog)
 		{
 			ResetGlobalFog();
@@ -5986,7 +5994,7 @@ void CBloodClientShell::UpdateContainerFX()
 
 	// See if we are under water (under any liquid)...
 
-	if (IsLiquid(m_eCurContainerCode)) 
+	if (IsLiquid(m_eCurContainerCode))
 	{
 		UpdateUnderWaterFX();
 	}
@@ -6015,7 +6023,7 @@ void CBloodClientShell::UpdateUnderWaterFX(DBOOL bUpdate)
 
 	DFLOAT fFovX = m_fovX;
 	DFLOAT fFovY = fFovX * m_fovYScale;
-	
+
 	if (bUpdate)
 	{
 		pClientDE->GetCameraFOV(m_hCamera, &fFovX, &fFovY);
@@ -6405,7 +6413,7 @@ void CBloodClientShell::LoadClientData( HMESSAGEREAD hMsg )
 	}
 
 	hLoadMsg = g_pClientDE->ReadFromMessageHMessageRead( hMsg );
-	
+
 	bNightVisionActive = g_pClientDE->ReadFromMessageByte( hLoadMsg );
 	m_fWonkyTime	= g_pClientDE->ReadFromMessageFloat( hLoadMsg );
 	m_bWonkyVision	= g_pClientDE->ReadFromMessageByte( hLoadMsg );
@@ -6427,7 +6435,7 @@ void CBloodClientShell::LoadClientData( HMESSAGEREAD hMsg )
 
 	g_pClientDE->EndHMessageRead( hLoadMsg );
 
-	g_pClientDE->RunConsoleString("maxfps 0");
+	//g_pClientDE->RunConsoleString("maxfps 60");
 }
 
 // --------------------------------------------------------------------------- //
@@ -6744,16 +6752,16 @@ void CBloodClientShell::UpdateCameraPosition()
 		bCameraIsListener = DTRUE;
 
 		// Determine the object to use
-		if (m_hSeeingEyeObj) 
+		if (m_hSeeingEyeObj)
 			hCameraObj = m_hSeeingEyeObj;
-		else if (m_hOrbObj) 
+		else if (m_hOrbObj)
 			hCameraObj = m_hOrbObj;
-		else if (m_pExternalCamera) 
+		else if (m_pExternalCamera)
 		{
 			hCameraObj = m_pExternalCamera->GetServerObj();
 			bCameraIsListener = m_pExternalCamera->IsListener( );
 		}
-		
+
 		if (hCameraObj)
 		{
 			// Get position
@@ -6765,7 +6773,7 @@ void CBloodClientShell::UpdateCameraPosition()
 				// Get Rotation
 				pClientDE->GetObjectRotation(hCameraObj, &rRot);
 				pClientDE->SetObjectRotation(m_hCamera, &rRot);
-			}                
+			}
 			else
 			{
 				ROT_INIT( rRot );
@@ -6783,7 +6791,7 @@ void CBloodClientShell::UpdateCameraPosition()
 	else
 	{
 		// Player camera - first person
-		if (m_playerCamera.IsFirstPerson())	
+		if (m_playerCamera.IsFirstPerson())
 		{
 			DVector up;
 			DVector forward;
@@ -6897,13 +6905,13 @@ void CBloodClientShell::CalculateCameraRotation()
 			if ((fAxisYaw > fAxisYawDeadZone) || ((fAxisYaw < -fAxisYawDeadZone))) offsets[0] += fAxisYaw;
 		}
 		hVar = pClientDE->GetConsoleVar( "AxisPitch");
-		if (hVar != NULL) 
+		if (hVar != NULL)
 		{
 			fAxisPitch = pClientDE->GetVarValueFloat(hVar);
 			if ((fAxisPitch > fAxisPitchDeadZone) || (fAxisPitch < -fAxisPitchDeadZone)) offsets[1] += fAxisPitch;
 		}
 		hVar = pClientDE->GetConsoleVar( "AxisLeftRight");
-		if (hVar != NULL) 
+		if (hVar != NULL)
 		{
 			fAxisLeftRight = pClientDE->GetVarValueFloat(hVar);
 			bUseAxisLeftRight = TRUE;
@@ -6916,7 +6924,7 @@ void CBloodClientShell::CalculateCameraRotation()
 		}
 
 		hVar = pClientDE->GetConsoleVar( "FixedAxisPitch");
-		if (hVar != NULL) if (pClientDE->GetVarValueFloat(hVar) == 1) 
+		if (hVar != NULL) if (pClientDE->GetVarValueFloat(hVar) == 1)
 		{
 			newPitch = fAxisPitch;
 			bFixedAxisPitch = TRUE;
@@ -6962,7 +6970,7 @@ void CBloodClientShell::CalculateCameraRotation()
 
 			nSpin = pClientDE->GetFrameTime() * 15;
 			m_SpinAmount += nSpin;
-			
+
 			if (m_SpinAmount > 0)
 			{
 				nSpin -= m_SpinAmount;
@@ -7016,7 +7024,7 @@ void CBloodClientShell::CalculateCameraRotation()
 	{
 		addPitch -= DEG2RAD(m_fViewKick);
 	}
-	
+
 	if (m_fKickTime)
 	{
 		m_fKickTime -= pClientDE->GetFrameTime();
@@ -7034,9 +7042,9 @@ void CBloodClientShell::CalculateCameraRotation()
 
 	DFLOAT minY = (PI / 2) - 0.01f;
 
-	if (newPitch < -minY) 
+	if (newPitch < -minY)
 		newPitch = -minY;
-	if (newPitch > minY) 
+	if (newPitch > minY)
 		newPitch = minY;
 
 	if (newPitch + addPitch != cdata.fPitch || newYaw + addYaw != cdata.fYaw)
@@ -7083,7 +7091,7 @@ void CBloodClientShell::UpdateCameraRotation()
 	DVector vU, vF, vR;
 	pClientDE->GetRotationVectors(&m_Rotation, &vU, &vR, &vF);
 	pClientDE->RotateAroundAxis(&m_Rotation, &vF, m_fCamCant + m_fBobCant + m_fShakeCant);
-	
+
 	if (m_pExternalCamera)
 	{
 		// Just calculate the correct player rotation...
@@ -7146,7 +7154,7 @@ void CBloodClientShell::GetWorldTitle(char *pWorldFile)
 	if(pClientDE->GetWorldInfoString(szFilename, szWorldInfo, 255, &dwInfoLen) == LT_OK)
 	{
 		int nArgs;
-    
+
 		char tokenSpace[64*20];
 		char *pTokens[64];
 		char *pCommand = szWorldInfo;
@@ -7245,13 +7253,13 @@ DBOOL LoadLeakFile(ClientDE *pClientDE, char *pFilename)
 
 		while(fgets(line, 256, fp))
 		{
-			nRead = sscanf(line, "%f %f %f %f %f %f", 
-				&theLine.m_Points[0].m_Pos.x, &theLine.m_Points[0].m_Pos.y, &theLine.m_Points[0].m_Pos.z, 
+			nRead = sscanf(line, "%f %f %f %f %f %f",
+				&theLine.m_Points[0].m_Pos.x, &theLine.m_Points[0].m_Pos.y, &theLine.m_Points[0].m_Pos.z,
 				&theLine.m_Points[1].m_Pos.x, &theLine.m_Points[1].m_Pos.y, &theLine.m_Points[1].m_Pos.z);
 
 			theLine.m_Points[0].r = theLine.m_Points[0].g = theLine.m_Points[0].b = 1;
 			theLine.m_Points[0].a = 1;
-			
+
 			theLine.m_Points[1].r = 1;
 			theLine.m_Points[1].g = theLine.m_Points[1].b = 0;
 			theLine.m_Points[1].a = 1;
@@ -7276,7 +7284,7 @@ DBOOL LoadLeakFile(ClientDE *pClientDE, char *pFilename)
 //	PURPOSE:	Reads player config data
 //
 // ----------------------------------------------------------------------- //
-DBOOL LoadConfig(char* pfilename, ConfigStruct *pConfig) 
+DBOOL LoadConfig(char* pfilename, ConfigStruct *pConfig)
 {
 	FILE *infile;
 	char line[256];
@@ -7293,7 +7301,7 @@ DBOOL LoadConfig(char* pfilename, ConfigStruct *pConfig)
 			continue;
 		if (!(tokenvalue = strtok(NULL, " \t\r\n")))
 			continue;
-		
+
 		_strupr(tokenname);
 
 		// Check for attributes
@@ -7585,7 +7593,7 @@ DBOOL CBloodClientShell::DoMultiplayer(DBOOL bMinimize, DBOOL bHost)
 	if (!pClientDE) return(DFALSE);
 
 	pClientDE->PauseSounds();
-		
+
 	if (bMinimize)
 	{
 		NetStart_MinimizeMainWnd(pClientDE);
@@ -7632,7 +7640,7 @@ DBOOL CBloodClientShell::DoMultiplayer(DBOOL bMinimize, DBOOL bHost)
 		req.m_GameInfoLen   = sizeof(NetGame_t);
 		req.m_pClientData   = NetStart_GetClientDataStruct();
 		req.m_ClientDataLen = sizeof(NetClientData_t);
-	
+
 		DRESULT dr = pClientDE->StartGame(&req);
 
 		if (bMinimize)
@@ -8168,7 +8176,7 @@ DBOOL CBloodClientShell::MenuNewGame(int nDifficulty, int nCharacter, int nGameT
 
 	m_bFirstWorld = DTRUE;
 
-	g_pClientDE->RunConsoleString("maxfps 0");
+	//g_pClientDE->RunConsoleString("maxfps 60");
 
 
 	// Fill in the character info...
@@ -8209,7 +8217,7 @@ DBOOL CBloodClientShell::MenuNewNightmaresGame(int nDifficulty)
 
 	m_bFirstWorld = DTRUE;
 
-	g_pClientDE->RunConsoleString("maxfps 0");
+	//g_pClientDE->RunConsoleString("maxfps 60");
 
 
 	// Fill in the character info...
@@ -8346,7 +8354,7 @@ DBOOL CBloodClientShell::MenuLoadGame(int nSlot)
 		nCharacter = m_SavedGameInfo.gCurrentSaveInfo.nCharacter;
 	}
 
-		
+
 	// Check for a valid regular slot...
 
 	if (nSlot != SLOT_QUICK && nSlot != SLOT_CURRENT)
@@ -8368,7 +8376,7 @@ DBOOL CBloodClientShell::MenuLoadGame(int nSlot)
 	}
 
 	// Copy slot to the current slot
-	
+
 	if (nSlot != SLOT_NONE && nSlot != SLOT_CURRENT)
 	{
 		m_SavedGameInfo.CopySlot(nSlot, SLOT_CURRENT);
@@ -8543,13 +8551,13 @@ DBOOL CBloodClientShell::MenuSetDetail()
 
 	hVar = pClientDE->GetConsoleVar ("SoundEnable");
 	m_bSoundOriginallyEnabled = (DBOOL) pClientDE->GetVarValueFloat (hVar);
-	
+
 	hVar = pClientDE->GetConsoleVar ("MusicEnable");
 	m_bMusicOriginallyEnabled = (DBOOL) pClientDE->GetVarValueFloat (hVar);
 
 	hVar = pClientDE->GetConsoleVar ("ModelFullbrite");
 	m_bModelFBOriginallyEnabled	= (DBOOL) pClientDE->GetVarValueFloat (hVar);
-	
+
 	hVar = pClientDE->GetConsoleVar ("LightMap");
 	m_bLightmappingOriginallyEnabled = (DBOOL) pClientDE->GetVarValueFloat (hVar);
 
@@ -8722,29 +8730,29 @@ void CBloodClientShell::GetMouseDeviceInfo(char *lpszDeviceName, int nDeviceBuff
 		return;
 	}
 
-	// get the mouse device name	
+	// get the mouse device name
 	DRESULT result = pClientDE->GetDeviceName (DEVICETYPE_MOUSE, lpszDeviceName, nDeviceBufferSize);
 	if (result == LT_OK)
-	{		
+	{
 		DeviceObject* pList = pClientDE->GetDeviceObjects (DEVICETYPE_MOUSE);
 		DeviceObject* ptr = pList;
 		while (ptr)
 		{
 			if (ptr->m_ObjectType == CONTROLTYPE_XAXIS)
 			{
-				_mbsncpy((unsigned char*)lpszXAxis, (const unsigned char*)ptr->m_ObjectName, nXAxisBufferSize);				
+				_mbsncpy((unsigned char*)lpszXAxis, (const unsigned char*)ptr->m_ObjectName, nXAxisBufferSize);
 			}
 
 			if (ptr->m_ObjectType == CONTROLTYPE_YAXIS)
 			{
-				_mbsncpy((unsigned char*)lpszYAxis, (const unsigned char*)ptr->m_ObjectName, nYAxisBufferSize);				
+				_mbsncpy((unsigned char*)lpszYAxis, (const unsigned char*)ptr->m_ObjectName, nYAxisBufferSize);
 			}
 
 			ptr = ptr->m_pNext;
 		}
 		if (pList)
 		{
-			pClientDE->FreeDeviceObjects (pList);		
+			pClientDE->FreeDeviceObjects (pList);
 		}
 	}
 }
@@ -8824,7 +8832,7 @@ void CBloodClientShell::SetKeyboardTurnRate(float fRate)
 	{
 		return;
 	}
-	
+
 	char szTemp[256];
 	sprintf(szTemp, "+KeyboardTurnRate %f", m_fKeyboardTurnRate);
 	pClientDE->RunConsoleString(szTemp);
@@ -8840,12 +8848,12 @@ void CBloodClientShell::SetKeyboardTurnRate(float fRate)
 //
 // ----------------------------------------------------------------------- //
 void CBloodClientShell::DoMessageBox(char *lpszMessage, DBOOL bAsync)
-{	
+{
 	// TODO: Make this localizable
 	ClientDE *pClientDE=GetClientDE();
 
 	HSTRING hString=pClientDE->CreateString(lpszMessage);
-	m_messageBox.SetText(hString);	
+	m_messageBox.SetText(hString);
 	pClientDE->FreeString(hString);
 
 	m_messageBox.SetCommandHandler(&m_messageBoxHandler);
@@ -8944,7 +8952,7 @@ DBOOL CBloodClientShell::HandleFiring()
 			bAltFiring = (!bFiring && (m_pMoveMgr->GetControlFlags() & CTRLFLAG_ALTFIRE));
 		}
 
-		// If we have duel weapons, make the altfire the same as the primary
+		// If we have dual weapons, make the altfire the same as the primary
 		if (m_pWeapon && m_pLWeapon && bAltFiring)
 			{ bFiring = DTRUE; bAltFiring = DFALSE; }
 
@@ -9147,7 +9155,7 @@ HSOUNDDE CBloodClientShell::PlaySound(char* sSound, DBOOL bStream, DBOOL bLoop, 
 
 	if(g_pClientDE->PlaySound(&playSoundInfo) != LT_OK )
 		return NULL;
-	
+
 	return playSoundInfo.m_hSound;
 }
 
@@ -9369,7 +9377,7 @@ DBOOL CBloodClientShell::SetCharacterInfo(int nCharacter, int nSkin)
 //
 //	ROUTINE:	CBloodClientShell::ResetPlayerInventory
 //
-//	PURPOSE:	
+//	PURPOSE:
 //
 // --------------------------------------------------------------------------- //
 

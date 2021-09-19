@@ -467,6 +467,10 @@ void BoneLeech::AI_STATE_EnemyAttach()
 						m_pServerDE->GetRotationVectors(&rRot, &vU, &vR, &vF);
 
 						VEC_ADDSCALED(vPos, m_vTargetPos, vF, -100.0f);
+
+						// throw it forward
+						DVector new_vel = vF * 100.0f;
+						m_pServerDE->SetVelocity(m_hObject, &new_vel);
 						
 						MC_FacePos(vPos);
 						Metacmd--;

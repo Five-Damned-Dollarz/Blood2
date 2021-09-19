@@ -359,14 +359,16 @@ DBOOL WreckingBall::DrawChain(DVector *pvAttachPoint)
 	VEC_COPY(theStruct.m_Pos, *pvAttachPoint);
 	ROT_COPY(theStruct.m_Rotation, rRot);
 
-	HCLASS hClass = pServerDE->GetClass("CClientCastLineSFX");
+	//HCLASS hClass = pServerDE->GetClass("CClientCastLineSFX");
 	CClientCastLineSFX* pLine = DNULL;
 
-	if (hClass)
+	if (HCLASS hClass = pServerDE->GetClass("CClientCastLineSFX"))
 	{
 		pLine = (CClientCastLineSFX*)pServerDE->CreateObject(hClass, &theStruct);
-		if (!pLine) return DFALSE;
+		//if (!pLine) return DFALSE;
 	}
+
+	if (!pLine) return DFALSE;
 
 	DVector vColor;
 	VEC_SET(vColor, 0.0f, 0.0f, 0.0f);          // Black line
