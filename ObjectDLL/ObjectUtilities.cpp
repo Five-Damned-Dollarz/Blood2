@@ -17,7 +17,6 @@
 #include "destructablebrush.h"
 #include "destructablemodel.h"
 
-
 //-------------------------------------------------------------------------------------------
 // PlaySoundFromObject
 //
@@ -35,7 +34,7 @@
 // Return:
 //		Handle to sound, if bHandle was set to TRUE.
 //-------------------------------------------------------------------------------------------
-HSOUNDDE PlaySoundFromObject( HOBJECT hObject, char *pSoundName, DFLOAT fRadius, 
+HSOUNDDE PlaySoundFromObject( HOBJECT hObject, char *pSoundName, DFLOAT fRadius,
 						  DBYTE nSoundPriority, DBOOL bLoop, DBOOL bHandle, DBOOL bTime, DBYTE nVolume,
 						  DBOOL bStream, DBOOL bInstant )
 {
@@ -92,7 +91,7 @@ HSOUNDDE PlaySoundFromObject( HOBJECT hObject, char *pSoundName, DFLOAT fRadius,
 // Return:
 //		Handle to sound, if bHandle was set to TRUE.
 //-------------------------------------------------------------------------------------------
-HSOUNDDE PlaySoundFromPos( DVector *vPos, char *pSoundName, DFLOAT fRadius, 
+HSOUNDDE PlaySoundFromPos( DVector *vPos, char *pSoundName, DFLOAT fRadius,
 						  DBYTE nSoundPriority, DBOOL bLoop, DBOOL bHandle, DBOOL bTime, DBYTE nVolume,
 						  DBOOL bStream )
 {
@@ -135,7 +134,7 @@ HSOUNDDE PlaySoundFromPos( DVector *vPos, char *pSoundName, DFLOAT fRadius,
 // Return:
 //		Handle to sound, if bHandle was set to TRUE.
 //-------------------------------------------------------------------------------------------
-HSOUNDDE PlaySoundLocal(char *pSoundName, DBYTE nSoundPriority, DBOOL bLoop, DBOOL bHandle, 
+HSOUNDDE PlaySoundLocal(char *pSoundName, DBYTE nSoundPriority, DBOOL bLoop, DBOOL bHandle,
 						DBOOL bStream, DBYTE nVolume)
 {
 	PlaySoundInfo playSoundInfo;
@@ -171,8 +170,8 @@ HSOUNDDE PlaySoundLocal(char *pSoundName, DBYTE nSoundPriority, DBOOL bLoop, DBO
 //
 // ----------------------------------------------------------------------- //
 
-void CreateScorchMark(DVector *pvPos, DFLOAT fMinLightRadius, DFLOAT fMaxLightRadius, 
-					  DFLOAT fRampUpTime, DFLOAT fRampDownTime, DFLOAT fRadiusMinTime, 
+void CreateScorchMark(DVector *pvPos, DFLOAT fMinLightRadius, DFLOAT fMaxLightRadius,
+					  DFLOAT fRampUpTime, DFLOAT fRampDownTime, DFLOAT fRadiusMinTime,
 					  DFLOAT fRadiusMaxTime, DFLOAT fRed, DFLOAT fGreen, DFLOAT fBlue)
 {
 	if (!g_pServerDE || !pvPos) return;
@@ -196,17 +195,17 @@ void CreateScorchMark(DVector *pvPos, DFLOAT fMinLightRadius, DFLOAT fMaxLightRa
 	VEC_SET(pMark->m_vColor1, fRed, fGreen, fBlue);
 
 	pMark->m_nNumRadiusCycles		= 1;
-    pMark->m_fRadiusMin				= fMinLightRadius;
-    pMark->m_fRadiusMax				= fMaxLightRadius;
+	pMark->m_fRadiusMin				= fMinLightRadius;
+	pMark->m_fRadiusMax				= fMaxLightRadius;
 	pMark->m_fRadiusMinTime			= fRadiusMinTime;
 	pMark->m_fRadiusMaxTime			= fRadiusMaxTime;
 	pMark->m_fRadiusRampUpTime	    = fRampUpTime;
 	pMark->m_fRadiusRampDownTime	= fRampDownTime;
-	pMark->m_fLifeTime				= (pMark->m_fRadiusMinTime + 
-									   pMark->m_fRadiusMaxTime + 
+	pMark->m_fLifeTime				= (pMark->m_fRadiusMinTime +
+									   pMark->m_fRadiusMaxTime +
 									   pMark->m_fRadiusRampUpTime +
 									   pMark->m_fRadiusRampDownTime);
-							
+
 	pMark->Init();
 }
 
@@ -224,7 +223,7 @@ SurfaceType GetSurfaceType(HOBJECT hObject, HPOLY hPoly)
 {
 	CServerDE* pServerDE = BaseClass::GetServerDE();
 	if (!pServerDE || !hObject) return SURFTYPE_UNKNOWN;
-	
+
 	SurfaceType eType = SURFTYPE_UNKNOWN;
 
 	// First see if we hit the world
@@ -259,7 +258,7 @@ SurfaceType GetSurfaceType(HOBJECT hObject, HPOLY hPoly)
 void TiltVectorToPlane(DVector *pVec, DVector *pNormal)
 {
 	DVector q, slope;
-	
+
 	// Get slope along vector...
 	VEC_CROSS(q, *pNormal, *pVec);
 	if(VEC_MAGSQR(q) > 0.001f)
@@ -349,7 +348,7 @@ void SendSoundTrigger(HOBJECT hSender, int nId, DVector vPos, DFLOAT fRadius)
 				HSTRING hString = pServerDE->CreateString(szTemp);
 				pServerDE->WriteToMessageHString(hMessage, hString );
 				pServerDE->FreeString( hString );
-				pServerDE->EndMessage(hMessage);				
+				pServerDE->EndMessage(hMessage);
 			}
 		}
 
@@ -383,7 +382,7 @@ DBOOL MoveObjectToGround(HOBJECT hObject)
 	VEC_SET(iq.m_Direction, 0.0f, -1.0f, 0.0f);
 	iq.m_Flags	   = IGNORE_NONSOLID | INTERSECT_OBJECTS;
 	iq.m_FilterFn  = NULL;
-	iq.m_pUserData = NULL;	
+	iq.m_pUserData = NULL;
 
 	if (g_pServerDE->CastRay(&iq, &ii))	// Hit
 	{
@@ -430,7 +429,7 @@ DBOOL GlobalFilterFn(HOBJECT hObj, void *pUserData)
 	}
 
 	HCLASS hObjClass	= g_pServerDE->GetObjectClass(hObj);
-	BaseClass* pObj = (BaseClass*)g_pServerDE->HandleToObject(hObj);			
+	BaseClass* pObj = (BaseClass*)g_pServerDE->HandleToObject(hObj);
 
 	if( pGlobalFilterFnData->m_dwFlags & IGNORE_CHARACTER)
 	{
@@ -454,7 +453,7 @@ DBOOL GlobalFilterFn(HOBJECT hObj, void *pUserData)
 
 		if(g_pServerDE->IsKindOf(hObjClass, hDestruct))
 		{
-			CDestructableModel* pModel = (CDestructableModel*)g_pServerDE->HandleToObject(hObj);			
+			CDestructableModel* pModel = (CDestructableModel*)g_pServerDE->HandleToObject(hObj);
 
 			if(pModel->IsDestructable())
 				return DFALSE;
@@ -467,7 +466,7 @@ DBOOL GlobalFilterFn(HOBJECT hObj, void *pUserData)
 
 		if(g_pServerDE->IsKindOf(hObjClass, hBrush))
 		{
-			CDestructableBrush* pBrush = (CDestructableBrush*)g_pServerDE->HandleToObject(hObj);			
+			CDestructableBrush* pBrush = (CDestructableBrush*)g_pServerDE->HandleToObject(hObj);
 
 			if(pBrush->GetSurfaceType() == SURFTYPE_GLASS && pBrush->IsDestructable())
 				return DFALSE;
@@ -486,16 +485,17 @@ DBOOL GlobalFilterFn(HOBJECT hObj, void *pUserData)
 //
 //  PARAMETERS:
 //
-//		hResponsible -	Handle to the object responsible for the damage 
+//		hResponsible -	Handle to the object responsible for the damage
 //						(may or may not be the same as pDamager->m_hObject)
 //		pDamager	 -	Pointer to the object that is doing the damage.
 //		hDamagee	 -	Handle to the object taking the damage
 //		fDamage		 -	The amount of damage being inflicted
 //		vDir		 -	The direction the damage is coming from
+//		vPos		 -	The origin position of the damage
 //		nDamageType	 -	The type of damage being inflicted.
 //
 // ----------------------------------------------------------------------- //
-void DamageObject(HOBJECT hResponsible, LPBASECLASS pDamager, 
+void DamageObject(HOBJECT hResponsible, LPBASECLASS pDamager,
 						 HOBJECT hDamagee, DFLOAT fDamage, DVector vDir, DVector vPos,DBYTE nDamageType)
 {
 	CServerDE* pServerDE = BaseClass::GetServerDE();
@@ -521,7 +521,7 @@ void DamageObject(HOBJECT hResponsible, LPBASECLASS pDamager,
 //
 //  PARAMETERS:
 //
-//		hResponsible -	Handle to the object responsible for the damage 
+//		hResponsible -	Handle to the object responsible for the damage
 //						(may or may not be the same as pDamager->m_hObject)
 //		pDamager	 -	Pointer to the object that is doing the damage.
 //		vOrigin		 -	Center of the damage sphere
@@ -546,10 +546,8 @@ void DamageObjectsInRadius(HOBJECT hResponsible, LPBASECLASS pDamager,
 
 	ObjectLink* object_ref=object_list->m_pFirstLink;
 
-	// small optimization..
-	// Work with the squares of the distances so as to not have to get a square root.
 	DFLOAT fRadiusSquared = fRadius * fRadius;
-	DFLOAT fHalfRadiusSquared = fRadiusSquared/2;
+	DFLOAT fHalfRadiusSquared = fRadiusSquared / 2;
 
 	while (object_ref)
 	{
@@ -576,23 +574,18 @@ void DamageObjectsInRadius(HOBJECT hResponsible, LPBASECLASS pDamager,
 		intersect_query.m_FilterFn = [](HOBJECT object, void* user_data) noexcept -> DBOOL { if (!object) return DFALSE; return object != (HOBJECT)user_data; };
 		intersect_query.m_pUserData = hObj;
 
-		if (!pServerDE->IntersectSegment(&intersect_query, &intersect_info))
+		if (pServerDE->IntersectSegment(&intersect_query, &intersect_info) == DFALSE)
 		{
 			// Apply full damage to 50% point, then reduce it
-			//if (fDistanceSquared < fHalfRadiusSquared)
-			//{
+			if (fDistanceSquared < fHalfRadiusSquared)
+			{
 				DamageObject(hResponsible, pDamager, hObj, fDamage, vDir, vOrigin, nDamageType);
-			//}
-			//else if (fDistanceSquared <= fRadiusSquared)
-			//{
-				//DFLOAT fAdjDamage = fDamage - (fDistanceSquared - fHalfRadiusSquared) / fHalfRadiusSquared * fDamage;
-				//DamageObject(hResponsible, pDamager, hObj, fAdjDamage, vDir, vOrigin, nDamageType);
-			//}
-		}
-		else if (fDistanceSquared <= fRadiusSquared) 
-		{
-			DFLOAT fAdjDamage = fDamage - (fDistanceSquared - fHalfRadiusSquared) / fHalfRadiusSquared * fDamage;
-			DamageObject(hResponsible, pDamager, hObj, fAdjDamage, vDir, vOrigin, nDamageType);
+			}
+			else if (fDistanceSquared <= fRadiusSquared)
+			{
+				DFLOAT fAdjDamage = fDamage - (fDistanceSquared - fHalfRadiusSquared) / fHalfRadiusSquared * fDamage;
+				DamageObject(hResponsible, pDamager, hObj, fAdjDamage, vDir, vOrigin, nDamageType);
+			}
 		}
 
 		object_ref = object_ref->m_pNext;
